@@ -1,21 +1,11 @@
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
+@import "tailwindcss";
+@plugin "daisyui" {
+  themes: emerald --default, dark --prefersdark;
+}
 
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  transition: background-color 3s ease-in-out, color 3s ease-in-out;
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
-}
-
-body {
-  color: var(--foreground);
-  background: var(--background);
-  font-family: Arial, Helvetica, sans-serif;
+[data-theme="dark"] {
 }
