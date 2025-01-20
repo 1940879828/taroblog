@@ -1,29 +1,31 @@
 "use client"
-import { getTheme, setTheme } from "@/lib/theme"
+import { initTheme, setTheme, useGetTheme } from "@/lib/theme"
 import { cn } from "@/lib/utils"
-import { type ChangeEvent, useState } from "react"
+import { type ChangeEvent, useEffect, useState } from "react"
 
 const ThemeController = ({ className }: { className?: string }) => {
-  const [isLight, setIsLight] = useState<"emerald" | "dark">(getTheme())
-  const [onSetting, setOnSettings] = useState<boolean>(false)
+  const theme = useGetTheme()
+  const [isChecked, setIsChecked] = useState(theme === "cupcake")
+
+  useEffect(() => {
+    setIsChecked(theme === "cupcake")
+  }, [theme])
 
   const onInputChange = (e: ChangeEvent<HTMLInputElement>) => {
-    if (onSetting) return
-    setOnSettings(true)
-    setIsLight(e.target.checked ? "emerald" : "dark")
-    setTheme(e.target.checked ? "emerald" : "dark")
-    setTimeout(() => {
-      setOnSettings(false)
-    }, 3000)
+    setTheme(e.target.checked ? "cupcake" : "dark")
+    setIsChecked(e.target.checked)
   }
+
+  useEffect(() => {
+    initTheme()
+  }, [])
 
   return (
     <label className={cn("swap swap-rotate", className)}>
       <input
-        disabled={onSetting}
         type="checkbox"
+        checked={isChecked}
         className="theme-controller"
-        value={isLight || "emerald"}
         onChange={onInputChange}
       />
 

@@ -1,10 +1,13 @@
 @import "tailwindcss";
 @plugin "daisyui" {
-  themes: emerald --default, dark --prefersdark;
+  themes: cupcake --default, dark --prefersdark;
+}
+
+.md-editor {
+  background-color: transparent !important;
 }
 
 :root {
-  transition: background-color 3s ease-in-out, color 3s ease-in-out;
 }
 
 [data-theme="dark"] {
