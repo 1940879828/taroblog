@@ -1,10 +1,24 @@
-import Button from "@/component/Button"
+"use client"
+import {TextSquare} from "@/component/TextSquare"
+import React from "react"
+import {Layer, Stage} from "react-konva"
 
 export default function Home() {
+  const [cards, _setCards] = React.useState([
+    { text: "Card 1", x: 100, y: 100 },
+    { text: "Card 2", x: 300, y: 100 }
+  ])
+
   return (
-    <div className="grid grid-rows-[20px_1fr_20px] items-center justify-items-center min-h-screen p-8 pb-20 gap-16 sm:p-20 font-[family-name:var(--font-geist-sans)]">
-      hello world
-      <Button>Button</Button>
-    </div>
+    <Stage width={window.innerWidth} height={window.innerHeight}>
+      <Layer>
+        {cards.map((card, index) => (
+          // 调用 makeTextSquare 创建每个卡片
+          <React.Fragment key={index}>
+            {TextSquare(card.text, { x: card.x, y: card.y })}
+          </React.Fragment>
+        ))}
+      </Layer>
+    </Stage>
   )
 }
