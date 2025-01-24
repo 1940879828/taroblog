@@ -6,7 +6,7 @@ const NavBar = () => {
     <div className="navbar bg-base-100">
       <div className="flex-1">
         <Link href="/" className="btn btn-ghost text-xl">
-          TaroBlog
+          🌳TaroBlog
         </Link>
         <ul className="menu menu-horizontal px-1">
           <li>
