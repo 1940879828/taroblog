@@ -1,6 +1,15 @@
 @import "tailwindcss";
+
 @plugin "daisyui" {
   themes: cupcake --default, dark --prefersdark;
+}
+@plugin "daisyui/theme" {
+  name: cupcake;
+  --radius-selector: .5rem;
+  --radius-box: .5rem;
+  --radius-field: .25rem;
+  --color-primary: #1976d2;
+  --color-primary-content: oklch(98% 0.003 247.858);
 }
 
 .md-editor {

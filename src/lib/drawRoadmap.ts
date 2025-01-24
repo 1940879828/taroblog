@@ -4,7 +4,7 @@ import Konva from "konva"
 export const CARD_CONFIG = {
   width: 140,
   height: 40,
-  color: "#444"
+  color: "oklch(23.574% 0.066 313.189)"
 }
 
 // 画布宽度

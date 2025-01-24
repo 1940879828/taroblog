@@ -1,4 +1,3 @@
-:root:has(input.theme-controller[value="dark"]:checked),
 [data-theme="dark"] {
   color-scheme: dark;
   --color-base-100: oklch(25.33% 0.016 252.42);
@@ -31,8 +30,6 @@
   --noise: 0;
 }
 
-:where(:root),
-:root:has(input.theme-controller[value="cupcake"]:checked),
 [data-theme="cupcake"] {
   color-scheme: light;
   --color-base-100: oklch(97.788% 0.004 56.375);
@@ -427,5 +424,4 @@
   --default-transition-duration: .15s;
   --default-transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
   --default-font-family: var(--font-sans);
-  );
 }
