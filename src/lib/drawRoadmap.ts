@@ -1,6 +1,12 @@
 import type { RoadMap } from "@/config/roadMap"
 import Konva from "konva"
 
+export const CARD_CONFIG = {
+  width: 140,
+  height: 40,
+  color: "#444"
+}
+
 // 画布宽度
 export const canvasWidth = window.innerWidth - 15
 
@@ -11,9 +17,9 @@ export const makeTextRect = (props: {
   /** 距离画布上边👆的距离 */
   y: number
   /** 宽度 */
-  width: number
+  width?: number
   /** 高度 */
-  height: number
+  height?: number
   /** 背景颜色 */
   fill: string
   /** 要跳转的路由 */
@@ -21,7 +27,15 @@ export const makeTextRect = (props: {
   /** 矩形内显示的文字 */
   text: string
 }) => {
-  const { x, y, width, height, fill, link, text } = props
+  const {
+    x,
+    y,
+    width = CARD_CONFIG.width,
+    height = CARD_CONFIG.height,
+    fill,
+    link,
+    text
+  } = props
   // 计算矩形水平居中的 x 坐标
   const rectX = (canvasWidth - width) / 2
   const rect = new Konva.Rect({
@@ -30,7 +44,12 @@ export const makeTextRect = (props: {
     width,
     height,
     fill,
-    cornerRadius: 10
+    cornerRadius: 4,
+    shadowColor: "rgba(0, 0, 0, 0.3)",
+    shadowBlur: 4,
+    shadowOffsetX: 2,
+    shadowOffsetY: 2,
+    shadowOpacity: 0.3
   })
   rect.setAttr("link", link)
 
@@ -44,7 +63,7 @@ export const makeTextRect = (props: {
     fontSize: 16, // 字体大小
     fontFamily:
       "Helvetica, 'Hiragino Sans GB', 'Microsoft Yahei', '微软雅黑', Arial, sans-serif",
-    fill: "white", // 字体颜色
+    fill: CARD_CONFIG.color, // 字体颜色
     align: "center", // 水平居中
     verticalAlign: "middle", // 垂直居中
     listening: false // 禁止文字响应事件
@@ -66,16 +85,21 @@ export const drawLine = (
   const minTwist = 20
   const maxTwist = 50
 
+  const rect1Width = rect1.width || CARD_CONFIG.width
+  const rect2Width = rect2.width || CARD_CONFIG.width
+  const rect1Height = rect1.height || CARD_CONFIG.height
+  const rect2Height = rect2.height || CARD_CONFIG.height
+
   // 没有x就是居中的
   // 计算矩形水平居中的 x 坐标
-  const rect1X = (canvasWidth - rect1.width) / 2
-  const rect2X = (canvasWidth - rect2.width) / 2
+  const rect1X = (canvasWidth - rect1Width) / 2
+  const rect2X = (canvasWidth - rect2Width) / 2
 
   // 计算连接线的起点和终点
-  const startX = rect1X + rect1.width / 2 // 第一个矩形的中心点 X
-  const startY = rect1.y + rect1.height / 2 // 第一个矩形的中心点 Y
-  const endX = rect2X + rect2.width / 2 // 第二个矩形的中心点 X
-  const endY = rect2.y + rect2.height / 2 // 第二个矩形的中心点 Y
+  const startX = rect1X + rect1Width / 2 // 第一个矩形的中心点 X
+  const startY = rect1.y + rect1Height / 2 // 第一个矩形的中心点 Y
+  const endX = rect2X + rect2Width / 2 // 第二个矩形的中心点 X
+  const endY = rect2.y + rect2Height / 2 // 第二个矩形的中心点 Y
 
   // 计算中间控制点
   const midX = (startX + endX) / 2 // 中间点的 X 坐标
@@ -89,7 +113,7 @@ export const drawLine = (
   const controlX = midX + twistDirection * twistOffset // 控制点的 X 坐标
 
   // 创建连接线（使用贝塞尔曲线）
-  const line = new Konva.Line({
+  return new Konva.Line({
     points: [startX, startY, controlX, midY, endX, endY], // 起点、控制点、终点
     stroke: "white", // 线条颜色
     strokeWidth: 3, // 线条宽度
@@ -97,8 +121,6 @@ export const drawLine = (
     lineJoin: "round", // 线条连接点样式
     tension: 0.5 // 贝塞尔曲线张力
   })
-
-  return line
 }
 
 // 画连接线 水平轴
@@ -117,10 +139,10 @@ export const drawDashedLine = (args: DrawDashedLineProps) => {
   const parentClientRect = parentGroup.getClientRect()
   const childClientRect = childGroup.getClientRect()
   // 计算连接线的起点和终点
-  let startX = 0
-  let startY = 0
-  let endX = 0
-  let endY = 0
+  let startX: number
+  let startY: number
+  let endX: number
+  let endY: number
   if (tree === "left") {
     // 起始点为第一个矩形的左侧中间
     startX = parentClientRect.x // 左侧 X 坐标
@@ -148,7 +170,7 @@ export const drawDashedLine = (args: DrawDashedLineProps) => {
   const midY = (startY + endY) / 2 - 10 // 中间点的 Y 坐标，稍微上移以形成微拱形
 
   // 创建连接线（使用贝塞尔曲线）
-  const line = new Konva.Line({
+  return new Konva.Line({
     points: [startX, startY, midX, midY, endX, endY], // 起点、控制点、终点
     stroke: "white", // 线条颜色
     strokeWidth: 2, // 线条宽度
@@ -157,6 +179,4 @@ export const drawDashedLine = (args: DrawDashedLineProps) => {
     tension: 0.5, // 贝塞尔曲线张力
     dash: [5, 5] // 虚线样式，5像素实线，5像素空白
   })
-
-  return line
 }

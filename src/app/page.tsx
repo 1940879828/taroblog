@@ -1,5 +1,6 @@
 "use client"
 import {
+  CARD_CONFIG,
   canvasWidth,
   drawDashedLine,
   drawLine,
@@ -13,8 +14,10 @@ import {
   type RoadMapRightTree,
   map
 } from "@/config/roadMap"
+import { useRouter } from "next/navigation"
 
 export default function Home() {
+  const router = useRouter()
   useEffect(() => {
     const width = canvasWidth
     const height = window.innerHeight
@@ -61,7 +64,8 @@ export default function Home() {
         let currentX = 0
         if (isLeftTree) {
           const parentLeftX = parentClientRect.x
-          currentX = parentLeftX - node.marginRight - node.width
+          currentX =
+            parentLeftX - node.marginRight - (node.width || CARD_CONFIG.width)
         }
         if (!isLeftTree) {
           const parentRightX = parentClientRect.x + parentClientRect.width
@@ -130,7 +134,7 @@ export default function Home() {
       // 判断目标形状是否有 link 属性
       if (target.getAttr("link")) {
         // 跳转到 link 属性指定的链接
-        window.location.href = target.getAttr("link")
+        router.push(`/note/${target.getAttr("link")}`)
       }
     })
 

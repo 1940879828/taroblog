@@ -28,9 +28,10 @@ export default async function Note({ params }: { params: { name: string } }) {
   const content = await getMarkdownContent(name)
 
   return (
-    <div className="p-20">
-      <h1>{name}</h1>
-      <Markdown content={content} />
+    <div className="flex justify-center">
+      <div className="w-[1280px]">
+        <Markdown content={content} />
+      </div>
     </div>
   )
 }
