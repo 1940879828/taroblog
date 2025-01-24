@@ -25,6 +25,7 @@ function getBrowserTheme() {
 
 // 自定义 Hook：useGetTheme
 export function useGetTheme() {
+  if (typeof localStorage === "undefined") return "cupcake"
   const [theme, setTheme] = useState<"dark" | "cupcake">(() => {
     // 从 localStorage 或浏览器默认主题中获取初始值
     return (
