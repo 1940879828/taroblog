@@ -29,7 +29,10 @@
         "noSvgWithoutTitle": "off"
       },
       "recommended": true,
-      "complexity": { "noUselessTypeConstraint": "error" },
+      "complexity": {
+        "noUselessTypeConstraint": "error",
+        "noForEach": "off"
+      },
       "correctness": {
         "noUnusedVariables": "error",
         "useArrayLiterals": "off",

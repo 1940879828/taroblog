@@ -30,7 +30,7 @@ const ThemeController = ({ className }: { className?: string }) => {
       />
 
       <svg
-        className="swap-off h-10 w-10 fill-current"
+        className="swap-off h-8 w-8 fill-current"
         xmlns="http://www.w3.org/2000/svg"
         viewBox="0 0 24 24"
       >
@@ -38,7 +38,7 @@ const ThemeController = ({ className }: { className?: string }) => {
       </svg>
 
       <svg
-        className="swap-on h-10 w-10 fill-current"
+        className="swap-on h-8 w-8 fill-current"
         xmlns="http://www.w3.org/2000/svg"
         viewBox="0 0 24 24"
       >

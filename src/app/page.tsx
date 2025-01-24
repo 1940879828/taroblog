@@ -1,103 +1,142 @@
 "use client"
-import React, {useEffect} from "react"
-import Konva from "konva";
-import {canvasWidth, drawLine, makeTextRect} from "@/lib/drawRoadmap";
+import {
+  canvasWidth,
+  drawDashedLine,
+  drawLine,
+  makeTextRect
+} from "@/lib/drawRoadmap"
+import Konva from "konva"
+import React, { useEffect } from "react"
+import Group = Konva.Group
+import {
+  type RoadMapLeftTree,
+  type RoadMapRightTree,
+  map
+} from "@/config/roadMap"
 
 export default function Home() {
-  const map = [
-    {
-      y: 20,
-      width: 100,
-      height: 50,
-      fill: 'green',
-      link: '/jump',
-      text: "title"
-    },
-    {
-      y: 120,
-      width: 100,
-      height: 50,
-      fill: 'orange',
-      link: '/jump',
-      text: "title"
-    },
-    {
-      y: 220,
-      width: 100,
-      height: 50,
-      fill: 'orange',
-      link: '/jump',
-      text: "title"
-    },
-    {
-      y: 320,
-      width: 100,
-      height: 50,
-      fill: 'orange',
-      link: '/jump',
-      text: "title"
-    }
-  ]
-
   useEffect(() => {
-    let width = canvasWidth;
-    let height = window.innerHeight;
+    const width = canvasWidth
+    const height = window.innerHeight
 
     // 创建 Stage
-    let stage = new Konva.Stage({
-      container: 'container', // 绑定到 id 为 container 的 div
+    const stage = new Konva.Stage({
+      container: "container", // 绑定到 id 为 container 的 div
       width: width,
-      height: height,
-    });
+      height: height
+    })
 
     // 创建 Layer
-    let layer = new Konva.Layer();
+    const mainLayer = new Konva.Layer()
+    const lineLayer = new Konva.Layer()
 
     // 画连接线
     for (let i = 0; i < map.length - 1; i++) {
-      const rect1 = map[i]; // 当前矩形
-      const rect2 = map[i + 1]; // 下一个矩形
+      const rect1 = map[i] // 当前矩形
+      const rect2 = map[i + 1] // 下一个矩形
 
       // 调用 drawLine 函数生成连接线
-      const line = drawLine(rect1, rect2,i);
+      const line = drawLine(rect1, rect2, i)
 
       // 将连接线添加到 Layer
-      layer.add(line);
+      lineLayer.add(line)
     }
 
+    // 画左右子树
+    const drawSubTree = ({
+      tree,
+      rootGroup
+    }: {
+      tree: RoadMapLeftTree | RoadMapRightTree
+      rootGroup: Group
+    }) => {
+      // 递归绘制子树
+      const drawTreeItem = (
+        parentGroup: Group,
+        node: RoadMapLeftTree[number] | RoadMapRightTree[number]
+      ) => {
+        const isLeftTree = "marginRight" in node
+        // 计算当前矩形的 x 坐标
+        const parentClientRect = parentGroup.getClientRect()
+        let currentX = 0
+        if (isLeftTree) {
+          const parentLeftX = parentClientRect.x
+          currentX = parentLeftX - node.marginRight - node.width
+        }
+        if (!isLeftTree) {
+          const parentRightX = parentClientRect.x + parentClientRect.width
+          currentX = parentRightX + node.marginLeft
+        }
+
+        // 创建当前矩形
+        const currentRect = makeTextRect({
+          ...node,
+          x: currentX
+        })
+        // 绘制连接父节点和当前节点的虚线
+        const line = drawDashedLine({
+          parentGroup,
+          childGroup: currentRect,
+          tree: isLeftTree ? "left" : "right"
+        })
+        lineLayer.add(line) // 将虚线添加到 Layer
+        // 将当前矩形添加到 Layer
+        mainLayer.add(currentRect)
+        // 如果有子节点，递归绘制子节点
+        if (node.children && node.children.length > 0) {
+          node.children.forEach((child) => {
+            drawTreeItem(currentRect, child)
+          })
+        }
+      }
+      // 遍历左子树并开始绘制
+      tree.forEach((node) => {
+        drawTreeItem(rootGroup, node)
+      })
+    }
     // 画矩形
-    map.forEach(item=>{
-      layer.add(makeTextRect(item))
+    map.forEach((item) => {
+      const mainRectGroup: Group = makeTextRect(item)
+      mainLayer.add(mainRectGroup)
+      // 画左子树🌳的矩形
+      const leftTree = item?.children?.[0]
+      if (leftTree && leftTree.length > 0) {
+        drawSubTree({ tree: leftTree, rootGroup: mainRectGroup })
+      }
+      // 画右子树🌳的矩形
+      const rightTree = item?.children?.[1]
+      if (rightTree && rightTree.length > 0) {
+        drawSubTree({ tree: rightTree, rootGroup: mainRectGroup })
+      }
     })
 
     // 在 Layer 上监听 mouseenter 和 mouseleave 事件
-    layer.on('mouseenter', function (e) {
+    mainLayer.on("mouseenter", (e) => {
       // 如果事件目标是矩形（或其他形状），则修改光标样式
       if (e.target instanceof Konva.Rect) {
-        stage.container().style.cursor = 'pointer';
+        stage.container().style.cursor = "pointer"
       }
-    });
+    })
 
-    layer.on('mouseleave', function (e) {
+    mainLayer.on("mouseleave", (_e) => {
       // 恢复默认光标
-      stage.container().style.cursor = 'default';
-    });
+      stage.container().style.cursor = "default"
+    })
 
-    layer.on('click', function (e) {
+    mainLayer.on("click", (e) => {
       // 获取点击的目标形状
-      const target = e.target;
+      const target = e.target
 
       // 判断目标形状是否有 link 属性
-      if (target.getAttr('link')) {
+      if (target.getAttr("link")) {
         // 跳转到 link 属性指定的链接
-        window.location.href = target.getAttr('link');
+        window.location.href = target.getAttr("link")
       }
-    });
+    })
 
     // 将 Layer 添加到 Stage
-    stage.add(layer);
-  }, []);
-  return (
-    <div id="container"></div>
-  )
+    stage.add(lineLayer)
+    stage.add(mainLayer)
+  }, [])
+  return <div id="container" style={{ backgroundColor: "#2d4059" }} />
 }
