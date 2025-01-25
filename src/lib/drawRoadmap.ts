@@ -8,7 +8,7 @@ export const CARD_CONFIG = {
 }
 
 // 画布宽度
-export const canvasWidth = window.innerWidth - 15
+export const canvasWidth = document.documentElement.clientWidth - 25
 
 // 画带有文字的方块
 export const makeTextRect = (props: {

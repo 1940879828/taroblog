@@ -3,7 +3,6 @@ title: Cookie、localStorage、sessionStorage
 tags: ['Html','Js']
 date: 2020-04-11 15:47:29
 categories: 'Js'
-cover: http://qny.bioart.icu/blog/17.jpg
 ---
 
 ## 一、他们之间的区别

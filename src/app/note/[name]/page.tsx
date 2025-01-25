@@ -23,7 +23,9 @@ async function getMarkdownContent(name: string) {
   return marked(content)
 }
 
-export default async function Note({ params }: { params: { name: string } }) {
+export default async function NoteDetail({
+  params
+}: { params: { name: string } }) {
   const { name } = params
   const content = await getMarkdownContent(name)
 
