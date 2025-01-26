@@ -1,19 +1,72 @@
 "use client"
 import { cn } from "@/lib/utils"
-import { type ChangeEvent, useEffect, useState } from "react"
+import {type ChangeEvent, useEffect, useRef, useState} from "react"
 import {useTheme} from "next-themes";
 
 const ThemeController = ({ className }: { className?: string }) => {
   const { setTheme, theme } = useTheme()
   const [isChecked, setIsChecked] = useState(theme === "cupcake")
+  const mousePositionRef = useRef<{ clientX: number; clientY: number }>(
+    { clientX: 0, clientY: 0 }
+  )
 
   useEffect(() => {
     setIsChecked(theme === "cupcake")
   }, [theme])
 
+  // 监听鼠标点击事件，获取鼠标位置
+  const handleMouseDown = (e: MouseEvent) => {
+    mousePositionRef.current = { clientX: e.clientX, clientY: e.clientY }
+  }
+
+  // 在组件挂载时添加鼠标点击事件监听器
+  useEffect(() => {
+    document.addEventListener("mousedown", handleMouseDown)
+    return () => {
+      document.removeEventListener("mousedown", handleMouseDown)
+    }
+  }, [])
+
   const onInputChange = (e: ChangeEvent<HTMLInputElement>) => {
-    setTheme(e.target.checked ? "cupcake" : "dark")
-    setIsChecked(e.target.checked)
+    const toTheme = theme === "dark" ? "cupcake" : "dark"
+    const transition = document.startViewTransition(async () => {
+      // 如果当前是暗色模式，添加类名以控制 z-index
+      if (theme === "cupcake") {
+        document.documentElement.classList.add("dark-transition")
+      } else {
+        document.documentElement.classList.remove("dark-transition")
+      }
+      setTheme(toTheme)
+      setIsChecked(e.target.checked)
+    })
+
+    // 在 transition.ready 的 Promise 完成后，执行自定义动画
+    transition.ready.then(() => {
+      // 由于我们要从鼠标点击的位置开始做动画，所以我们需要先获取到鼠标的位置
+      const { clientX, clientY } = mousePositionRef.current
+
+      // 计算半径，以鼠标点击的位置为圆心，到四个角的距离中最大的那个作为半径
+      const radius = Math.hypot(Math.max(clientX, innerWidth - clientX), Math.max(clientY, innerHeight - clientY))
+      const clipPath = [`circle(0% at ${clientX}px ${clientY}px)`, `circle(${radius}px at ${clientX}px ${clientY}px)`]
+      // 自定义动画
+      document.documentElement.animate(
+        {
+          // 如果要切换到暗色主题，我们在过渡的时候从半径 100% 的圆开始，到 0% 的圆结束
+          clipPath: theme === "cupcake" ? clipPath.reverse() : clipPath
+        },
+        {
+          duration: 500,
+          // 如果要切换到暗色主题，我们应该裁剪 view-transition-old(root) 的内容
+          pseudoElement: theme === "cupcake" ? "::view-transition-old(root)" : "::view-transition-new(root)"
+        }
+      )
+      // 确保在动画完成后移除类
+      transition.ready.then(() => {
+        if (theme === "dark") {
+          document.documentElement.classList.remove("dark-transition")
+        }
+      })
+    })
   }
 
   return (

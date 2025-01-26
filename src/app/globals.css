@@ -43,7 +43,7 @@
   }
 }
 
-
+/* md展示样式覆盖 */
 .md-editor-dark .md-editor-preview,
 .md-editor-dark .md-editor-preview h1,
 .md-editor-dark .md-editor-preview h2,
@@ -54,4 +54,18 @@
 .md-editor-dark .md-editor-preview .md-editor-code-block
 {
   color: #f0f0f0!important;
+}
+
+/* 暗黑模式切换配合样式 */
+::view-transition-new(root),
+::view-transition-old(root) {
+  /* 关闭默认动画，否则影响自定义动画的执行 */
+  animation: none;
+  /* 设置了元素的混合模式为"正常" */
+  mix-blend-mode: normal;
+}
+
+/* 暗黑模式遮罩层级调整 */
+.dark-transition::view-transition-old(root) {
+  z-index: 100 !important; /* 确保在添加类时能生效 */
 }
