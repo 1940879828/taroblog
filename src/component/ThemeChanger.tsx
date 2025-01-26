@@ -1,10 +1,10 @@
 "use client"
-import { initTheme, setTheme, useGetTheme } from "@/lib/theme"
 import { cn } from "@/lib/utils"
 import { type ChangeEvent, useEffect, useState } from "react"
+import {useTheme} from "next-themes";
 
 const ThemeController = ({ className }: { className?: string }) => {
-  const theme = useGetTheme()
+  const { setTheme, theme } = useTheme()
   const [isChecked, setIsChecked] = useState(theme === "cupcake")
 
   useEffect(() => {
@@ -15,10 +15,6 @@ const ThemeController = ({ className }: { className?: string }) => {
     setTheme(e.target.checked ? "cupcake" : "dark")
     setIsChecked(e.target.checked)
   }
-
-  useEffect(() => {
-    initTheme()
-  }, [])
 
   return (
     <label className={cn("swap swap-rotate", className)}>
