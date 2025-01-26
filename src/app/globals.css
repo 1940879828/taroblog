@@ -17,7 +17,41 @@
 }
 
 :root {
+
 }
 
 [data-theme="dark"] {
+  --root-bg: #181818;
+}
+
+.w-container {
+  width: 1340px;
+  max-width: 1340px;
+  min-width: 1340px;
+  box-sizing: content-box;
+  margin: 0 auto;
+  position: relative;
+  padding: 0 20px;
+}
+
+@media (max-width: 1340px) {
+  .w-container {
+    width: 100vw;
+    max-width: 100vw;
+    min-width: auto;
+    box-sizing: border-box;
+  }
+}
+
+
+.md-editor-dark .md-editor-preview,
+.md-editor-dark .md-editor-preview h1,
+.md-editor-dark .md-editor-preview h2,
+.md-editor-dark .md-editor-preview h3,
+.md-editor-dark .md-editor-preview h4,
+.md-editor-dark .md-editor-preview h5,
+.md-editor-dark .md-editor-preview h6,
+.md-editor-dark .md-editor-preview .md-editor-code-block
+{
+  color: #f0f0f0!important;
 }
