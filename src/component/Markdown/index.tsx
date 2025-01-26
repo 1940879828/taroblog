@@ -1,16 +1,16 @@
 "use client"
-import { useGetTheme } from "@/lib/theme"
 import { MdCatalog, MdPreview } from "md-editor-rt"
 import { useState } from "react"
+import {useTheme} from "next-themes";
 
 type Props = {
   content: string
 }
 
 const Markdown = ({ content }: Props) => {
+  const {theme} = useTheme()
   const [id] = useState("preview-only")
   const [scrollElement] = useState(document.documentElement)
-  const theme = useGetTheme()
 
   return (
     <>

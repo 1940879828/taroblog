@@ -142,5 +142,5 @@ export default function Home() {
     stage.add(lineLayer)
     stage.add(mainLayer)
   }, [])
-  return <div id="container" style={{ backgroundColor: "#2d4059" }} />
+  return <div id="container" />
 }
