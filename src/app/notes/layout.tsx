@@ -1,4 +1,4 @@
-export default function NoteDetailLayout({
+export default function NoteLayout({
   children
 }: Readonly<{
   children: React.ReactNode
