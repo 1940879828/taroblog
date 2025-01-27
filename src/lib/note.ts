@@ -78,6 +78,7 @@ export const getAllTags = async (): Promise<string[]> => {
 
 interface CategoryNode {
   name: string
+  count: number
   children: CategoryNode[]
 }
 
@@ -88,6 +89,7 @@ const buildCategoryTree = (categories: string[]): CategoryNode | null => {
   return categories.reduceRight<CategoryNode>(
     (childNode, currentName) => ({
       name: currentName,
+      count:1,
       children: childNode ? [childNode] : []
     }),
     null as unknown as CategoryNode
@@ -117,6 +119,7 @@ const mergeTwoNodes = (
 
   return {
     name: node1.name,
+    count: node1.count,
     children: Array.from(mergedChildren.values())
   }
 }
@@ -124,13 +127,22 @@ const mergeTwoNodes = (
 // 合并多个分类树
 const mergeCategoryTrees = (trees: CategoryNode[]): CategoryNode[] => {
   const nodeMap = new Map<string, CategoryNode>()
+  const nameCountMap = new Map<string, number>() // 用于统计每个 name 的出现次数
 
   trees.forEach((tree) => {
+    // 统计该分类的出现次数
+    nameCountMap.set(tree.name, (nameCountMap.get(tree.name) || 0) + 1)
+
     if (nodeMap.has(tree.name)) {
       nodeMap.set(tree.name, mergeTwoNodes(nodeMap.get(tree.name)!, tree))
     } else {
       nodeMap.set(tree.name, { ...tree })
     }
+  })
+
+  // 更新每个分类的 count 字段，将 nameCount 合并到 count 中
+  nodeMap.forEach((node) => {
+    node.count = nameCountMap.get(node.name) || 0
   })
 
   return Array.from(nodeMap.values())
