@@ -1,5 +1,5 @@
 import Paper from "@/component/Paper/Paper"
-import { getAllTags, getNotes } from "@/lib/note"
+import {getAllCategoriesTree, getAllTags, getNotes} from "@/lib/note"
 import { cn } from "@/lib/utils"
 import { Tag } from "lucide-react"
 import Link from "next/link"
@@ -7,7 +7,7 @@ import Link from "next/link"
 export default async function Notes() {
   const notes = await getNotes()
   const allTags = await getAllTags()
-
+  const categoryTree = await getAllCategoriesTree()
   return (
     <div className="w-container !pt-8 flex gap-2">
       <ul className="flex-1 flex flex-col gap-2">
@@ -15,7 +15,7 @@ export default async function Notes() {
           <Paper key={index} elevation={2}>
             <Link href={`/note/${note.fileName}`}>
               <div
-                className="card bg-base-100 card-md cursor-pointer"
+                className="card card-md cursor-pointer"
                 title={note.content}
               >
                 <div className="card-body">
@@ -53,7 +53,6 @@ export default async function Notes() {
         </div>
         <div className="space-y-2 space-x-2">
           {allTags.map((tag, index) => {
-            console.log({ tag })
             const rainbowColors = [
               "#FF0000", // 红
               "#FF7F00", // 橙
