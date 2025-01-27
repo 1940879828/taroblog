@@ -13,7 +13,7 @@ export default async function Notes() {
     <div className="w-container !pt-8 flex gap-2">
       <ul className="flex-1 flex flex-col gap-2">
         {notes.map((note, index) => (
-          <Paper key={index} elevation={2}>
+          <Paper key={index} elevation={2} className="hover:scale-[101%] transition-transform duration-75 bg-base-100 z-10">
             <Link href={`/note/${note.fileName}`}>
               <div className="card card-md cursor-pointer" title={note.content}>
                 <div className="card-body">
@@ -49,7 +49,7 @@ export default async function Notes() {
           <Tag />
           标签
         </div>
-        <div className="space-y-2 space-x-2">
+        <div className="">
           {allTags.map((tag, index) => {
             const rainbowColors = [
               "#FF0000", // 红
@@ -77,9 +77,7 @@ export default async function Notes() {
             return (
               <div
                 key={index}
-                className={cn(
-                  "badge border-none text-xs pr-2 pl-1 h-6 cursor-pointer transition-colors shadow-sm brightness-75 opacity-80 backdrop-blur-sm"
-                )}
+                className="badge border-none ml-2 mt-2 text-xs pr-2 pl-1 h-6 cursor-pointer shadow-sm brightness-75 opacity-80 backdrop-blur-sm hover:scale-[110%] transition-transform duration-75"
                 style={{
                   backgroundColor: color,
                   color: textColor,
