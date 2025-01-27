@@ -1,14 +1,15 @@
 "use client"
 import { cn } from "@/lib/utils"
-import {type ChangeEvent, useEffect, useRef, useState} from "react"
-import {useTheme} from "next-themes";
+import { useTheme } from "next-themes"
+import { type ChangeEvent, useEffect, useRef, useState } from "react"
 
 const ThemeController = ({ className }: { className?: string }) => {
   const { setTheme, theme } = useTheme()
   const [isChecked, setIsChecked] = useState(theme === "cupcake")
-  const mousePositionRef = useRef<{ clientX: number; clientY: number }>(
-    { clientX: 0, clientY: 0 }
-  )
+  const mousePositionRef = useRef<{ clientX: number; clientY: number }>({
+    clientX: 0,
+    clientY: 0
+  })
 
   useEffect(() => {
     setIsChecked(theme === "cupcake")
@@ -46,8 +47,14 @@ const ThemeController = ({ className }: { className?: string }) => {
       const { clientX, clientY } = mousePositionRef.current
 
       // 计算半径，以鼠标点击的位置为圆心，到四个角的距离中最大的那个作为半径
-      const radius = Math.hypot(Math.max(clientX, innerWidth - clientX), Math.max(clientY, innerHeight - clientY))
-      const clipPath = [`circle(0% at ${clientX}px ${clientY}px)`, `circle(${radius}px at ${clientX}px ${clientY}px)`]
+      const radius = Math.hypot(
+        Math.max(clientX, innerWidth - clientX),
+        Math.max(clientY, innerHeight - clientY)
+      )
+      const clipPath = [
+        `circle(0% at ${clientX}px ${clientY}px)`,
+        `circle(${radius}px at ${clientX}px ${clientY}px)`
+      ]
       // 自定义动画
       document.documentElement.animate(
         {
@@ -57,7 +64,10 @@ const ThemeController = ({ className }: { className?: string }) => {
         {
           duration: 500,
           // 如果要切换到暗色主题，我们应该裁剪 view-transition-old(root) 的内容
-          pseudoElement: theme === "cupcake" ? "::view-transition-old(root)" : "::view-transition-new(root)"
+          pseudoElement:
+            theme === "cupcake"
+              ? "::view-transition-old(root)"
+              : "::view-transition-new(root)"
         }
       )
       // 确保在动画完成后移除类

@@ -17,7 +17,6 @@
 }
 
 :root {
-
 }
 
 [data-theme="dark"] {
@@ -51,9 +50,8 @@
 .md-editor-dark .md-editor-preview h4,
 .md-editor-dark .md-editor-preview h5,
 .md-editor-dark .md-editor-preview h6,
-.md-editor-dark .md-editor-preview .md-editor-code-block
-{
-  color: #f0f0f0!important;
+.md-editor-dark .md-editor-preview .md-editor-code-block {
+  color: #f0f0f0 !important;
 }
 
 /* 暗黑模式切换配合样式 */

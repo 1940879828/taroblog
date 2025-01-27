@@ -36,19 +36,17 @@ export const getNotes = async () => {
             return data.tags
               .map((t) => t?.toString().trim())
               .filter((t) => t && t !== "undefined")
-          } else if (data.tags != null) {
-            return [data.tags.toString().trim()]
-          } else {
-            return []
           }
+          if (data.tags != null) {
+            return [data.tags.toString().trim()]
+          }
+          return []
         }
 
         const note: Note = {
           fileName: file.replace(/\.md$/, ""),
           title: data.title?.toString() || "Untitled",
-          tags: Array.isArray(data.tags)
-            ? data.tags
-            : [data.tags?.toString()],
+          tags: Array.isArray(data.tags) ? data.tags : [data.tags?.toString()],
           date: safeDate(), // 使用安全转换
           categories: safeTags(),
           content: content?.toString() || ""
@@ -62,6 +60,6 @@ export const getAllTags = async (): Promise<string[]> => {
   const notes = await getNotes()
   const allTags = notes
     .flatMap((note) => note.tags)
-    .filter((tag) =>tag && tag.trim() !== "") // 过滤空字符串和 null/undefined
+    .filter((tag) => tag && tag.trim() !== "") // 过滤空字符串和 null/undefined
   return [...new Set(allTags)] // 去重
 }
