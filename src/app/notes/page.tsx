@@ -1,5 +1,5 @@
 import Paper from "@/component/Paper/Paper"
-import {getAllCategoriesTree, getAllTags, getNotes} from "@/lib/note"
+import { getAllCategoriesTree, getAllTags, getNotes } from "@/lib/note"
 import { cn } from "@/lib/utils"
 import { Tag } from "lucide-react"
 import Link from "next/link"
@@ -8,16 +8,14 @@ export default async function Notes() {
   const notes = await getNotes()
   const allTags = await getAllTags()
   const categoryTree = await getAllCategoriesTree()
+  console.log(JSON.stringify(categoryTree, null, 2))
   return (
     <div className="w-container !pt-8 flex gap-2">
       <ul className="flex-1 flex flex-col gap-2">
         {notes.map((note, index) => (
           <Paper key={index} elevation={2}>
             <Link href={`/note/${note.fileName}`}>
-              <div
-                className="card card-md cursor-pointer"
-                title={note.content}
-              >
+              <div className="card card-md cursor-pointer" title={note.content}>
                 <div className="card-body">
                   <h2 className="card-title">{note.title}</h2>
                   <div className="flex items-center gap-4">

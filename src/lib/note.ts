@@ -1,7 +1,6 @@
-import {promises as fs} from "node:fs"
+import { promises as fs } from "node:fs"
 import path from "node:path"
 import matter from "gray-matter"
-import _ from 'lodash';
 
 interface Note {
   fileName: string
@@ -21,7 +20,7 @@ export const getNotes = async () => {
       .map(async (file) => {
         const filePath = path.join(notesDir, file)
         const fileContent = await fs.readFile(filePath, "utf8")
-        const {data, content} = matter(fileContent)
+        const { data, content } = matter(fileContent)
 
         // 处理日期类型转换
         const safeDate = () => {
@@ -77,82 +76,79 @@ export const getAllTags = async (): Promise<string[]> => {
   return [...new Set(allTags)] // 去重
 }
 
-const buildTree = (arr: string[]): any[] => {
-  if (arr.length === 0) return []
-
-  const result: any[] = []
-
-  // 递归生成树状结构
-  const createNode = (index: number): any => {
-    if (index >= arr.length) return null
-
-    const node = {
-      name: arr[index],
-      children: createNode(index + 1) ? [createNode(index + 1)] : [] // 如果有后续元素，继续递归
-    }
-
-    return node
-  }
-
-  // 开始递归从第一个元素开始
-  result.push(createNode(0))
-
-  return result
+interface CategoryNode {
+  name: string
+  children: CategoryNode[]
 }
 
-// 合并分类并递归处理
-const mergeCategories = (data) => {
-  // 将数据展平并去重
-  const flattened = _.flatten(data);
+// 构建单个分类树
+const buildCategoryTree = (categories: string[]): CategoryNode | null => {
+  if (!categories.length) return null
 
-  // 创建一个 Map 来存储合并后的分类
-  const categoryMap = new Map();
+  return categories.reduceRight<CategoryNode>(
+    (childNode, currentName) => ({
+      name: currentName,
+      children: childNode ? [childNode] : []
+    }),
+    null as unknown as CategoryNode
+  )
+}
 
-  flattened.forEach(item => {
-    if (categoryMap.has(item.name)) {
-      // 如果已经存在该分类，则合并 children
-      const existingItem = categoryMap.get(item.name);
-      existingItem.children = mergeCategoriesHelper([...existingItem.children, ...item.children]);
-    } else {
-      // 否则加入 Map
-      categoryMap.set(item.name, { ...item, children: mergeCategoriesHelper(item.children) });
-    }
-  });
-
-  return Array.from(categoryMap.values());
-};
-
-// 合并每一层的子节点
-const mergeCategoriesHelper = (children) => {
-  if (!children || children.length === 0) {
-    return [];
+// 合并两个节点
+const mergeTwoNodes = (
+  node1: CategoryNode,
+  node2: CategoryNode
+): CategoryNode => {
+  if (node1.name !== node2.name) {
+    throw new Error("Cannot merge nodes with different names")
   }
 
-  const childMap = new Map();
+  const mergedChildren = new Map<string, CategoryNode>()
 
-  children.forEach(child => {
-    if (childMap.has(child.name)) {
-      // 合并子节点的 children
-      const existingChild = childMap.get(child.name);
-      existingChild.children = mergeCategoriesHelper([...existingChild.children, ...child.children]);
+  // 合并两个节点的所有子节点
+  ;[...node1.children, ...node2.children].forEach((child) => {
+    if (mergedChildren.has(child.name)) {
+      const existing = mergedChildren.get(child.name)!
+      mergedChildren.set(child.name, mergeTwoNodes(existing, child))
     } else {
-      // 直接存入
-      childMap.set(child.name, { ...child, children: mergeCategoriesHelper(child.children) });
-    }
-  });
-
-  return Array.from(childMap.values());
-};
-
-
-export const getAllCategoriesTree = async (): Promise<any> => {
-  const notes = await getNotes()
-  let result: any[][] = []
-  notes.map(({categories}) => {
-    if (categories && categories.length > 0) {
-      const resultArray = buildTree(categories)
-      result.push(resultArray)
+      mergedChildren.set(child.name, { ...child })
     }
   })
-  return mergeCategories(result)
+
+  return {
+    name: node1.name,
+    children: Array.from(mergedChildren.values())
+  }
+}
+
+// 合并多个分类树
+const mergeCategoryTrees = (trees: CategoryNode[]): CategoryNode[] => {
+  const nodeMap = new Map<string, CategoryNode>()
+
+  trees.forEach((tree) => {
+    if (nodeMap.has(tree.name)) {
+      nodeMap.set(tree.name, mergeTwoNodes(nodeMap.get(tree.name)!, tree))
+    } else {
+      nodeMap.set(tree.name, { ...tree })
+    }
+  })
+
+  return Array.from(nodeMap.values())
+}
+
+export const getAllCategoriesTree = async (): Promise<CategoryNode[]> => {
+  try {
+    const notes = await getNotes()
+
+    // 过滤掉空分类，并构建初始分类树
+    const categoryTrees = notes
+      .filter((note) => note.categories?.length > 0)
+      .map((note) => buildCategoryTree(note.categories))
+      .filter((tree): tree is CategoryNode => tree !== null)
+
+    return mergeCategoryTrees(categoryTrees)
+  } catch (error) {
+    console.error("Error building category tree:", error)
+    throw error
+  }
 }
