@@ -5,9 +5,9 @@ import matter from "gray-matter"
 interface Note {
   fileName: string
   title: string
-  tags: string
+  tags: string[]
   date: string
-  categories: string
+  categories: string[]
   content: string
 }
 
@@ -30,17 +30,38 @@ export const getNotes = async () => {
           }
           return data.date.toString()
         }
+
+        const safeTags = () => {
+          if (Array.isArray(data.tags)) {
+            return data.tags
+              .map((t) => t?.toString().trim())
+              .filter((t) => t && t !== "undefined")
+          } else if (data.tags != null) {
+            return [data.tags.toString().trim()]
+          } else {
+            return []
+          }
+        }
+
         const note: Note = {
           fileName: file.replace(/\.md$/, ""),
           title: data.title?.toString() || "Untitled",
           tags: Array.isArray(data.tags)
-            ? data.tags.join(", ")
-            : data.tags?.toString() || "",
+            ? data.tags
+            : [data.tags?.toString()],
           date: safeDate(), // 使用安全转换
-          categories: data.categories?.toString() || "",
+          categories: safeTags(),
           content: content?.toString() || ""
         }
         return note
       })
   )
+}
+
+export const getAllTags = async (): Promise<string[]> => {
+  const notes = await getNotes()
+  const allTags = notes
+    .flatMap((note) => note.tags)
+    .filter((tag) =>tag && tag.trim() !== "") // 过滤空字符串和 null/undefined
+  return [...new Set(allTags)] // 去重
 }
