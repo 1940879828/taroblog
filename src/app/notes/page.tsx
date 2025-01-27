@@ -3,12 +3,10 @@ import Link from "next/link"
 import Paper from "@/component/Paper/Paper";
 import {Tag} from "lucide-react";
 import { cn } from "@/lib/utils";
-import { cookies } from "next/headers";
 
 export default async function Notes() {
   const notes = await getNotes()
   const allTags = await getAllTags()
-  const savedTheme = (await cookies()).get('theme')
 
   return (
     <div className="w-container !pt-8 flex gap-2">
@@ -77,7 +75,7 @@ export default async function Notes() {
               return (
                 <div
                   key={index}
-                  className={cn("badge text-xs pr-2 pl-1 h-6 cursor-pointer transition-colors shadow-sm brightness-75 opacity-80 backdrop-blur-sm")}
+                  className={cn("badge border-none text-xs pr-2 pl-1 h-6 cursor-pointer transition-colors shadow-sm brightness-75 opacity-80 backdrop-blur-sm")}
                   style={{
                     backgroundColor: color,
                     color: textColor,
