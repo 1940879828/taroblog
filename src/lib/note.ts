@@ -11,6 +11,12 @@ interface Note {
   content: string
 }
 
+export const getNotesCount = async () => {
+  const notesDir = path.join(process.cwd(), "public/notes")
+  const files = await fs.readdir(notesDir)
+  return files.length
+}
+
 export const getNotes = async () => {
   const notesDir = path.join(process.cwd(), "public/notes")
   const files = await fs.readdir(notesDir)
