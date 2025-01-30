@@ -1,7 +1,7 @@
-import Paper from "@/component/Paper/Paper";
-import {ListTree, Tag} from "lucide-react";
-import Link from "next/link";
-import {getAllCategoriesTree, getAllTags, getNotesCount} from "@/lib/note";
+import Paper from "@/component/Paper/Paper"
+import { getAllCategoriesTree, getAllTags, getNotesCount } from "@/lib/note"
+import { ListTree, Tag } from "lucide-react"
+import Link from "next/link"
 
 const Sidebar = async () => {
   const notesCount = await getNotesCount()
@@ -16,7 +16,7 @@ const Sidebar = async () => {
             <Tag />
             标签
           </div>
-          <div >
+          <div>
             {allTags.map((tag, index) => {
               const rainbowColors = [
                 "#FF0000", // 红
@@ -42,15 +42,18 @@ const Sidebar = async () => {
               const textColor = hexToLuma(color) > 128 ? "black" : "white" // 亮度阈值128
 
               return (
-                <Link href={`/tags/${tag}`}
-                      key={index}
-                      className="badge border-none mr-2 mt-2 text-xs pr-2 pl-1 h-6 cursor-pointer shadow-sm brightness-75 opacity-80 backdrop-blur-sm hover:scale-[110%] transition-transform duration-300"
-                      style={{
-                        backgroundColor: color,
-                        color: textColor,
-                        textShadow:
-                          textColor === "white" ? "0 1px 2px rgba(0,0,0,0.5)" : "none" // 增强对比度
-                      }}
+                <Link
+                  href={`/tags/${tag}`}
+                  key={index}
+                  className="badge border-none mr-2 mt-2 text-xs pr-2 pl-1 h-6 cursor-pointer shadow-sm brightness-75 opacity-80 backdrop-blur-sm hover:scale-[110%] transition-transform duration-300"
+                  style={{
+                    backgroundColor: color,
+                    color: textColor,
+                    textShadow:
+                      textColor === "white"
+                        ? "0 1px 2px rgba(0,0,0,0.5)"
+                        : "none" // 增强对比度
+                  }}
                 >
                   🏷{tag}
                 </Link>
@@ -66,20 +69,24 @@ const Sidebar = async () => {
               <ListTree />
               分类
             </div>
-            <span>
-              {notesCount}
-            </span>
+            <span>{notesCount}</span>
           </div>
           <ul className="flex flex-col">
-            {categoryTree.map(function recursion(category, index){
-              const {name, count, children} = category
+            {categoryTree.map(function recursion(category, index) {
+              const { name, count, children } = category
               return (
                 <li key={index}>
-                  <Link href={``}className="text-base py-1 px-1 hover:bg-base-200 flex justify-between items-center hover:px-2 transition-all duration-[218ms]">
+                  <Link
+                    href={""}
+                    className="text-base py-1 px-1 hover:bg-base-200 flex justify-between items-center hover:px-2 transition-all duration-[218ms]"
+                  >
                     <span>{name}</span>
                     <span>{count}</span>
                   </Link>
-                  <ul hidden={children.length===0} className="flex pl-4 flex-col">
+                  <ul
+                    hidden={children.length === 0}
+                    className="flex pl-4 flex-col"
+                  >
                     {children.map(recursion)}
                   </ul>
                 </li>
@@ -89,7 +96,7 @@ const Sidebar = async () => {
         </div>
       </Paper>
     </div>
-  );
-};
+  )
+}
 
-export default Sidebar;
+export default Sidebar

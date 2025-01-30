@@ -1,7 +1,7 @@
 import Paper from "@/component/Paper/Paper"
+import Sidebar from "@/component/Sidebar"
 import { getNotes } from "@/lib/note"
 import Link from "next/link"
-import Sidebar from "@/component/Sidebar";
 
 export default async function Notes() {
   const notes = await getNotes()
@@ -10,7 +10,11 @@ export default async function Notes() {
     <div className="w-container !pt-8 flex gap-2">
       <ul className="flex-1 flex flex-col gap-2">
         {notes.map((note, index) => (
-          <Paper key={index} elevation={2} className="hover:scale-[101%] transition-transform duration-300 bg-base-100 z-10">
+          <Paper
+            key={index}
+            elevation={2}
+            className="hover:scale-[101%] transition-transform duration-300 bg-base-100 z-10"
+          >
             <Link href={`/note/${note.fileName}`}>
               <div className="card card-md cursor-pointer">
                 <div className="card-body">
@@ -22,7 +26,8 @@ export default async function Notes() {
                     </div>
                     <div className="flex items-center gap-1">
                       {note.tags.map((tag, index) => (
-                        <Link href={`/tags/${tag}`}
+                        <Link
+                          href={`/tags/${tag}`}
                           key={index}
                           className="badge badge-primary text-xs pr-2 pl-1 h-5 cursor-pointer"
                         >
@@ -41,7 +46,7 @@ export default async function Notes() {
           </Paper>
         ))}
       </ul>
-      <Sidebar/>
+      <Sidebar />
     </div>
   )
 }

@@ -95,7 +95,7 @@ const buildCategoryTree = (categories: string[]): CategoryNode | null => {
   return categories.reduceRight<CategoryNode>(
     (childNode, currentName) => ({
       name: currentName,
-      count:1,
+      count: 1,
       children: childNode ? [childNode] : []
     }),
     null as unknown as CategoryNode
