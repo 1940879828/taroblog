@@ -4,16 +4,16 @@ export async function generateMetadata({
  params
 }: {
   params: Promise<{
-    tag: string
+    category: string
   }>
 }) {
-  let { tag } = await params
+  let { category } = await params
   return {
-    title: `标签 ${tag} | TaroBlog`,
+    title: `分类 ${category} | TaroBlog`,
   }
 }
 
-export default function TagLayout({
+export default function CategoryLayout({
   children
 }: Readonly<{
   children: React.ReactNode
