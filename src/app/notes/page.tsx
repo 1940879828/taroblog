@@ -22,14 +22,32 @@ export default async function Notes() {
                   <div className="flex items-center gap-4">
                     <span>{note.date}</span>
                     <div className="flex items-center gap-1">
-                      <div>📁{note.categories.join(">")}</div>
+                      {note.categories.map((category, index) => (
+                        <div key={index} className="flex items-center gap-1">
+                          <Link
+                            href={`/categories/${category}`}
+                            key={index}
+                            className="hover:link-hover"
+                          >
+                            {category}
+                          </Link>
+                          <div
+                            hidden={
+                              index === note.categories.length - 1 ||
+                              note.categories.length === 1
+                            }
+                          >
+                            {">"}
+                          </div>
+                        </div>
+                      ))}
                     </div>
                     <div className="flex items-center gap-1">
                       {note.tags.map((tag, index) => (
                         <Link
                           href={`/tags/${tag}`}
                           key={index}
-                          className="badge badge-primary text-xs pr-2 pl-1 h-5 cursor-pointer"
+                          className="badge badge-primary text-xs pr-2 pl-1 h-5 cursor-pointer hover:link-hover"
                         >
                           🏷{tag}
                         </Link>

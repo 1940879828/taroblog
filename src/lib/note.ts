@@ -2,7 +2,7 @@ import { promises as fs } from "node:fs"
 import path from "node:path"
 import matter from "gray-matter"
 
-interface Note {
+export interface Note {
   fileName: string
   title: string
   tags: string[]
@@ -80,6 +80,14 @@ export const getAllTags = async (): Promise<string[]> => {
     .flatMap((note) => note.tags)
     .filter((tag) => tag && tag.trim() !== "") // 过滤空字符串和 null/undefined
   return [...new Set(allTags)] // 去重
+}
+
+export const getAllCategories = async (): Promise<string[]> => {
+  const notes = await getNotes()
+  const allCategories = notes
+    .flatMap((note) => note.categories)
+    .filter((tag) => tag && tag.trim() !== "") // 过滤空字符串和 null/undefined
+  return [...new Set(allCategories)] // 去重
 }
 
 interface CategoryNode {

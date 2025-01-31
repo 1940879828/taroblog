@@ -27,7 +27,7 @@ export default function RootLayout({
   return (
     <html lang="en" data-theme="cupcake" className="theme-transition">
       <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased relative`}
+        className={`${geistSans.variable} ${geistMono.variable} antialiased relative overflow-x-hidden`}
       >
         <ThemeProvider>
           <NavBar />

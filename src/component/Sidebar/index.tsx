@@ -77,7 +77,7 @@ const Sidebar = async () => {
               return (
                 <li key={index}>
                   <Link
-                    href={""}
+                    href={`/categories/${name}`}
                     className="text-base py-1 px-1 hover:bg-base-200 flex justify-between items-center hover:px-2 transition-all duration-[218ms]"
                   >
                     <span>{name}</span>
