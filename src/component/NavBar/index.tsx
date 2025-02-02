@@ -15,10 +15,7 @@ const NavBar = () => {
               <Link href="/">路线图</Link>
             </li>
             <li>
-              <Link href="/notes">笔记</Link>
-            </li>
-            <li>
-              <Link href="/about">关于</Link>
+              <Link href="/notes/1">笔记</Link>
             </li>
           </ul>
         </div>
