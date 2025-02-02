@@ -1,15 +1,15 @@
 import type React from "react"
 
 export async function generateMetadata({
- params
+  params
 }: {
   params: Promise<{
     tag: string
   }>
 }) {
-  let { tag } = await params
+  const { tag } = await params
   return {
-    title: `标签 ${tag} | TaroBlog`,
+    title: `标签 ${tag} | TaroBlog`
   }
 }
 

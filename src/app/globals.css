@@ -55,6 +55,7 @@
 }
 
 /* 暗黑模式切换配合样式 */
+/*noinspection CssInvalidPseudoSelector*/
 ::view-transition-new(root),
 ::view-transition-old(root) {
   /* 关闭默认动画，否则影响自定义动画的执行 */
@@ -64,6 +65,7 @@
 }
 
 /* 暗黑模式遮罩层级调整 */
+/*noinspection CssInvalidPseudoSelector*/
 .dark-transition::view-transition-old(root) {
   z-index: 100 !important; /* 确保在添加类时能生效 */
 }

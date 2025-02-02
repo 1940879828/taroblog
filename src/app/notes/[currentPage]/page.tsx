@@ -1,14 +1,24 @@
 import Paper from "@/component/Paper/Paper"
 import Sidebar from "@/component/Sidebar"
-import { getNotes } from "@/lib/note"
+import { getNotes, getNotesByPage } from "@/lib/note"
 import Link from "next/link"
 
-export default async function Notes() {
+export async function generateStaticParams() {
   const notes = await getNotes()
+  return notes.map((_, index) => ({
+    currentPage: String(index + 1)
+  }))
+}
 
+export default async function Notes({
+  params
+}: { params: { currentPage: number } }) {
+  const { currentPage } = params
+  const { data: notes, total } = await getNotesByPage({ page: currentPage })
+  const totalPages = Math.ceil(total / 10)
   return (
     <div className="w-container !pt-8 flex gap-2">
-      <ul className="flex-1 flex flex-col gap-2">
+      <ul className="flex-1 flex flex-col gap-2 pb-8">
         {notes.map((note, index) => (
           <Paper
             key={index}
@@ -63,6 +73,19 @@ export default async function Notes() {
             </Link>
           </Paper>
         ))}
+        <div className="flex justify-center">
+          <div className="join">
+            {[...Array(totalPages)].map((_, index) => (
+              <Link
+                href={`/notes/${index + 1}`}
+                key={index}
+                className="join-item btn"
+              >
+                {index + 1}
+              </Link>
+            ))}
+          </div>
+        </div>
       </ul>
       <Sidebar />
     </div>

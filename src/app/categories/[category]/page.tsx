@@ -1,7 +1,7 @@
 import Paper from "@/component/Paper/Paper"
 import Sidebar from "@/component/Sidebar"
 import TimeLine from "@/component/TimeLine"
-import { getAllCategories, getAllTags, getNotes } from "@/lib/note"
+import { getAllCategories, getNotes } from "@/lib/note"
 
 export async function generateStaticParams() {
   const allCategory = await getAllCategories()

@@ -74,6 +74,38 @@ export const getNotes = async () => {
   )
 }
 
+export interface PaginatedResult {
+  data: Note[]
+  total: number
+  page: number
+  pageSize: number
+}
+
+export const getNotesByPage = async ({
+  page = 1,
+  pageSize = 10
+}: { page: number; pageSize?: number }): Promise<PaginatedResult> => {
+  const allNotes = await getNotes()
+
+  // 过滤无效日期并排序
+  const sortedNotes = allNotes.sort((a, b) => {
+    const dateA = new Date(a.date || 0).getTime()
+    const dateB = new Date(b.date || 0).getTime()
+    return dateB - dateA // 倒序排列
+  })
+
+  // 分页计算
+  const startIndex = (page - 1) * pageSize
+  const endIndex = startIndex + pageSize
+
+  return {
+    data: sortedNotes.slice(startIndex, endIndex),
+    total: sortedNotes.length,
+    page,
+    pageSize
+  }
+}
+
 export const getAllTags = async (): Promise<string[]> => {
   const notes = await getNotes()
   const allTags = notes
