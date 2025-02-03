@@ -10,8 +10,10 @@ export async function generateStaticParams() {
   }))
 }
 
-export default async function Tag({ params }: { params: { tag: string } }) {
-  const { tag: _tag } = params
+export default async function Tag({
+  params
+}: { params: Promise<{ tag: string }> }) {
+  const { tag: _tag } = await params
   const tag = decodeURIComponent(_tag)
   const notes = await getNotes()
   const filterTagNotes = notes.filter((item) => item.tags.includes(tag))
