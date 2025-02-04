@@ -1,5 +1,5 @@
 export type RoadMapLeftTree = {
-  /** 距画布顶部的距离 */
+  /** 相对主轴矩形的偏移量 */
   y: number
   /** 子矩形右侧 和主矩形左侧 的距离 */
   marginRight: number
@@ -16,7 +16,7 @@ export type RoadMapLeftTree = {
   children?: RoadMapLeftTree
 }[]
 export type RoadMapRightTree = {
-  /** 距画布顶部的距离 */
+  /** 相对主轴矩形的偏移量 */
   y: number
   /** 子矩形左侧 和 主矩形右侧 的距离 */
   marginLeft: 100
@@ -33,7 +33,7 @@ export type RoadMapRightTree = {
   children?: RoadMapRightTree
 }[]
 export type RoadMap = {
-  /** 距画布顶部的距离 */
+  /** 第一个：距画布顶部的距离 其余：相对上一个矩形的偏移量 */
   y: number
   /** 矩形宽度 */
   width?: number

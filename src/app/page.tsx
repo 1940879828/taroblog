@@ -33,6 +33,12 @@ export default function Home() {
     const mainLayer = new Konva.Layer()
     const lineLayer = new Konva.Layer()
 
+    // 重新计算y轴位置 相对定位->绝对定位
+    map.forEach((item, index) => {
+      const prevY = map[index - 1] ? map[index - 1].y : 20
+      item.y = item.y + prevY
+    })
+
     // 画连接线
     for (let i = 0; i < map.length - 1; i++) {
       const rect1 = map[i] // 当前矩形
@@ -48,10 +54,12 @@ export default function Home() {
     // 画左右子树
     const drawSubTree = ({
       tree,
-      rootGroup
+      rootGroup,
+      mainRectY
     }: {
       tree: RoadMapLeftTree | RoadMapRightTree
       rootGroup: Group
+      mainRectY: number
     }) => {
       // 递归绘制子树
       const drawTreeItem = (
@@ -75,7 +83,8 @@ export default function Home() {
         // 创建当前矩形
         const currentRect = makeTextRect({
           ...node,
-          x: currentX
+          x: currentX,
+          y: mainRectY + node.y
         })
         // 绘制连接父节点和当前节点的虚线
         const line = drawDashedLine({
@@ -105,12 +114,20 @@ export default function Home() {
       // 画左子树🌳的矩形
       const leftTree = item?.children?.[0]
       if (leftTree && leftTree.length > 0) {
-        drawSubTree({ tree: leftTree, rootGroup: mainRectGroup })
+        drawSubTree({
+          tree: leftTree,
+          rootGroup: mainRectGroup,
+          mainRectY: item.y
+        })
       }
       // 画右子树🌳的矩形
       const rightTree = item?.children?.[1]
       if (rightTree && rightTree.length > 0) {
-        drawSubTree({ tree: rightTree, rootGroup: mainRectGroup })
+        drawSubTree({
+          tree: rightTree,
+          rootGroup: mainRectGroup,
+          mainRectY: item.y
+        })
       }
     })
 
