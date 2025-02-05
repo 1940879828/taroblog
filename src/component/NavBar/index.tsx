@@ -1,4 +1,4 @@
-import ThemeChanger from "@/component/ThemeChanger"
+import ButtonGroup from "@/component/NavBar/ButtonGroup"
 import Link from "next/link"
 
 const NavBar = () => {
@@ -19,9 +19,7 @@ const NavBar = () => {
             </li>
           </ul>
         </div>
-        <div className="flex-none">
-          <ThemeChanger />
-        </div>
+        <ButtonGroup />
       </div>
     </div>
   )
