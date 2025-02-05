@@ -7,7 +7,7 @@ import {
   makeTextRect
 } from "@/lib/drawRoadmap"
 import Konva from "konva"
-import React, { useEffect } from "react"
+import React, { useEffect, useRef } from "react"
 import Group = Konva.Group
 import {
   type RoadMapLeftTree,
@@ -20,10 +20,14 @@ import { useRouter } from "next/navigation"
 export default function Home() {
   const router = useRouter()
   const { theme } = useTheme()
+  const initializer = useRef(false)
 
   useEffect(() => {
+    if (initializer.current) return
+    initializer.current = true
+
     const width = canvasWidth
-    const height = window.innerHeight
+    const height = 5000
 
     // 创建 Stage
     const stage = new Konva.Stage({
@@ -41,7 +45,6 @@ export default function Home() {
       const prevY = map[index - 1] ? map[index - 1].y : 20
       item.y = item.y + prevY
     })
-
     // 画连接线
     for (let i = 0; i < map.length - 1; i++) {
       const rect1 = map[i] // 当前矩形

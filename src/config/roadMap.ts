@@ -56,74 +56,74 @@ export const map: RoadMap = [
     text: "计算机网络"
   },
   {
-    y: 180,
+    y: 80,
     fill: "#4285F4",
     link: "",
     text: "浏览器"
   },
   {
-    y: 180,
+    y: 80,
     fill: "#e5ea22",
     link: "",
     text: "编辑器"
   },
   {
-    y: 180,
+    y: 80,
     fill: "#e0744c",
     link: "/html",
     text: "HTML"
   },
   {
-    y: 180,
+    y: 80,
     fill: "#8552cb",
     link: "",
     text: "CSS"
   },
   {
-    y: 180,
+    y: 80,
     fill: "#fbd200",
     link: "",
     text: "JavaScript"
   },
   {
-    y: 180,
+    y: 80,
     fill: "#bf5555",
     link: "",
     text: "包管理器"
   },
   {
-    y: 180,
+    y: 80,
     fill: "#d34d30",
     link: "",
     text: "版本控制系统"
   },
   {
-    y: 180,
+    y: 80,
     fill: "#63aa7b",
     link: "",
     text: "Vue"
   },
   {
-    y: 180,
+    y: 80,
     fill: "#109ccf",
     link: "",
     text: "React"
   },
   {
-    y: 180,
+    y: 80,
     fill: "#5dae47",
     link: "",
     text: "Node.js"
   },
   {
-    y: 180,
+    y: 80,
     fill: "#6F42C1",
     link: "",
     // next
     text: "应用框架"
   },
   {
-    y: 180,
+    y: 80,
     fill: "#0057E7",
     link: "",
     // next
@@ -131,7 +131,7 @@ export const map: RoadMap = [
     children: [
       [
         {
-          y: 180,
+          y: 80,
           fill: "#3077c5",
           link: "",
           text: "TypeScript",
@@ -142,21 +142,21 @@ export const map: RoadMap = [
     ]
   },
   {
-    y: 180,
+    y: 80,
     fill: "#FD7E14",
     link: "前端性能优化",
     // next
     text: "性能优化"
   },
   {
-    y: 180,
+    y: 80,
     fill: "#28A745",
     link: "",
     // next
     text: "小程序"
   },
   {
-    y: 180,
+    y: 80,
     fill: "#28A745",
     link: "",
     // next
