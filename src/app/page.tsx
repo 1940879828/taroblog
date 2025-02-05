@@ -14,10 +14,13 @@ import {
   type RoadMapRightTree,
   map
 } from "@/config/roadMap"
+import { useTheme } from "next-themes"
 import { useRouter } from "next/navigation"
 
 export default function Home() {
   const router = useRouter()
+  const { theme } = useTheme()
+
   useEffect(() => {
     const width = canvasWidth
     const height = window.innerHeight
@@ -159,5 +162,10 @@ export default function Home() {
     stage.add(lineLayer)
     stage.add(mainLayer)
   }, [])
-  return <div id="container" />
+  return (
+    <div
+      id="container"
+      style={{ background: theme === "dark" ? "#181818" : "#2d4059" }}
+    />
+  )
 }

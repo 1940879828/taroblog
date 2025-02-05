@@ -20,6 +20,10 @@
   text-indent: 2em;
 }
 
+.md-editor .md-editor-preview-wrapper {
+  padding: 10px 10px 10px 0;
+}
+
 :root {
 }
 
