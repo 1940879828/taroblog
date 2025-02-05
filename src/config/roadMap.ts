@@ -144,7 +144,7 @@ export const map: RoadMap = [
   {
     y: 180,
     fill: "#FD7E14",
-    link: "",
+    link: "前端性能优化",
     // next
     text: "性能优化"
   },
