@@ -24,6 +24,18 @@
   padding: 10px 10px 10px 0;
 }
 
+.md-editor ul {
+  list-style-type: disc;
+}
+
+.md-editor ul ul {
+  list-style-type: circle;
+}
+
+.md-editor ul ul ul {
+  list-style-type: square;
+}
+
 :root {
 }
 
