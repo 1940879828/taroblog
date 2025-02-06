@@ -10,8 +10,9 @@ export async function generateStaticParams() {
   const fileNames = fs.readdirSync(notesDir)
   return fileNames.map((fileName) => {
     // 解码文件名
+    const decodedName = encodeURIComponent(fileName.replace(/\.md$/, ""))
     return {
-      name: fileName.replace(/\.md$/, "")
+      name: decodedName
     }
   })
 }
