@@ -12,8 +12,9 @@ import Group = Konva.Group
 import {
   type RoadMapLeftTree,
   type RoadMapRightTree,
-  map
+  map as _map
 } from "@/config/roadMap"
+import _ from "lodash"
 import { useTheme } from "next-themes"
 import { useRouter } from "next/navigation"
 
@@ -35,7 +36,7 @@ export default function Home() {
       width: width,
       height: height
     })
-
+    const map = _.cloneDeep(_map)
     // 创建 Layer
     const mainLayer = new Konva.Layer()
     const lineLayer = new Konva.Layer()
