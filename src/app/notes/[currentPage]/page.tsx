@@ -12,8 +12,8 @@ export async function generateStaticParams() {
 
 export default async function Notes({
   params
-}: { params: { currentPage: number } }) {
-  const { currentPage } = params
+}: { params: Promise<{ currentPage: number }> }) {
+  const { currentPage } = await params
   const { data: notes, total } = await getNotesByPage({ page: currentPage })
   const totalPages = Math.ceil(total / 10)
   return (
