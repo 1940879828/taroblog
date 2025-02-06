@@ -12,8 +12,8 @@ export async function generateStaticParams() {
 
 export default async function Category({
   params
-}: { params: { category: string } }) {
-  const { category: _category } = params
+}: { params: Promise<{ category: string }> }) {
+  const { category: _category } = await params
   const category = decodeURIComponent(_category)
   const notes = await getNotes()
   const filterTagNotes = notes.filter((item) =>

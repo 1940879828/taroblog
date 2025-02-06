@@ -59,7 +59,19 @@ export const map: RoadMap = [
     y: 80,
     fill: "#4285F4",
     link: "",
-    text: "浏览器"
+    text: "浏览器",
+    children: [
+      [
+        {
+          y: 0,
+          fill: "#4285F4",
+          link: "localStorage",
+          text: "本地存储",
+          marginRight: 80
+        }
+      ],
+      []
+    ],
   },
   {
     y: 80,
