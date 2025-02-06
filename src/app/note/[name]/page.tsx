@@ -1,5 +1,6 @@
 import fs from "node:fs"
 import path from "node:path"
+import BackButton from "@/component/BackButton"
 import Markdown from "@/component/Markdown"
 import matter from "gray-matter"
 
@@ -32,7 +33,8 @@ export default async function NoteDetail({
   const content = await getMarkdownContent(name)
 
   return (
-    <div className="w-container flex-nowrap flex">
+    <div className="w-container flex-nowrap flex flex-col">
+      <BackButton className="mt-4" />
       <Markdown content={content} />
     </div>
   )
