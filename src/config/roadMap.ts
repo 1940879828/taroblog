@@ -52,7 +52,7 @@ export const map: RoadMap = [
   {
     y: 20,
     fill: "#A9A9A9",
-    link: "",
+    link: "计算机网络",
     text: "计算机网络"
   },
   {
