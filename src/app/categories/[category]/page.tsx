@@ -6,7 +6,7 @@ import { getAllCategories, getNotes } from "@/lib/note"
 export async function generateStaticParams() {
   const allCategory = await getAllCategories()
   return allCategory.map((tag) => ({
-    category: encodeURIComponent(tag)
+    category: tag
   }))
 }
 
