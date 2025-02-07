@@ -21,8 +21,6 @@ export default async function Tag({
     <div className="w-container !pt-8 flex gap-2">
       <Paper elevation={2} className="flex-1 p-8">
         <div className="font-bold text-xl flex mb-2">标签：{tag}</div>
-        <div>{decodeURIComponent.toString()}</div>
-        <div>{decodeURIComponent("%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C")}</div>
         <TimeLine list={filterTagNotes} />
       </Paper>
       <Sidebar />
