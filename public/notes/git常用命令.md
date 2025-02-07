@@ -59,7 +59,7 @@ cover: http://qny.bioart.icu/blog/7.jpeg
    - `git config --global user.name [username] //密码`
 2. 查看配置信息是否添加成功：`git config --list `  输入`:q`退出
 
-​    我尝试上面的方法过后发现不行，但可以使用下面的命令，效果类似于记住密码，输入一次后续上传就不需要再输入了：
+我尝试上面的方法过后发现不行，但可以使用下面的命令，效果类似于记住密码，输入一次后续上传就不需要再输入了：
 
 `git config --global credential.helper store `
 

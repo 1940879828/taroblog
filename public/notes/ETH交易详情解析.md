@@ -1,12 +1,9 @@
 ---
 title:  ETH交易详情解析
 date: 2024-09-02 09:10:52
-tags: 'Web3'
-categories: 'Web3'
-cover: 
+tags: ['Web3']
+categories: ['Web3']
 ---
-
-![image-20240902092823522](http://qny.bioart.icu/blog/202409020928650.png)
 
 - Transaction Hash: 一个独一无二的交易哈希，代表该区块链上的该笔交易
 

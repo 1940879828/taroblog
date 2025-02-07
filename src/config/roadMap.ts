@@ -19,7 +19,7 @@ export type RoadMapRightTree = {
   /** 相对主轴矩形的偏移量 */
   y: number
   /** 子矩形左侧 和 主矩形右侧 的距离 */
-  marginLeft: 100
+  marginLeft: number
   /** 矩形宽度 */
   width?: number
   /** 矩形高度 */
@@ -58,7 +58,7 @@ export const map: RoadMap = [
   {
     y: 80,
     fill: "#4285F4",
-    link: "",
+    link: "关于浏览器的一些内容",
     text: "浏览器",
     children: [
       [
@@ -71,13 +71,39 @@ export const map: RoadMap = [
         }
       ],
       []
-    ],
+    ]
   },
   {
     y: 80,
-    fill: "#e5ea22",
-    link: "",
-    text: "编辑器"
+    fill: "#ea5455",
+    link: "关于编辑器的一些内容",
+    text: "编辑器",
+    children: [
+      [],
+      [
+        {
+          y: -60,
+          fill: "#4f5e85",
+          link: "关于编辑器的一些内容",
+          text: "WebStorm",
+          marginLeft: 80
+        },
+        {
+          y: 0,
+          fill: "#0078d4",
+          link: "关于编辑器的一些内容",
+          text: "VSCode",
+          marginLeft: 80
+        },
+        {
+          y: 60,
+          fill: "#ff9800",
+          link: "关于编辑器的一些内容",
+          text: "Sublime",
+          marginLeft: 80
+        }
+      ]
+    ]
   },
   {
     y: 80,
@@ -88,7 +114,7 @@ export const map: RoadMap = [
   {
     y: 80,
     fill: "#8552cb",
-    link: "",
+    link: "关于CSS的一些内容",
     text: "CSS"
   },
   {
