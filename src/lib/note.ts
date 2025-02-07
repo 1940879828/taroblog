@@ -9,6 +9,7 @@ export interface Note {
   date: string
   categories: string[]
   content: string
+  description: string
 }
 
 export const getNotesCount = async () => {
@@ -67,7 +68,8 @@ export const getNotes = async () => {
           tags: safeTags(),
           date: safeDate(), // 使用安全转换
           categories: safeCategories(),
-          content: content?.toString() || ""
+          content: content?.toString() || "",
+          description: data.description?.toString() || ""
         }
         return note
       })

@@ -64,10 +64,9 @@ export default async function Notes({
                       ))}
                     </div>
                   </div>
-                  <p>
-                    A card component has a figure, a body part, and inside body
-                    there are title and actions parts
-                  </p>
+                  {note.description && <p>
+                    {note.description}
+                  </p>}
                 </div>
               </div>
             </Link>
