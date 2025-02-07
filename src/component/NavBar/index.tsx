@@ -1,4 +1,5 @@
 import ButtonGroup from "@/component/NavBar/ButtonGroup"
+import { Link as LinkIcon, Newspaper, Route } from "lucide-react"
 import Link from "next/link"
 
 const NavBar = () => {
@@ -12,10 +13,22 @@ const NavBar = () => {
           </Link>
           <ul className="menu menu-horizontal px-1">
             <li>
-              <Link href="/">路线图</Link>
+              <Link href="/">
+                <Route size={16} />
+                路线图
+              </Link>
             </li>
             <li>
-              <Link href="/notes/1">笔记</Link>
+              <Link href="/notes/1">
+                <Newspaper size={16} />
+                笔记
+              </Link>
+            </li>
+            <li>
+              <Link href="/friend">
+                <LinkIcon size={16} />
+                友链
+              </Link>
             </li>
           </ul>
         </div>

@@ -36,11 +36,17 @@
   list-style-type: square;
 }
 
-:root {
+[data-theme="cupcake"] {
+  --text-bg-hover: #7fc8f8;
 }
 
 [data-theme="dark"] {
   --root-bg: #181818;
+  --text-bg-hover: color-mix(
+    in oklab,
+    var(--color-base-content) 10%,
+    transparent
+  );
 }
 
 .w-container {
