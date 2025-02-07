@@ -52,7 +52,7 @@ export const map: RoadMap = [
   {
     y: 20,
     fill: "#A9A9A9",
-    link: "Computer network",
+    link: "计算机网络",
     text: "计算机网络"
   },
   {
@@ -82,7 +82,7 @@ export const map: RoadMap = [
   {
     y: 80,
     fill: "#e0744c",
-    link: "html",
+    link: "/html",
     text: "HTML"
   },
   {
@@ -156,7 +156,7 @@ export const map: RoadMap = [
   {
     y: 80,
     fill: "#FD7E14",
-    link: "Front-end performance optimization",
+    link: "前端性能优化",
     // next
     text: "性能优化"
   },
