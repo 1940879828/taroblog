@@ -2,6 +2,7 @@ import Paper from "@/component/Paper/Paper"
 import Sidebar from "@/component/Sidebar"
 import { getNotes, getNotesByPage } from "@/lib/note"
 import Link from "next/link"
+import {Folder} from "lucide-react";
 
 export async function generateStaticParams() {
   const notes = await getNotes()
@@ -32,6 +33,7 @@ export default async function Notes({
                   <div className="flex items-center gap-4">
                     <span>{note.date}</span>
                     <div className="flex items-center gap-1">
+                      <Folder size={16}/>
                       {note.categories.map((category, index) => (
                         <div key={index} className="flex items-center gap-1">
                           <Link
