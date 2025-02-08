@@ -192,10 +192,59 @@ export const map: RoadMap = [
     ]
   },
   {
-    y: 80,
+    y: 120,
     fill: "#63aa7b",
     link: "",
-    text: "Vue"
+    text: "Vue",
+    children: [
+      [],
+      [
+        {
+          y: -40,
+          fill: "#f5b361",
+          link: "关于Vue的一些内容",
+          text: "UI库",
+          marginLeft: 80,
+          children: [
+            {
+              y: -100,
+              fill: "#3f85ed",
+              link: "关于Vue的一些内容",
+              text: "Element Plus",
+              marginLeft: 80
+            },
+            {
+              y: -40,
+              fill: "#f85961",
+              link: "关于Vue的一些内容",
+              text: "Ant Design Vue",
+              marginLeft: 80
+            },
+            {
+              y: 20,
+              fill: "#36d7b7",
+              link: "关于Vue的一些内容",
+              text: "Vant UI",
+              marginLeft: 80
+            }
+          ]
+        },
+        {
+          y: 20,
+          fill: "#6F42C1",
+          link: "关于Vue的一些内容",
+          text: "Nuxt.js",
+          marginLeft: 80
+        },
+        {
+          y: 80,
+          fill: "#b341fe",
+          link: "关于Vue的一些内容",
+          text: "Vite",
+          marginLeft: 80
+        }
+      ]
+    ]
   },
   {
     y: 80,
