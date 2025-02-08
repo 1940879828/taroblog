@@ -8,8 +8,9 @@ export async function generateMetadata({
   }>
 }) {
   const { category } = await params
+  const _category = decodeURIComponent(category)
   return {
-    title: `分类 ${category} | TaroBlog`
+    title: `分类 ${_category} | TaroBlog`
   }
 }
 
