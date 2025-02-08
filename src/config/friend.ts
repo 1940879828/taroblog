@@ -30,5 +30,17 @@ export const friends: Friend[] = [
     description: "前端工程师",
     cover_url: "https://crazystudent13.cn/images/avatar.png",
     url: "https://crazystudent13.cn/"
+  },
+  {
+    name: "liangerwen",
+    description: "放水娃(想要成为外包之星)",
+    cover_url: "https://blog-nine-navy-52.vercel.app/favicon.ico",
+    url: "https://blog-nine-navy-52.vercel.app/"
+  },
+  {
+    name: "Liliya",
+    description: "甜",
+    cover_url: "https://liliya-site.vercel.app/favicon.svg",
+    url: "https://liliya-site.vercel.app"
   }
 ]
