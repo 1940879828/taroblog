@@ -176,7 +176,20 @@ export const map: RoadMap = [
     y: 80,
     fill: "#d34d30",
     link: "",
-    text: "版本控制系统"
+    text: "版本控制系统",
+    children: [
+      [],
+      [
+        {
+          y: 0,
+          fill: "#ff5a3a",
+          link: "关于github推送那些事",
+          text: "配置SSH连接的坎坷",
+          width: 180,
+          marginLeft: 80
+        }
+      ]
+    ]
   },
   {
     y: 80,
