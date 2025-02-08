@@ -57,14 +57,20 @@ export const map: RoadMap = [
   },
   {
     y: 80,
-    fill: "#4285F4",
+    fill: "#0078D7",
+    link: "",
+    text: "windows系统"
+  },
+  {
+    y: 80,
+    fill: "#1E90FF",
     link: "关于浏览器的一些内容",
     text: "浏览器",
     children: [
       [
         {
           y: 0,
-          fill: "#4285F4",
+          fill: "#C4C4D5",
           link: "localStorage",
           text: "本地存储",
           marginRight: 80
@@ -115,13 +121,38 @@ export const map: RoadMap = [
     y: 80,
     fill: "#8552cb",
     link: "关于CSS的一些内容",
-    text: "CSS"
+    text: "CSS",
+    children: [
+      [],
+      [
+        {
+          y: 0,
+          fill: "#b83e9b",
+          link: "关于CSS的一些内容",
+          text: "现代CSS框架:Tailwind",
+          width: 180,
+          marginLeft: 80
+        }
+      ]
+    ]
   },
   {
     y: 80,
     fill: "#fbd200",
     link: "",
-    text: "JavaScript"
+    text: "JavaScript",
+    children: [
+      [
+        {
+          y: 0,
+          fill: "#3077c5",
+          link: "",
+          text: "TypeScript",
+          marginRight: 80
+        }
+      ],
+      []
+    ]
   },
   {
     y: 80,
@@ -144,8 +175,64 @@ export const map: RoadMap = [
   {
     y: 80,
     fill: "#109ccf",
-    link: "",
-    text: "React"
+    link: "关于React的一些内容",
+    text: "React",
+    children: [
+      [
+        {
+          y: -40,
+          fill: "#f5b361",
+          link: "关于React的一些内容",
+          text: "UI库",
+          marginRight: 80,
+          children: [
+            {
+              y: -180,
+              fill: "#a8e0e5",
+              link: "关于React的一些内容",
+              text: "daisyUI",
+              marginRight: 80
+            },
+            {
+              y: -120,
+              fill: "#a8e0e5",
+              link: "关于React的一些内容",
+              text: "shadcn/ui",
+              marginRight: 80
+            },
+            {
+              y: -60,
+              fill: "#a8e0e5",
+              link: "关于React的一些内容",
+              text: "Material UI",
+              marginRight: 80
+            },
+            {
+              y: 0,
+              fill: "#a8e0e5",
+              link: "关于React的一些内容",
+              text: "Magic UI",
+              marginRight: 80
+            },
+            {
+              y: 60,
+              fill: "#a8e0e5",
+              link: "关于React的一些内容",
+              text: "Ant Design",
+              marginRight: 80
+            }
+          ]
+        },
+        {
+          y: 40,
+          fill: "#6F42C1",
+          link: "关于React的一些内容",
+          text: "Next.js",
+          marginRight: 80
+        }
+      ],
+      []
+    ]
   },
   {
     y: 80,
@@ -155,29 +242,10 @@ export const map: RoadMap = [
   },
   {
     y: 80,
-    fill: "#6F42C1",
-    link: "",
-    // next
-    text: "应用框架"
-  },
-  {
-    y: 80,
     fill: "#0057E7",
     link: "",
     // next
-    text: "质量工程",
-    children: [
-      [
-        {
-          y: 80,
-          fill: "#3077c5",
-          link: "",
-          text: "TypeScript",
-          marginRight: 20
-        }
-      ],
-      []
-    ]
+    text: "质量工程"
   },
   {
     y: 80,
