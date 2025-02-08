@@ -1,8 +1,8 @@
 ---
 title: Cookie、localStorage、sessionStorage
-tags: ['Html','Js']
+tags: ['Html','JavaScript']
 date: 2020-04-11 15:47:29
-categories: 'Js'
+categories: ['前端','JavaScript']
 ---
 
 ## 一、他们之间的区别

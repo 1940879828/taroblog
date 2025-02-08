@@ -1,8 +1,8 @@
 ---
 title: win11耳机在电脑上测试有声音，但是网页和视频没有声音
 date: 2023-08-20 13:57:42
-tags: ['windows','音频','问题']
-categories: 'windows'
+tags: ['Windows','音频','问题']
+categories: 'Windows'
 keywords: ['win11','没声音']
 description: win11耳机在电脑上测试有声音，但是网页和视频没有声音，需要设置播放设备为默认值
 cover: http://qny.bioart.icu/483c592874d97a55a5e268a30ccc1538.png

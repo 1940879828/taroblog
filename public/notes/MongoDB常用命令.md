@@ -1,8 +1,8 @@
 ---
 title: MongoDB常用命令
-tags: 'MongoDB'
+tags: ['MongoDB']
 date: 2023-04-4 22:07:29
-categories: '数据库'
+categories: ['后端','数据库']
 cover: http://qny.bioart.icu/blog/12.jpg
 ---
 

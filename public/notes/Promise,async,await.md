@@ -1,8 +1,8 @@
 ---
 title: Promise
-tags: ['Js','ES6']
+tags: ['JavaScript','ES6']
 date: 2023-04-05 19:47:29
-categories: 'Js'
+categories: ['前端','JavaScript']
 cover: http://qny.bioart.icu/blog/8.jpg
 ---
 

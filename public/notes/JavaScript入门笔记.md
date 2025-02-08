@@ -1,6 +1,6 @@
 ---
 title: JavaScript入门
-tags: ['前端','Js']
+tags: ['前端','JavaScript']
 date: 2020-05-07 18:43:44
 categories: ['前端','JavaScript']
 cover: http://qny.bioart.icu/blog/9.jpeg
