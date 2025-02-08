@@ -33,7 +33,7 @@ export const friends: Friend[] = [
   },
   {
     name: "liangerwen",
-    description: "放水娃(想要成为外包之星)",
+    description: "放水娃",
     cover_url: "https://blog-nine-navy-52.vercel.app/favicon.ico",
     url: "https://blog-nine-navy-52.vercel.app/"
   },
