@@ -1,9 +1,8 @@
 ---
 title: git常用命令
 date: 2020-06-25 16:00:29
-tags: ['前端','前端工具']
-categories: ['前端工具','Git']
-cover: http://qny.bioart.icu/blog/7.jpeg
+tags: ['Git']
+categories: ['前端','工具','Git']
 ---
 
 1、cd 路径 进入当前目录

@@ -158,7 +158,19 @@ export const map: RoadMap = [
     y: 80,
     fill: "#bf5555",
     link: "",
-    text: "包管理器"
+    text: "包管理器",
+    children: [
+      [],
+      [
+        {
+          y: 0,
+          fill: "#e57b86",
+          link: "https://juejin.cn/post/6962554654643191815",
+          text: "给三方包打补丁",
+          marginLeft: 80
+        }
+      ]
+    ]
   },
   {
     y: 80,

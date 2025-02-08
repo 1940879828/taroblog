@@ -2,8 +2,7 @@
 title: laravel框架学习笔记
 tags: ['PHP']
 date: 2020-12-01 20:06:29
-categories: ['后端','Php']
-cover: http://qny.bioart.icu/blog/11.jpeg
+categories: ['后端','PHP']
 ---
 
 # laravel54笔记

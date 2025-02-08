@@ -156,9 +156,14 @@ export default function Home() {
       const target = e.target
 
       // 判断目标形状是否有 link 属性
-      if (target.getAttr("link")) {
+      const link = target.getAttr("link")
+      if (link) {
         // 跳转到 link 属性指定的链接
-        router.push(`/note/${target.getAttr("link")}`)
+        if (String(link).includes("http")) {
+          window.open(link, "_blank")
+        } else {
+          router.push(`/note/${link}`)
+        }
       }
     })
 

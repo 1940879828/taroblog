@@ -1,9 +1,8 @@
 ---
 title: php入门笔记
 date: 2020-06-05 16:27:40
-tags: 'php'
+tags: ['PHP']
 categories: ['后端','PHP']
-cover: http://qny.bioart.icu/blog/10.jpeg
 ---
 
 ## 服务器认识
