@@ -30,6 +30,7 @@ description: "记录了一些关于React的内容，文章、文档、好用的�
 - [Material UI](https://mui.com/material-ui/getting-started/)：非常重量级的组件库。
 - [Magic UI](https://magicui.design/)：50+免费和开源的动画组件，由React、Typescript、tailwind CSS和Framer Motion构建。
 - [Ant Design](https://ant-design.antgroup.com/index-cn)：中后台框架，Ant Design 无需多言。
+- [Ant Design X](https://ant-design-x.antgroup.com/components/overview-cn)：AI大模型聊天页面组件库
 
 # 应用框架
 

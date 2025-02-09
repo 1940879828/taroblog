@@ -294,6 +294,13 @@ export const map: RoadMap = [
               link: "关于React的一些内容",
               text: "Ant Design",
               marginRight: 80
+            },
+            {
+              y: 60,
+              fill: "#cf63ff",
+              link: "关于React的一些内容",
+              text: "Ant Design X",
+              marginRight: 80
             }
           ]
         },
