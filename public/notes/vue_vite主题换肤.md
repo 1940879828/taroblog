@@ -3,7 +3,6 @@ title: vue3+vite实现主题换肤/黑暗模式
 date: 2023-04-19 11:20:40
 tags: ['Vue','vite','less']
 categories: ['前端','Vue']
-cover: http://qny.bioart.icu/blog/18.jpg
 ---
 
 利用less和css变量实现动态修改Css变量
