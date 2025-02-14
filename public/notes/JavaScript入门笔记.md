@@ -38,11 +38,11 @@ IE当年为了跟NetScape争夺市场份额。不甘落后很快退出适用于I
 
 由于总所周知的原因，大家没有忍住，蹭了一把JAVA热度，最终将其命名为JavaScript
 
-​	至此，JavaScript诞生
+至此，JavaScript诞生
 
-​	如果非要说Java和Javascript有什么关系的话，就是Javascript在语法及很多API设计，内存结构设计上，直接借鉴和抄袭了Java
+如果非要说Java和Javascript有什么关系的话，就是Javascript在语法及很多API设计，内存结构设计上，直接借鉴和抄袭了Java
 
-​	从这件事情可以看出，Java能这么经久不衰，是因为它非常优秀的设计（Java世界第一~~~
+从这件事情可以看出，Java能这么经久不衰，是因为它非常优秀的设计（Java世界第一~~~
 
 ## 二.JavaScript-基础内容
 
@@ -506,7 +506,7 @@ function print(n){
 
 #### 1.1. 为什么要使用数组
 
-​	当我们需要表示一组数据，或者叫做一次性定义很多相似的数字或变量时，就需要使用数组，如：表示一个班级学生的成绩，一年十二个月的销售数据等等
+当我们需要表示一组数据，或者叫做一次性定义很多相似的数字或变量时，就需要使用数组，如：表示一个班级学生的成绩，一年十二个月的销售数据等等
 
 #### 1.2. 数组的概念
 
@@ -694,7 +694,7 @@ alert(arr);//100,hello,true
 
 #### 5.7. 数组求平均数
 
-​	定义一个含有38个整型元素的数组，按顺序分别赋予从2开始的偶数；然后按顺序每五个数求出一个平均值，放在另一个数组中并输出。
+定义一个含有38个整型元素的数组，按顺序分别赋予从2开始的偶数；然后按顺序每五个数求出一个平均值，放在另一个数组中并输出。
 
 ```javascript
 var arr=new Array(30);
@@ -1677,7 +1677,7 @@ function afterOfDate(n){
 
 ### 2. 系统对话框
 
-​	浏览器可以通过alert()、confirm()和prompt()方法调用系统对话框向用户显示信息.
+浏览器可以通过alert()、confirm()和prompt()方法调用系统对话框向用户显示信息.
 
 ```javascript
 //弹出警告框
@@ -2681,9 +2681,9 @@ function removeEvent(node,evenType,funcName){
 
 ### 1.什么是localStorage
 
-​	loacalStorage本地存储对象	
+loacalStorage本地存储对象	
 
-​	在HTML5中，新加入了一个loaclStorage特性，这个特性作为本地存储使用，解决了cookie存储空间不足问题（每条cookie的存储空间为4k），localStorage中一般浏览器支持的是5M大小，这个在不同浏览器中localStoarage会有所不同。
+在HTML5中，新加入了一个loaclStorage特性，这个特性作为本地存储使用，解决了cookie存储空间不足问题（每条cookie的存储空间为4k），localStorage中一般浏览器支持的是5M大小，这个在不同浏览器中localStoarage会有所不同。
 
 ### 2.localStorage优势与局限
 

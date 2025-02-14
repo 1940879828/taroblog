@@ -6,7 +6,7 @@ categories: ['前端','Vue']
 cover: http://qny.bioart.icu/blog/18.jpg
 ---
 
-​	利用less和css变量实现动态修改Css变量
+利用less和css变量实现动态修改Css变量
 
 vue3包版本：
 

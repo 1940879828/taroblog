@@ -38,15 +38,15 @@ CREATE TABLE 表名
 
 - 查看数据表：
 
-  ​	`SHOW TABLES;`
+  `SHOW TABLES;`
 
 - 查看数据表结构：
 
-  ​	`DESCRIBE 表名;`
+  `DESCRIBE 表名;`
 
 - 查看表的创建信息：
 
-  ​	`show create table 表名[\G];`
+  `show create table 表名[\G];`
 
   
 
@@ -77,7 +77,7 @@ CREATE TABLE 表名
 
 # 3.字段操作
 
-​	
+
 
 - 字段约束目录
 
@@ -146,11 +146,11 @@ CREATE TABLE 表名
 
   - 为部分字段添加数据
 
-    ​	INSERT [INTO] 数据表名 (字段名1 [, 字段名2] …) VALUES (值1[, 值2] …);
-    ​	INSERT [INTO] 数据表名 SET 字段名1 = 值1 [, 字段名2 = 值2]
-    ​	字段名必须与数据相对应 一次只能加一条
-    ​	`insert into student set sno='1004',sname='貂蝉',classno='19004';`
-    ​	`insert into student(sno,sname,classno) values ('1003','吕布','19001');`
+    INSERT [INTO] 数据表名 (字段名1 [, 字段名2] …) VALUES (值1[, 值2] …);
+    INSERT [INTO] 数据表名 SET 字段名1 = 值1 [, 字段名2 = 值2]
+    字段名必须与数据相对应 一次只能加一条
+    `insert into student set sno='1004',sname='貂蝉',classno='19004';`
+    `insert into student(sno,sname,classno) values ('1003','吕布','19001');`
 
   - 一次添加多行数据
     INSERT [INTO] 数据表名 [(字段列表)] VALUES (值列表) [, (值列表)] …;

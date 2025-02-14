@@ -525,13 +525,13 @@ return view('test',compact('data'));
 
 语法：@extends(‘父级文件名')	 相对路径根view
 
-​			通过section标签绑定区块/部件到父级页面，区块名称就是父级页面yield标签参数名
+		通过section标签绑定区块/部件到父级页面，区块名称就是父级页面yield标签参数名
 
-​			@section(区块名称)
+		@section(区块名称)
 
-​			代码
+		代码
 
-​			@endsection
+		@endsection
 
 ```html
 @extends(‘parent')
