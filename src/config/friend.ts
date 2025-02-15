@@ -42,5 +42,11 @@ export const friends: Friend[] = [
     description: "甜",
     cover_url: "https://liliya-site.vercel.app/favicon.svg",
     url: "https://liliya-site.vercel.app"
+  },
+  {
+    name: "胖子子",
+    description: "日暮诗成天又雪，与梅并作十分春。",
+    cover_url: "/profilePhoto/pang.ico",
+    url: "https://www.cnblogs.com/dingshaohua"
   }
 ]
