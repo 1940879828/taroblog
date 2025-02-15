@@ -16,8 +16,11 @@ categories: ['前端','React实战']
 通过二次封装 ahooks 的 `useWebSocket`，我们可以实现：
 
 ✅ 全局单例 WebSocket 连接  
+
 ✅ 自动 JSON 序列化  
+
 ✅ 统一错误处理  
+
 ✅ 便捷的状态获取
 
 ---
