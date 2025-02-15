@@ -53,7 +53,19 @@ export const map: RoadMap = [
     y: 20,
     fill: "#A9A9A9",
     link: "计算机网络",
-    text: "计算机网络"
+    text: "计算机网络",
+    children: [
+      [
+        {
+          y: 0,
+          fill: "#8c42f1",
+          link: "WebSocket二次封装hook",
+          text: "WebSocket",
+          marginRight: 80
+        }
+      ],
+      []
+    ]
   },
   {
     y: 80,
