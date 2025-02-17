@@ -10,6 +10,7 @@ export interface Note {
   categories: string[]
   content: string
   description: string
+  snippet?: string
 }
 
 export const getNotesCount = async () => {
@@ -190,13 +191,11 @@ const mergeCategoryTrees = (trees: CategoryNode[]): CategoryNode[] => {
 export const getAllCategoriesTree = async (): Promise<CategoryNode[]> => {
   try {
     const notes = await getNotes()
-
     // 过滤掉空分类，并构建初始分类树
     const categoryTrees = notes
       .filter((note) => note.categories?.length > 0)
       .map((note) => buildCategoryTree(note.categories))
       .filter((tree): tree is CategoryNode => tree !== null)
-    console.log(categoryTrees)
     return mergeCategoryTrees(categoryTrees)
   } catch (error) {
     console.error("Error building category tree:", error)

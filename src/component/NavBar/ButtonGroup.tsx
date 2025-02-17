@@ -18,9 +18,9 @@ const ButtonGroup = () => {
   const currentTheme = theme === "system" ? resolvedTheme : theme
 
   return (
-    <div className="flex-none">
+    <div className="w-[250px]">
       <div
-        className={cn("flex gap-4 items-center text-gray-950", {
+        className={cn("flex justify-end gap-4 items-center text-gray-950", {
           "text-white": currentTheme === "dark"
         })}
       >
