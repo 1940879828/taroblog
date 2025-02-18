@@ -66,7 +66,7 @@ const SearchInput = React.forwardRef<HTMLInputElement, Props>((props, _ref) => {
 
   useEffect(() => {
     const handleKeyDown = (event: KeyboardEvent) => {
-      const isMac = navigator.platform.toUpperCase().indexOf("MAC") >= 0
+      const isMac = /Mac|iPod|iPhone|iPad/.test(navigator.userAgent);
       const cmdKey = isMac ? event.metaKey : event.ctrlKey
       if (cmdKey && event.key.toLowerCase() === "k") {
         event.preventDefault()
