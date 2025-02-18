@@ -1,5 +1,5 @@
-import Paper from "@/component/Paper/Paper"
-import Sidebar from "@/component/Sidebar"
+import Paper from "@/components/Paper/Paper"
+import Sidebar from "@/components/Sidebar"
 import { getNotes, getNotesByPage } from "@/lib/note"
 import { Folder } from "lucide-react"
 import Link from "next/link"

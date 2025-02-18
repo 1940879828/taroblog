@@ -1,7 +1,8 @@
 import type { Metadata } from "next"
 import "./globals.css"
-import NavBar from "@/component/NavBar"
-import ThemeProvider from "@/component/ThemeProvider"
+import MountMessageList from "@/components/MountMessageList"
+import NavBar from "@/components/NavBar"
+import ThemeProvider from "@/components/ThemeProvider"
 import localFont from "next/font/local"
 import type React from "react"
 
@@ -34,6 +35,7 @@ export default function RootLayout({
         <ThemeProvider>
           <NavBar />
           {children}
+          <MountMessageList />
         </ThemeProvider>
       </body>
     </html>

@@ -1,7 +1,7 @@
 import fs from "node:fs"
 import path from "node:path"
-import BackButton from "@/component/BackButton"
-import Markdown from "@/component/Markdown"
+import BackButton from "@/components/BackButton"
+import Markdown from "@/components/Markdown"
 import matter from "gray-matter"
 
 // 生成静态路径

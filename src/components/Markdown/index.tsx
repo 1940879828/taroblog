@@ -3,7 +3,7 @@ import { MdCatalog, MdPreview } from "md-editor-rt"
 import { useTheme } from "next-themes"
 import { useState } from "react"
 import "md-editor-rt/lib/preview.css"
-import BackButton from "@/component/BackButton"
+import BackButton from "@/components/BackButton"
 
 type Props = {
   content: string
@@ -27,7 +27,7 @@ const Markdown = ({ content }: Props) => {
           <MdCatalog
             editorId={id}
             scrollElement={scrollElement}
-            className="overflow-y-auto p-4 rounded-lg shadow-lg"
+            className="overflow-y-auto p-4 rounded-lg shadow-lg max-w-64"
           />
         </div>
       </div>

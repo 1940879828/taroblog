@@ -1,5 +1,5 @@
-import FriendLinkItem from "@/component/FriendLinkItem"
-import Paper from "@/component/Paper/Paper"
+import FriendLinkItem from "@/components/FriendLinkItem"
+import Paper from "@/components/Paper/Paper"
 import { friends } from "@/config/friend"
 export default function Friend() {
   return (

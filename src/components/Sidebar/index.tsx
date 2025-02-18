@@ -1,4 +1,4 @@
-import Paper from "@/component/Paper/Paper"
+import Paper from "@/components/Paper/Paper"
 import { getAllCategoriesTree, getAllTags, getNotesCount } from "@/lib/note"
 import { ListTree, Tag } from "lucide-react"
 import Link from "next/link"

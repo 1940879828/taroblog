@@ -1,5 +1,5 @@
 "use client"
-import Button from "@/component/Button"
+import Button from "@/components/Button"
 import { cn } from "@/lib/utils"
 import { useRouter } from "next/navigation"
 

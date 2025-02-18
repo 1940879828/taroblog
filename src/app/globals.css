@@ -1,5 +1,5 @@
 @import "tailwindcss";
-@import "../component/Paper/paper.css";
+@import "../components/Paper/paper.css";
 @plugin "daisyui" {
   themes: cupcake --default, dark --prefersdark;
 }

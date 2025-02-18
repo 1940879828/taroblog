@@ -84,14 +84,12 @@ const ClickAwayListener: React.FC<ClickAwayListenerProps> = ({
   const createHandleSynthetic =
     (handlerName: string) => (event: React.SyntheticEvent) => {
       syntheticEventRef.current = true
-      // biome-ignore lint/suspicious/noExplicitAny: <explanation>
       const childrenPropsHandler = (children.props as any)[handlerName]
       if (childrenPropsHandler) {
         childrenPropsHandler(event)
       }
     }
 
-  // biome-ignore lint/suspicious/noExplicitAny: <explanation>
   const childrenProps: any = {
     ref: (node: HTMLElement | null) => {
       nodeRef.current = node

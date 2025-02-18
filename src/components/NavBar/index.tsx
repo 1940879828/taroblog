@@ -1,6 +1,6 @@
-import Button from "@/component/Button"
-import ButtonGroup from "@/component/NavBar/ButtonGroup"
-import Search from "@/component/Search/Search"
+import Button from "@/components/Button"
+import ButtonGroup from "@/components/NavBar/ButtonGroup"
+import Search from "@/components/Search/Search"
 import { AlignLeft, Link as LinkIcon, Newspaper, Route } from "lucide-react"
 import Link from "next/link"
 
