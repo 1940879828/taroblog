@@ -28,7 +28,7 @@ export default function Home() {
     initializer.current = true
 
     const width = canvasWidth
-    const height = 5000
+    const height = 1500
 
     // 创建 Stage
     const stage = new Konva.Stage({
@@ -174,7 +174,12 @@ export default function Home() {
   return (
     <div
       id="container"
-      style={{ background: theme === "dark" ? "#181818" : "#2d4059" }}
+      style={{
+        display: "flex",
+        justifyContent: "center",
+        background: theme === "dark" ? "#181818" : "#2d4059",
+        overflowX: "auto"
+      }}
     />
   )
 }
