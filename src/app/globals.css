@@ -95,3 +95,75 @@
 .dark-transition::view-transition-old(root) {
   z-index: 100 !important; /* 确保在添加类时能生效 */
 }
+
+html[data-theme="cupcake"] {
+  overflow: auto;
+  scrollbar-color: rgb(var(--color-primary)/.2) #0000;
+  scrollbar-width: thin
+}
+
+html[data-theme="cupcake"]::-webkit-scrollbar {
+  height: 6px;
+  width: 6px
+}
+
+html[data-theme="cupcake"]::-webkit-scrollbar-thumb {
+  background-clip: padding-box;
+  background-color: initial;
+  border: 1px dashed #0000;
+  border-radius: 3px
+}
+
+html[data-theme="cupcake"]::-webkit-scrollbar-thumb:hover {
+  background-clip: initial;
+  background-color: rgb(var(--color-primary)/.4)
+}
+
+html[data-theme="cupcake"]:hover::-webkit-scrollbar-thumb {
+  background-color: rgb(var(--color-primary)/.2)
+}
+
+html[data-theme="cupcake"]:hover::-webkit-scrollbar-thumb:hover {
+  background-clip: initial;
+  background-color: rgb(var(--color-primary)/.4)
+}
+
+html[data-theme="cupcake"]::-webkit-scrollbar-track {
+  background-color: initial
+}
+
+html[data-theme="dark"] {
+  overflow: auto;
+  scrollbar-color: rgb(var(--color-base-100)/.2) #0000;
+  scrollbar-width: thin
+}
+
+html[data-theme="dark"]::-webkit-scrollbar {
+  height: 6px;
+  width: 6px
+}
+
+html[data-theme="dark"]::-webkit-scrollbar-thumb {
+  background-clip: padding-box;
+  background-color: initial;
+  border: 1px dashed #0000;
+  border-radius: 3px
+}
+
+html[data-theme="dark"]::-webkit-scrollbar-thumb:hover {
+  background-clip: initial;
+  background-color: rgb(var(--color-base-100)/.4)
+}
+
+html[data-theme="dark"]:hover::-webkit-scrollbar-thumb {
+  background-color: rgb(var(--color-base-100)/.2)
+}
+
+html[data-theme="dark"]:hover::-webkit-scrollbar-thumb:hover {
+  background-clip: initial;
+  background-color: rgb(var(--color-base-100)/.4)
+}
+
+html[data-theme="dark"]::-webkit-scrollbar-track {
+  background-color: initial
+}
