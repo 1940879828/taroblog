@@ -20,7 +20,7 @@ export default async function Category({
     item.categories.includes(category)
   )
   return (
-    <div className="w-container !pt-8 flex gap-2">
+    <div className="w-container !pt-8 flex gap-2 flex-wrap">
       <Paper elevation={2} className="flex-1 p-8">
         <div className="font-bold text-xl flex mb-2">分类：{category}</div>
         <TimeLine list={filterTagNotes} />

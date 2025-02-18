@@ -18,7 +18,7 @@ export default async function Tag({
   const notes = await getNotes()
   const filterTagNotes = notes.filter((item) => item.tags.includes(tag))
   return (
-    <div className="w-container !pt-8 flex gap-2">
+    <div className="w-container !pt-8 flex gap-2 flex-wrap">
       <Paper elevation={2} className="flex-1 p-8">
         <div className="font-bold text-xl flex mb-2">标签：{tag}</div>
         <TimeLine list={filterTagNotes} />
