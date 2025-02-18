@@ -5,7 +5,7 @@ import { useTheme } from "next-themes"
 import Link from "next/link"
 import { useEffect, useState } from "react"
 
-const ButtonGroup = () => {
+const LinkButtonGroup = () => {
   const { theme, resolvedTheme } = useTheme()
   const [mounted, setMounted] = useState(false)
 
@@ -18,9 +18,9 @@ const ButtonGroup = () => {
   const currentTheme = theme === "system" ? resolvedTheme : theme
 
   return (
-    <div className="w-[250px]">
+    <div className="hidden sm:block w-[250px]">
       <div
-        className={cn("flex justify-end gap-4 items-center text-gray-950", {
+        className={cn("flex justify-end gap-4 items-center text-gray-950 ", {
           "text-white": currentTheme === "dark"
         })}
       >
@@ -39,7 +39,7 @@ const ButtonGroup = () => {
             />
           </svg>
         </Link>
-        <Link href="https://github.com/1940879828/taroblog" className="w-6 h-6">
+        <Link href="https://gitee.com/code-jay" className="w-6 h-6">
           <svg
             role="img"
             viewBox="0 0 24 24"
@@ -69,4 +69,4 @@ const ButtonGroup = () => {
   )
 }
 
-export default ButtonGroup
+export default LinkButtonGroup

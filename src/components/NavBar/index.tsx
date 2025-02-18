@@ -1,7 +1,8 @@
-import Button from "@/components/Button"
-import ButtonGroup from "@/components/NavBar/ButtonGroup"
+import LinkButtonGroup from "@/components/NavBar/LinkButtonGroup"
+import NavbarDrawer from "@/components/NavbarDrawer"
 import Search from "@/components/Search/Search"
-import { AlignLeft, Link as LinkIcon, Newspaper, Route } from "lucide-react"
+import { navs } from "@/config/navbar"
+import { Link as LinkIcon, Newspaper, Route } from "lucide-react"
 import Link from "next/link"
 
 const NavBar = () => {
@@ -14,33 +15,21 @@ const NavBar = () => {
             🌳TaroBlog
           </Link>
           <ul className="menu menu-horizontal px-1 flex-nowrap">
-            <li>
-              <Link href="/">
-                <Route size={16} />
-                路线图
-              </Link>
-            </li>
-            <li>
-              <Link href="/notes/1">
-                <Newspaper size={16} />
-                笔记
-              </Link>
-            </li>
-            <li>
-              <Link href="/friend">
-                <LinkIcon size={16} />
-                友链
-              </Link>
-            </li>
+            {navs.map((nav) => (
+              <li key={nav.name}>
+                <Link href={nav.link} key={nav.link}>
+                  {nav.icon}
+                  {nav.name}
+                </Link>
+              </li>
+            ))}
           </ul>
         </div>
-        <div className="flex gap-2">
-          <Button variant={"ghost"} className="block lg:hidden">
-            <AlignLeft />
-          </Button>
+        <div className="flex gap-4">
+          <NavbarDrawer />
           <Search />
         </div>
-        <ButtonGroup />
+        <LinkButtonGroup />
       </div>
     </div>
   )
