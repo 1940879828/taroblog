@@ -2,7 +2,7 @@
 title: 封装ahooks的useWebSocket实现全局单例连接
 date: 2025-02-14 17:55:40
 tags: ['前端','React','WebSocket']
-categories: ['前端','React实战']
+categories: ['前端','React']
 ---
 
 ## 背景说明

@@ -2,7 +2,8 @@ import fs from "node:fs"
 import path from "node:path"
 import BackButton from "@/components/BackButton"
 import Markdown from "@/components/Markdown"
-import matter from "gray-matter"
+import { getNoteDetail } from "@/lib/note"
+import Head from "next/head"
 
 // 生成静态路径
 export async function generateStaticParams() {
@@ -16,26 +17,39 @@ export async function generateStaticParams() {
   })
 }
 
-// 获取 Markdown 文件内容
-async function getMarkdownContent(name: string) {
-  const decodedName = decodeURIComponent(name) // 将路径参数编码回来
-  const filePath = path.join(process.cwd(), "public/notes", `${decodedName}.md`)
-  const fileContent = fs.readFileSync(filePath, "utf8")
-  const { content, data } = matter(fileContent) // 解析 Markdown 内容
-  return { content, data }
-}
-
 export default async function NoteDetail({
   params
 }: { params: Promise<{ name: string }> }) {
   const { name } = await params
-  const { content, data } = await getMarkdownContent(name)
-
+  const note = await getNoteDetail(name)
+  // 动态生成 JSON-LD 数据
+  const jsonLd = {
+    "@context": "https://schema.org",
+    "@type": "Article",
+    headline: note.title,
+    description: note.description,
+    author: {
+      "@type": "Person",
+      name: "Taro"
+    },
+    datePublished: note.date,
+    publisher: {
+      "@type": "Organization",
+      name: "Taro",
+      logo: {
+        "@type": "ImageObject",
+        url: "https://www.taroblog.top/icon.png"
+      }
+    }
+  }
   return (
     <div className="w-container flex-nowrap flex flex-col">
+      <Head>
+        <script type="application/ld+json">{JSON.stringify(jsonLd)}</script>
+      </Head>
       <BackButton className="mt-4" />
-      <div className="mt-2">: {data.title}</div>
-      <Markdown content={content} />
+      <div className="mt-2">: {note.title}</div>
+      <Markdown content={note.content} />
     </div>
   )
 }

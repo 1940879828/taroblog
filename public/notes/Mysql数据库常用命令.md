@@ -3,7 +3,6 @@ title: Mysql数据库常用命令
 date: 2020-04-03 21:22:44
 tags: ['MySql']
 categories: ['后端','数据库']
-cover: http://qny.bioart.icu/blog/6.jpg
 ---
 
 登陆数据库：mysql -h localhost -u root -p

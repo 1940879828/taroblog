@@ -19,6 +19,63 @@ export const getNotesCount = async () => {
   return files.length
 }
 
+const convertNote = ({
+  data,
+  content
+}: {
+  data: { [p: string]: any } & GrayMatterData
+  content: string
+}) => {
+  // 处理日期类型转换
+  const safeDate = () => {
+    if (!data.date) return ""
+    return data.date.toString()
+  }
+
+  const safeTags = () => {
+    if (Array.isArray(data.tags)) {
+      return data.tags
+        .map((t) => t?.toString().trim())
+        .filter((t) => t && t !== "undefined")
+    }
+    if (data.tags != null) {
+      return [data.tags.toString().trim()]
+    }
+    return []
+  }
+
+  const safeCategories = () => {
+    if (Array.isArray(data.categories)) {
+      return data.categories
+        .map((t) => t?.toString().trim())
+        .filter((t) => t && t !== "undefined")
+    }
+    if (data.categories != null) {
+      return [data.categories.toString().trim()]
+    }
+    return []
+  }
+
+  const noteWithoutFileName: Note = {
+    fileName: "",
+    title: data.title?.toString() || "Untitled",
+    tags: safeTags(),
+    date: safeDate(), // 使用安全转换
+    categories: safeCategories(),
+    content: content?.toString() || "",
+    description: data.description?.toString() || ""
+  }
+  return noteWithoutFileName
+}
+
+export type GrayMatterData = {
+  title: string
+  date: string
+  tags: string[] | string
+  categories: string[] | string
+  description?: string
+}
+
 export const getNotes = async () => {
   const notesDir = path.join(process.cwd(), "public/notes")
   const files = await fs.readdir(notesDir)
@@ -28,49 +85,14 @@ export const getNotes = async () => {
       .map(async (file) => {
         const filePath = path.join(notesDir, file)
         const fileContent = await fs.readFile(filePath, "utf8")
-        const { data, content } = matter(fileContent)
-
-        // 处理日期类型转换
-        const safeDate = () => {
-          if (!data.date) return ""
-          if (data.date instanceof Date) {
-            return data.date.toISOString().split("T")[0] // 转换为 YYYY-MM-DD 格式
-          }
-          return data.date.toString()
-        }
-
-        const safeTags = () => {
-          if (Array.isArray(data.tags)) {
-            return data.tags
-              .map((t) => t?.toString().trim())
-              .filter((t) => t && t !== "undefined")
-          }
-          if (data.tags != null) {
-            return [data.tags.toString().trim()]
-          }
-          return []
-        }
-
-        const safeCategories = () => {
-          if (Array.isArray(data.categories)) {
-            return data.categories
-              .map((t) => t?.toString().trim())
-              .filter((t) => t && t !== "undefined")
-          }
-          if (data.categories != null) {
-            return [data.categories.toString().trim()]
-          }
-          return []
-        }
+        const { data, content } = matter(
+          fileContent
+        ) as matter.GrayMatterFile<string> & { data: GrayMatterData }
+        const _note = convertNote({ data, content })
 
         const note: Note = {
-          fileName: file.replace(/\.md$/, ""),
-          title: data.title?.toString() || "Untitled",
-          tags: safeTags(),
-          date: safeDate(), // 使用安全转换
-          categories: safeCategories(),
-          content: content?.toString() || "",
-          description: data.description?.toString() || ""
+          ..._note,
+          fileName: file.replace(/\.md$/, "")
         }
         return note
       })
@@ -201,4 +223,20 @@ export const getAllCategoriesTree = async (): Promise<CategoryNode[]> => {
     console.error("Error building category tree:", error)
     throw error
   }
+}
+
+// 获取 Markdown 文件内容
+export async function getNoteDetail(name: string) {
+  const decodedName = decodeURIComponent(name) // 将路径参数编码回来
+  const filePath = path.join(process.cwd(), "public/notes", `${decodedName}.md`)
+  const fileContent = await fs.readFile(filePath, "utf8")
+  const { content, data } = matter(
+    fileContent
+  ) as matter.GrayMatterFile<string> & { data: GrayMatterData } // 解析 Markdown 内容
+  const _note = convertNote({ data, content })
+  const note: Note = {
+    ..._note,
+    fileName: name
+  }
+  return note
 }

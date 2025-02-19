@@ -1,6 +1,7 @@
 import FriendLinkItem from "@/components/FriendLinkItem"
 import Paper from "@/components/Paper/Paper"
 import { friends } from "@/config/friend"
+
 export default function Friend() {
   return (
     <div className="w-container">
