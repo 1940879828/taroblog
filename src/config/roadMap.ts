@@ -317,11 +317,20 @@ export const map: RoadMap = [
           ]
         },
         {
-          y: 40,
+          y: 80,
           fill: "#6F42C1",
           link: "关于React的一些内容",
           text: "Next.js",
-          marginRight: 80
+          marginRight: 80,
+          children: [
+            {
+              y: 120,
+              fill: "#6F42C1",
+              link: "Next中seo优化实践",
+              text: "seo优化",
+              marginRight: 60,
+            }
+          ]
         }
       ],
       []
