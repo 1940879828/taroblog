@@ -328,7 +328,7 @@ export const map: RoadMap = [
               fill: "#6F42C1",
               link: "Next中seo优化实践",
               text: "seo优化",
-              marginRight: 60,
+              marginRight: 60
             }
           ]
         }
