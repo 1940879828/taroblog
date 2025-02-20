@@ -1,5 +1,7 @@
 import { useAsyncEffect } from "ahooks"
+import type { Timeout } from "ahooks/es/useRequest/src/types"
 import type React from "react"
+import { useEffect } from "react"
 import { type PropsWithChildren, useRef } from "react"
 import styles from "./index.module.css"
 
@@ -10,11 +12,12 @@ interface Props {
 }
 const KeywordHighlight: React.FC<PropsWithChildren<Props>> = ({
   keyword,
-  delayInMilliseconds = 200,
+  delayInMilliseconds = 70,
   isCaseInsensitive,
   children
 }) => {
   const wrapper = useRef<HTMLDivElement>(null)
+  const timerRef = useRef<Timeout>(null)
 
   const removeWrappedElement = () => {
     if (!wrapper.current) return
@@ -69,11 +72,34 @@ const KeywordHighlight: React.FC<PropsWithChildren<Props>> = ({
     })
   }
 
-  useAsyncEffect(async () => {
-    await new Promise((resolve) => setTimeout(resolve, delayInMilliseconds))
-    removeWrappedElement()
-    highlightKeywords()
-  }, [keyword])
+  useEffect(() => {
+    if (!wrapper.current) return
+
+    const observer = new MutationObserver((_mutations) => {
+      // 检测到变化，清除定时器，重新设置
+      if (timerRef.current) clearTimeout(timerRef.current)
+      timerRef.current = setTimeout(() => {
+        removeWrappedElement()
+        highlightKeywords()
+      }, delayInMilliseconds)
+    })
+
+    observer.observe(wrapper.current, {
+      childList: true,
+      subtree: true,
+      characterData: true
+    })
+
+    timerRef.current = setTimeout(() => {
+      removeWrappedElement()
+      highlightKeywords()
+    }, delayInMilliseconds)
+
+    return () => {
+      observer.disconnect()
+      if (timerRef.current) clearTimeout(timerRef.current)
+    }
+  }, [keyword, delayInMilliseconds])
 
   return <div ref={wrapper}>{children}</div>
 }

@@ -31,8 +31,16 @@ const Search = () => {
         setNotes([])
         return
       }
+      console.log({ keyword })
       handleSearch(keyword).then()
     }, 300)
+  )
+
+  const triggerSearchDebounce = useRef(
+    _.debounce(async (keyword: string) => {
+      console.log({ keyword })
+      handleSearch(keyword).then()
+    }, 500)
   )
 
   const handleSearch = async (keyword: string) => {
@@ -84,12 +92,15 @@ const Search = () => {
     setSearchText(value)
     if (value.trim() === "") {
       setNotes([])
+    } else {
+      triggerSearchDebounce.current(value)
     }
   }
 
   useEffect(() => {
     return () => {
       debounceHandleSearch.current.cancel()
+      triggerSearchDebounce.current.cancel()
     }
   }, [])
 
@@ -100,7 +111,7 @@ const Search = () => {
           onInput={handleInput}
           value={searchText}
           onSearch={debounceHandleSearch.current}
-          placeholder={"点🔍搜索或按↵回车搜索笔记"}
+          placeholder={"搜索本站笔记"}
           onFocus={() => setIsShowResultCard(true)}
           onKeyDown={onKeyDown}
         />
@@ -142,7 +153,7 @@ const SearchResults = ({
   keyword: string
   jump: (url: string) => void
 }) => (
-  <KeywordHighlight keyword={keyword}>
+  <KeywordHighlight key={keyword} keyword={keyword}>
     <ResultContainer>
       {notes.map((note, i) => (
         <div
@@ -151,7 +162,7 @@ const SearchResults = ({
           className="p-2 rounded-md hover:bg-base-300 cursor-pointer"
         >
           <div>{note.title}</div>
-          <div className="text-sm">{note?.snippet}</div>
+          <div className="text-sm overflow-hidden">{note?.snippet}</div>
         </div>
       ))}
     </ResultContainer>
