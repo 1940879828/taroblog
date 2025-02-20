@@ -43,6 +43,11 @@ export const metadata: Metadata = {
     ],
     locale: "zh_CN", // 页面的语言和地区
     type: "website" // 页面类型，如 'website', 'article' 等
+  },
+  other: {
+    "itemprop:name": "TaroBlog",
+    "itemprop:description": "欢迎光临泰罗的个人网站",
+    "itemprop:image": "https://taroblog.top/icon.png"
   }
 }
 

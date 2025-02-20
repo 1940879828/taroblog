@@ -19,7 +19,7 @@ export async function generateMetadata({
     openGraph: {
       title: note.title,
       description: note.description,
-      url: `https://taroblog.top/note/${note.fileName}`, // 页面的完整 URL
+      url: `https://taroblog.top/note/${note.title}`, // 页面的完整 URL
       siteName: "TaroBlog",
       images: [
         {
@@ -31,6 +31,11 @@ export async function generateMetadata({
       ],
       locale: "zh_CN", // 页面的语言和地区
       type: "article" // 页面类型，如 'website', 'article' 等
+    },
+    other: {
+      "itemprop:name": note.title,
+      "itemprop:description": note.description || "TaroBlog",
+      "itemprop:image": "https://taroblog.top/icon.png"
     }
   }
 }
