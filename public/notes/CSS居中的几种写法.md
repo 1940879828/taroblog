@@ -3,7 +3,6 @@ title: CSS居中的几种写法
 tags: ['Css']
 date: 2023-05-07 21:39:29
 categories: ['前端','Css']
-cover: http://qny.bioart.icu/blog/21.jpg
 ---
 
 # 一、行内元素的垂直水平居中方法

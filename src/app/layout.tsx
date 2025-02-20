@@ -54,11 +54,13 @@ export default function RootLayout({
   return (
     <html lang="en" data-theme="cupcake" className="theme-transition">
       <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased relative overflow-x-hidden`}
+        className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
         <ThemeProvider>
           <NavBar />
-          {children}
+          <div className="overflow-auto h-[calc(100vh-65px)] hi_scroll">
+            {children}
+          </div>
           <MountMessageList />
         </ThemeProvider>
       </body>
