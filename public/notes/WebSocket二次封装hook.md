@@ -3,6 +3,7 @@ title: 封装ahooks的useWebSocket实现全局单例连接
 date: 2025-02-14 17:55:40
 tags: ['前端','React','WebSocket']
 categories: ['前端','React']
+description: 本文深入探讨如何基于ahooks的useWebSocket进行二次封装，解决原生WebSocket在多组件复用、消息格式混乱和状态管理复杂等痛点。
 ---
 
 ## 背景说明
