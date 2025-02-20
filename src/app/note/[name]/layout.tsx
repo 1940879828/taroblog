@@ -1,4 +1,5 @@
 import { getNoteDetail } from "@/lib/note"
+import Head from "next/head"
 import type React from "react"
 
 export async function generateMetadata({
@@ -31,11 +32,6 @@ export async function generateMetadata({
       ],
       locale: "zh_CN", // 页面的语言和地区
       type: "article" // 页面类型，如 'website', 'article' 等
-    },
-    other: {
-      "itemprop:name": note.title,
-      "itemprop:description": note.description || "TaroBlog",
-      "itemprop:image": "https://taroblog.top/icon.png"
     }
   }
 }
