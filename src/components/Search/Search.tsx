@@ -100,7 +100,7 @@ const Search = () => {
           onInput={handleInput}
           value={searchText}
           onSearch={debounceHandleSearch.current}
-          placeholder={"搜索笔记"}
+          placeholder={"点🔍搜索或按↵回车搜索笔记"}
           onFocus={() => setIsShowResultCard(true)}
           onKeyDown={onKeyDown}
         />

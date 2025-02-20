@@ -96,7 +96,7 @@ const SearchInput = React.forwardRef<HTMLInputElement, Props>((props, _ref) => {
   }
 
   return (
-    <label className="input input-bordered flex items-center gap-1">
+    <label className="input input-bordered flex items-center gap-1 w-80">
       <Search
         aria-label="搜索按钮"
         role="button"
