@@ -1,5 +1,6 @@
 import type { Metadata } from "next"
 import "./globals.css"
+import HappyModeButton from "@/components/HappyModeButton"
 import MountMessageList from "@/components/MountMessageList"
 import NavBar from "@/components/NavBar"
 import ThemeProvider from "@/components/ThemeProvider"
@@ -26,7 +27,7 @@ export const metadata: Metadata = {
     canonical: "https://taroblog.top" // 设置 canonical URL
   },
   keywords:
-    "前端开发, JavaScript, Vue, React, PHP, Laravel, MongoDB, MySQL, CSS, HTML, Git, WebSocket, 智能合约, 性能优化, 闭包, 跨域, 计算机网络, 节流与防抖, 宏任务, 微任务, 回流与重绘, 前端性能优化, Web开发, 技术博客",
+    "TaroBlog, taroblog, 前端开发, JavaScript, Vue, React, PHP, Laravel, MongoDB, MySQL, CSS, HTML, Git, WebSocket, 智能合约, 性能优化, 闭包, 跨域, 计算机网络, 节流与防抖, 宏任务, 微任务, 回流与重绘, 前端性能优化, Web开发, 技术博客",
   authors: { name: "TaroBlog" },
   robots: "index, follow",
   openGraph: {
@@ -74,6 +75,7 @@ export default function RootLayout({
             {children}
           </div>
           <MountMessageList />
+          <HappyModeButton />
         </ThemeProvider>
       </body>
     </html>
