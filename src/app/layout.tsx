@@ -4,6 +4,7 @@ import MountMessageList from "@/components/MountMessageList"
 import NavBar from "@/components/NavBar"
 import ThemeProvider from "@/components/ThemeProvider"
 import localFont from "next/font/local"
+import Head from "next/head"
 import type React from "react"
 
 const geistSans = localFont({
@@ -61,6 +62,12 @@ export default function RootLayout({
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
+        <Head>
+          {/*@ts-ignore*/}
+          <meta itemProp="name" content="TaroBlog" />
+          <meta itemProp="description" content="欢迎光临泰罗的个人网站" />
+          <meta itemProp="image" content="https://taroblog.top/icon.png" />
+        </Head>
         <ThemeProvider>
           <NavBar />
           <div className="overflow-auto h-[calc(100vh-65px)] hi_scroll">

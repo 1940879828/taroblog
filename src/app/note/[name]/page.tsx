@@ -47,6 +47,9 @@ export default async function NoteDetail({
     <div className="w-container flex-nowrap flex flex-col">
       <Head>
         <script type="application/ld+json">{JSON.stringify(jsonLd)}</script>
+        <meta itemProp="name" content={note.title} />
+        <meta itemProp="description" content={note.description || "Taroblog"} />
+        <meta itemProp="image" content="https://taroblog.top/icon.png" />
       </Head>
       <BackButton className="mt-4" />
       <div className="mt-2">: {note.title}</div>
