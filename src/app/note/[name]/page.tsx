@@ -4,6 +4,7 @@ import BackButton from "@/components/BackButton"
 import Markdown from "@/components/Markdown"
 import { getNoteDetail } from "@/lib/note"
 import Head from "next/head"
+import type React from "react"
 
 // 生成静态路径
 export async function generateStaticParams() {

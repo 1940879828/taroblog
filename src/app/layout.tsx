@@ -43,11 +43,6 @@ export const metadata: Metadata = {
     ],
     locale: "zh_CN", // 页面的语言和地区
     type: "website" // 页面类型，如 'website', 'article' 等
-  },
-  other: {
-    "itemprop:name": "TaroBlog",
-    "itemprop:description": "欢迎光临泰罗的个人网站",
-    "itemprop:image": "https://taroblog.top/icon.png"
   }
 }
 
@@ -58,6 +53,11 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en" data-theme="cupcake" className="theme-transition">
+      <head>
+        <meta itemProp="name" content="TaroBlog" />
+        <meta itemProp="description" content="欢迎光临泰罗的个人网站" />
+        <meta itemProp="image" content="https://taroblog.top/icon.png" />
+      </head>
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
