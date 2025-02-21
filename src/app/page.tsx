@@ -17,6 +17,8 @@ import {
   map as _map
 } from "@/config/roadMap"
 import { cn } from "@/lib/utils"
+import { isHappyModeAtom } from "@/store/happyMode"
+import { useAtom } from "jotai"
 import _ from "lodash"
 import { useTheme } from "next-themes"
 import Head from "next/head"
@@ -314,7 +316,7 @@ export default function Home() {
       "https://gitee.com/code-jay"
     ]
   }
-
+  const [_isHappyModeGlobal, _setIsHappyModeGlobal] = useAtom(isHappyModeAtom)
   return (
     <div className="overflow-hidden h-full sm:overflow-auto sm:h-auto">
       <Head>
