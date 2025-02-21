@@ -126,12 +126,6 @@
 }
 
 /* 路线图适配移动端下全局缩放 */
-#container {
-  /*width: 100vw;*/
-  /*height: 100vh;*/
-  /*overflow: hidden!important;*/
-}
-
 @media (max-width: 768px) {
   .konva-stage {
     transform-origin: center center !important;

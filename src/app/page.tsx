@@ -316,7 +316,7 @@ export default function Home() {
   }
 
   return (
-    <>
+    <div className="overflow-hidden h-full sm:overflow-auto sm:h-auto">
       <Head>
         <script type="application/ld+json">
           {JSON.stringify(websiteJsonLd)}
@@ -350,6 +350,6 @@ export default function Home() {
           overflowX: "auto"
         }}
       />
-    </>
+    </div>
   )
 }
