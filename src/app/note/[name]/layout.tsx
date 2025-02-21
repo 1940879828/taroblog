@@ -1,5 +1,4 @@
 import { getNoteDetail } from "@/lib/note"
-import Head from "next/head"
 import type React from "react"
 
 export async function generateMetadata({

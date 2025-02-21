@@ -2,7 +2,6 @@ import LinkButtonGroup from "@/components/NavBar/LinkButtonGroup"
 import NavbarDrawer from "@/components/NavbarDrawer"
 import Search from "@/components/Search/Search"
 import { navs } from "@/config/navbar"
-import { Link as LinkIcon, Newspaper, Route } from "lucide-react"
 import Link from "next/link"
 
 const NavBar = () => {

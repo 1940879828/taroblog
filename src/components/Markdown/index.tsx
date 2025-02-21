@@ -3,7 +3,6 @@ import { MdCatalog, MdPreview } from "md-editor-rt"
 import { useTheme } from "next-themes"
 import { useState } from "react"
 import "md-editor-rt/lib/preview.css"
-import BackButton from "@/components/BackButton"
 
 type Props = {
   content: string
