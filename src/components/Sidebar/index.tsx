@@ -1,12 +1,11 @@
 import Paper from "@/components/Paper/Paper"
 import TagGroup from "@/components/TagGroup"
-import { getAllCategoriesTree, getAllTags, getNotesCount } from "@/lib/note"
+import { getAllCategoriesTree, getNotesCount } from "@/lib/note"
 import { ListTree, Tag } from "lucide-react"
 import Link from "next/link"
 
 const Sidebar = async () => {
   const notesCount = await getNotesCount()
-  const _allTags = await getAllTags()
   const categoryTree = await getAllCategoriesTree()
 
   return (
