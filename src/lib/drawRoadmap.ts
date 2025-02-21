@@ -1,6 +1,7 @@
 import type { RoadMap } from "@/config/roadMap"
 import Konva from "konva"
 
+// 卡片默认参数
 export const CARD_CONFIG = {
   width: 140,
   height: 40,
@@ -77,11 +78,17 @@ export const makeTextRect = (props: {
 }
 
 // 画主轴连接线
-export const drawLine = (
-  rect1: RoadMap[number],
-  rect2: RoadMap[number],
+export const drawLine = ({
+  rect1,
+  rect2,
+  index,
+  lineColor
+}: {
+  rect1: RoadMap[number]
+  rect2: RoadMap[number]
   index: number
-) => {
+  lineColor: "black" | "white"
+}) => {
   const minTwist = 20
   const maxTwist = 50
 
@@ -115,7 +122,7 @@ export const drawLine = (
   // 创建连接线（使用贝塞尔曲线）
   return new Konva.Line({
     points: [startX, startY, controlX, midY, endX, endY], // 起点、控制点、终点
-    stroke: "white", // 线条颜色
+    stroke: lineColor, // 线条颜色
     strokeWidth: 3, // 线条宽度
     lineCap: "round", // 线条端点样式
     lineJoin: "round", // 线条连接点样式
@@ -131,9 +138,11 @@ type DrawDashedLineProps = {
   childGroup: Konva.Group
   /** 左子树还是右子树 */
   tree?: "left" | "right"
+  /** 线条颜色 */
+  lineColor: "black" | "white"
 }
 export const drawDashedLine = (args: DrawDashedLineProps) => {
-  const { tree, parentGroup, childGroup } = args
+  const { tree, parentGroup, childGroup, lineColor } = args
   // 没有x就是居中的
   // 计算矩形水平居中的 x 坐标
   const parentClientRect = parentGroup.getClientRect()
@@ -172,7 +181,7 @@ export const drawDashedLine = (args: DrawDashedLineProps) => {
   // 创建连接线（使用贝塞尔曲线）
   return new Konva.Line({
     points: [startX, startY, midX, midY, endX, endY], // 起点、控制点、终点
-    stroke: "white", // 线条颜色
+    stroke: lineColor, // 线条颜色
     strokeWidth: 2, // 线条宽度
     lineCap: "round", // 线条端点样式
     lineJoin: "round", // 线条连接点样式

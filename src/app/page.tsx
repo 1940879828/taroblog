@@ -9,11 +9,13 @@ import {
 import Konva from "konva"
 import React, { useEffect, useRef } from "react"
 import Group = Konva.Group
+import { AnimatedGridPattern } from "@/components/AnimatedGridPattern"
 import {
   type RoadMapLeftTree,
   type RoadMapRightTree,
   map as _map
 } from "@/config/roadMap"
+import { cn } from "@/lib/utils"
 import _ from "lodash"
 import { useTheme } from "next-themes"
 import Head from "next/head"
@@ -22,11 +24,10 @@ import { useRouter } from "next/navigation"
 export default function Home() {
   const router = useRouter()
   const { theme } = useTheme()
-  const initializer = useRef(false)
 
   useEffect(() => {
-    if (initializer.current) return
-    initializer.current = true
+    const container = document.getElementById("container")
+    if (container) container.innerHTML = ""
 
     const width = canvasWidth
     const height = 1500
@@ -53,7 +54,12 @@ export default function Home() {
       const rect2 = map[i + 1] // 下一个矩形
 
       // 调用 drawLine 函数生成连接线
-      const line = drawLine(rect1, rect2, i)
+      const line = drawLine({
+        rect1,
+        rect2,
+        index: i,
+        lineColor: theme === "dark" ? "white" : "black"
+      })
 
       // 将连接线添加到 Layer
       lineLayer.add(line)
@@ -98,7 +104,8 @@ export default function Home() {
         const line = drawDashedLine({
           parentGroup,
           childGroup: currentRect,
-          tree: isLeftTree ? "left" : "right"
+          tree: isLeftTree ? "left" : "right",
+          lineColor: theme === "dark" ? "white" : "black"
         })
         lineLayer.add(line) // 将虚线添加到 Layer
         // 将当前矩形添加到 Layer
@@ -171,7 +178,7 @@ export default function Home() {
     // 将 Layer 添加到 Stage
     stage.add(lineLayer)
     stage.add(mainLayer)
-  }, [])
+  }, [theme])
 
   // 网站信息
   const websiteJsonLd = {
@@ -223,15 +230,7 @@ export default function Home() {
   }
 
   return (
-    <div
-      id="container"
-      style={{
-        display: "flex",
-        justifyContent: "center",
-        background: theme === "dark" ? "#181818" : "#2d4059",
-        overflowX: "auto"
-      }}
-    >
+    <>
       <Head>
         <script type="application/ld+json">
           {JSON.stringify(websiteJsonLd)}
@@ -243,6 +242,28 @@ export default function Home() {
           {JSON.stringify(organizationJsonLd)}
         </script>
       </Head>
-    </div>
+      <div className="absolute inset-0 z-[-2] bg-base-100" />
+      {theme !== "dark" && (
+        <AnimatedGridPattern
+          numSquares={30}
+          maxOpacity={0.1}
+          duration={3}
+          repeatDelay={1}
+          className={cn(
+            "[mask-image:radial-gradient(800px_circle_at_center,white,transparent)]",
+            "skew-y-12 z-[-1]"
+          )}
+        />
+      )}
+      <div
+        id="container"
+        style={{
+          display: "flex",
+          justifyContent: "center",
+          background: theme === "dark" ? "#181818" : "transparent",
+          overflowX: "auto"
+        }}
+      />
+    </>
   )
 }

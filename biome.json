@@ -3,7 +3,7 @@
   "vcs": { "enabled": false, "clientKind": "git", "useIgnoreFile": false },
   "files": {
     "ignoreUnknown": false,
-    "ignore": ["node_modules", "public", ".idea", ".next"]
+    "ignore": ["node_modules", "public", ".idea", ".next", "src/lib/ribbon.js"]
   },
   "formatter": {
     "enabled": true,

@@ -1,5 +1,6 @@
 import { promises as fs } from "node:fs"
 import path from "node:path"
+import dayjs from "dayjs"
 import matter from "gray-matter"
 
 export interface Note {
@@ -29,7 +30,7 @@ const convertNote = ({
   // 处理日期类型转换
   const safeDate = () => {
     if (!data.date) return ""
-    return data.date.toString()
+    return dayjs(data.date).format("YYYY-MM-DD HH:mm:ss")
   }
 
   const safeTags = () => {

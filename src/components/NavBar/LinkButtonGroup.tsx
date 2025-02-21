@@ -4,6 +4,8 @@ import { cn } from "@/lib/utils"
 import { useTheme } from "next-themes"
 import Link from "next/link"
 import { useEffect, useState } from "react"
+// @ts-ignore
+import "@/lib/ribbon"
 
 const LinkButtonGroup = () => {
   const { theme, resolvedTheme } = useTheme()
