@@ -20,16 +20,14 @@ const HappyModeButton = () => {
   }
 
   const handleClick = () => {
-    if (animationPhase === "down") return // 下降过程不可中断
-
     // 立即切换状态
     const newHappy = !isHappyMode
-    setIsHappyMode(newHappy)
 
     if (newHappy) {
       // 处理上升动画
       if (animationPhase === "up" && upTimerRef.current)
         clearTimeout(upTimerRef.current)
+      setIsHappyMode(newHappy)
       setAnimationPhase("up")
       upTimerRef.current = setTimeout(() => {
         change()
@@ -43,7 +41,8 @@ const HappyModeButton = () => {
       change() // 下降立即触发change
       downTimerRef.current = setTimeout(() => {
         setAnimationPhase("idle")
-      }, 3000)
+        setIsHappyMode(newHappy)
+      }, 2500)
     }
   }
 
