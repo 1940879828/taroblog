@@ -3,7 +3,8 @@ import { isHappyModeAtom } from "@/store/happyMode"
 import type { Timeout } from "ahooks/lib/useRequest/src/types"
 import { useSetAtom } from "jotai"
 import { useTheme } from "next-themes"
-import { type ChangeEvent, useRef, useState } from "react"
+import Image from "next/image"
+import { useRef, useState } from "react"
 
 const HappyModeButton = () => {
   const [isHappyMode, setIsHappyMode] = useState(false)
@@ -61,8 +62,8 @@ const HappyModeButton = () => {
 
     // 在 transition.ready 的 Promise 完成后，执行自定义动画
     transition.ready.then(() => {
-      const clientX = 140
-      const clientY = innerHeight - 200
+      const clientX = innerWidth - 238
+      const clientY = innerHeight - 112
 
       // 计算半径，以鼠标点击的位置为圆心，到四个角的距离中最大的那个作为半径
       const radius = Math.hypot(clientX, clientY)
@@ -96,18 +97,24 @@ const HappyModeButton = () => {
   }
 
   return (
-    <div className="fixed bottom-0 left-16">
+    <div className="fixed bottom-0 right-16">
       <div
         style={{
-          marginBottom: isHappyMode ? "0" : "-60px",
+          marginBottom: isHappyMode ? "-5px" : "-120px",
           transition: "all 3s ease-in-out"
         }}
-        className={`w-10 h-32 bg-blue-300 ${
+        className={`w-48 h-auto ${
           animationPhase === "down" ? "pointer-events-none" : "cursor-pointer"
         }`}
         onClick={handleClick}
       >
-        123
+        <Image
+          src="https://s21.ax1x.com/2025/02/21/pEQ4nIS.png"
+          alt="logo"
+          width={192}
+          height={138}
+          style={{ width: "100%" }}
+        />
       </div>
     </div>
   )
