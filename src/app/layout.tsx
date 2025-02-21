@@ -61,7 +61,7 @@ export default function RootLayout({
         <meta itemProp="image" content="https://taroblog.top/icon.png" />
       </head>
       <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased`}
+        className={`${geistSans.variable} ${geistMono.variable} antialiased overflow-hidden`}
       >
         <Head>
           {/*@ts-ignore*/}

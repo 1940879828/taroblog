@@ -1,4 +1,5 @@
 import type { Friend } from "@/config/friend"
+import { cn } from "@/lib/utils"
 import type React from "react"
 import styles from "./index.module.css"
 
@@ -9,7 +10,7 @@ const FriendLinkItem: React.FC<Props> = ({ friend }) => {
   return (
     <a
       href={url}
-      className={styles.linkItem}
+      className={cn("shadow-sm", styles.linkItem)}
       target="_blank"
       title={description}
       rel="noreferrer"

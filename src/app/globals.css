@@ -124,3 +124,10 @@
 *::-webkit-scrollbar-thumb:hover {
   background-color: var(--scrollbar-hover-color);
 }
+
+/* 路线图适配移动端下全局缩放 */
+@media (max-width: 768px) {
+  .konva-stage {
+    transform-origin: center center !important;
+  }
+}

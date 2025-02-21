@@ -9,24 +9,44 @@ import {
 import Konva from "konva"
 import React, { useEffect, useRef } from "react"
 import Group = Konva.Group
+import { AnimatedGridPattern } from "@/components/AnimatedGridPattern"
+import Message from "@/components/Message"
 import {
   type RoadMapLeftTree,
   type RoadMapRightTree,
   map as _map
 } from "@/config/roadMap"
+import { cn } from "@/lib/utils"
 import _ from "lodash"
 import { useTheme } from "next-themes"
 import Head from "next/head"
 import { useRouter } from "next/navigation"
 
+// 添加工具函数
+function getCenter(p1: { x: number; y: number }, p2: { x: number; y: number }) {
+  return {
+    x: (p1.x + p2.x) / 2,
+    y: (p1.y + p2.y) / 2
+  }
+}
+
+function getDistance(
+  p1: { x: number; y: number },
+  p2: { x: number; y: number }
+) {
+  return Math.sqrt((p2.x - p1.x) ** 2 + (p2.y - p1.y) ** 2)
+}
+
 export default function Home() {
   const router = useRouter()
   const { theme } = useTheme()
-  const initializer = useRef(false)
+  // 添加 ref 用于保存缩放状态
+  const lastCenter = useRef<{ x: number; y: number } | null>(null)
+  const lastDist = useRef(0)
 
   useEffect(() => {
-    if (initializer.current) return
-    initializer.current = true
+    const container = document.getElementById("container")
+    if (container) container.innerHTML = ""
 
     const width = canvasWidth
     const height = 1500
@@ -35,8 +55,67 @@ export default function Home() {
     const stage = new Konva.Stage({
       container: "container", // 绑定到 id 为 container 的 div
       width: width,
-      height: height
+      height: height,
+      draggable: true,
+      dragDistance: 5, // 设置拖动触发阈值
+      hitGraphEnabled: true // 启用精确命中检测
     })
+
+    // 添加触摸事件监听
+    stage.on("touchmove", (e) => {
+      e.evt.preventDefault()
+      const touch1 = e.evt.touches[0]
+      const touch2 = e.evt.touches[1]
+
+      if (touch1 && touch2) {
+        stage.draggable(false)
+        if (stage.isDragging()) {
+          stage.stopDrag()
+        }
+
+        const p1 = { x: touch1.clientX, y: touch1.clientY }
+        const p2 = { x: touch2.clientX, y: touch2.clientY }
+
+        if (!lastCenter.current) {
+          lastCenter.current = getCenter(p1, p2)
+          return
+        }
+
+        const newCenter = getCenter(p1, p2)
+        const dist = getDistance(p1, p2)
+
+        if (!lastDist.current) {
+          lastDist.current = dist
+        }
+
+        const pointTo = {
+          x: (newCenter.x - stage.x()) / stage.scaleX(),
+          y: (newCenter.y - stage.y()) / stage.scaleX()
+        }
+
+        const scale = stage.scaleX() * (dist / lastDist.current)
+        stage.scaleX(scale)
+        stage.scaleY(scale)
+
+        const dx = newCenter.x - lastCenter.current.x
+        const dy = newCenter.y - lastCenter.current.y
+        const newPos = {
+          x: newCenter.x - pointTo.x * scale + dx,
+          y: newCenter.y - pointTo.y * scale + dy
+        }
+
+        stage.position(newPos)
+        lastDist.current = dist
+        lastCenter.current = newCenter
+      }
+    })
+
+    stage.on("touchend", () => {
+      lastDist.current = 0
+      lastCenter.current = null
+      stage.draggable(true)
+    })
+
     const map = _.cloneDeep(_map)
     // 创建 Layer
     const mainLayer = new Konva.Layer()
@@ -53,7 +132,12 @@ export default function Home() {
       const rect2 = map[i + 1] // 下一个矩形
 
       // 调用 drawLine 函数生成连接线
-      const line = drawLine(rect1, rect2, i)
+      const line = drawLine({
+        rect1,
+        rect2,
+        index: i,
+        lineColor: theme === "dark" ? "white" : "black"
+      })
 
       // 将连接线添加到 Layer
       lineLayer.add(line)
@@ -98,7 +182,8 @@ export default function Home() {
         const line = drawDashedLine({
           parentGroup,
           childGroup: currentRect,
-          tree: isLeftTree ? "left" : "right"
+          tree: isLeftTree ? "left" : "right",
+          lineColor: theme === "dark" ? "white" : "black"
         })
         lineLayer.add(line) // 将虚线添加到 Layer
         // 将当前矩形添加到 Layer
@@ -152,26 +237,34 @@ export default function Home() {
       stage.container().style.cursor = "default"
     })
 
-    mainLayer.on("click", (e) => {
-      // 获取点击的目标形状
+    const handleTap = (e: Konva.KonvaEventObject<MouseEvent>) => {
       const target = e.target
 
-      // 判断目标形状是否有 link 属性
+      // 添加触摸事件过滤
+      if (e.evt.type === "touchend" && lastDist.current !== 0) {
+        return
+      }
+
       const link = target.getAttr("link")
       if (link) {
-        // 跳转到 link 属性指定的链接
         if (String(link).includes("http")) {
           window.open(link, "_blank")
         } else {
           router.push(`/note/${link}`)
         }
+      } else {
+        Message.warning("这个卡片暂未设置链接~", { justify: "center" })
       }
-    })
+    }
+
+    // 修改事件监听方式
+    mainLayer.on("tap", handleTap)
+    mainLayer.on("click", handleTap)
 
     // 将 Layer 添加到 Stage
     stage.add(lineLayer)
     stage.add(mainLayer)
-  }, [])
+  }, [theme])
 
   // 网站信息
   const websiteJsonLd = {
@@ -223,15 +316,7 @@ export default function Home() {
   }
 
   return (
-    <div
-      id="container"
-      style={{
-        display: "flex",
-        justifyContent: "center",
-        background: theme === "dark" ? "#181818" : "#2d4059",
-        overflowX: "auto"
-      }}
-    >
+    <div className="overflow-hidden h-full sm:overflow-auto sm:h-auto">
       <Head>
         <script type="application/ld+json">
           {JSON.stringify(websiteJsonLd)}
@@ -243,6 +328,28 @@ export default function Home() {
           {JSON.stringify(organizationJsonLd)}
         </script>
       </Head>
+      <div className="absolute inset-0 z-[-2] bg-base-100" />
+      {theme !== "dark" && (
+        <AnimatedGridPattern
+          numSquares={30}
+          maxOpacity={0.1}
+          duration={3}
+          repeatDelay={1}
+          className={cn(
+            "[mask-image:radial-gradient(800px_circle_at_center,white,transparent)]",
+            "skew-y-12 z-[-1]"
+          )}
+        />
+      )}
+      <div
+        id="container"
+        style={{
+          display: "flex",
+          justifyContent: "center",
+          background: theme === "dark" ? "#181818" : "transparent",
+          overflowX: "auto"
+        }}
+      />
     </div>
   )
 }

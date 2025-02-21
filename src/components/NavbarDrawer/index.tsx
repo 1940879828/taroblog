@@ -21,7 +21,7 @@ const NavbarDrawer = () => {
           aria-label="close sidebar"
           className="drawer-overlay"
         />
-        <ul className="menu gap-4 bg-base-200 text-base-content min-h-full w-80 p-4">
+        <ul className="menu gap-4 bg-base-200 text-base-content min-h-full w-auto md:w-80 p-4">
           {navs.map((nav) => (
             <li key={nav.name}>
               <Link href={nav.link} key={nav.link} className="py-4">

@@ -18,8 +18,7 @@ const ThemeProvider: React.FC<PropsWithChildren> = ({ children }) => {
   return (
     <NextThemesProvider
       attribute="data-theme"
-      defaultTheme="dark"
-      enableSystem
+      defaultTheme="cupcake"
       disableTransitionOnChange
     >
       {children}

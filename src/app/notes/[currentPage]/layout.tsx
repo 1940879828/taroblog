@@ -1,3 +1,4 @@
+import RibbonEffect from "@/components/RibbonEffect"
 import type React from "react"
 
 export async function generateMetadata({
@@ -18,5 +19,10 @@ export default function NoteLayout({
 }: Readonly<{
   children: React.ReactNode
 }>) {
-  return <>{children}</>
+  return (
+    <>
+      {children}
+      <RibbonEffect />
+    </>
+  )
 }

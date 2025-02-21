@@ -8,19 +8,10 @@ interface Props extends React.ButtonHTMLAttributes<HTMLDivElement> {
   children?: ReactNode
 }
 
-const Paper: React.FC<Props> = ({
-  elevation = 0,
-  children,
-  className,
-  ...props
-}) => {
+const Paper: React.FC<Props> = ({ children, className, ...props }) => {
   return (
     <div
-      className={cn("rounded", className)}
-      style={{
-        boxShadow: `var(--my-paper-shadow-${elevation})`,
-        backgroundImage: `var(--my-paper-overlay-${elevation})`
-      }}
+      className={cn("card drop-shadow-md bg-base-100", className)}
       {...props}
     >
       {children}
