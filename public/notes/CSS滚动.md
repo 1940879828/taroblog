@@ -82,6 +82,41 @@ overflow 属性控制内容溢出元素框时在对应的元素区间内是否�
 - 给body或html设定高度为100vh，
 - 或把`height: calc(100% - 64px)`的`100%`设置为`100vh`
 
+第二个例子
+
+```html
+<style>
+  .container {
+    height: 500px;
+    overflow: auto;
+  }
+
+  .main {
+    overflow: hidden;
+    height: 500px;
+  }
+
+  .box {
+    width: 100%;
+    height: 1000px;
+    background-color: red;
+  }
+</style>
+<div class="container">
+  <div class="main">
+    <div class="box">
+
+    </div>
+  </div>
+</div>
+```
+
+需求是隐藏main的滚动条。
+
+但上述代码还是会出现滚动条的，因为main没有设置高度，导致box撑开main的盒子，main再撑开container，导致container满足了高度+属性，所以出现了滚动条。
+
+限制main的高度即可解决
+
 ## 滚动条样式
 
 ### 浏览器兼容
