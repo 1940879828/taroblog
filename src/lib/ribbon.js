@@ -1,15 +1,15 @@
-!(() => {
-  const t = document.getElementById("root")
+export const init = (id) => {
+  const contain = document.getElementById(id)
   if (
-    "false" === t.getAttribute("mobile") &&
+    "false" === contain.getAttribute("mobile") &&
     /Android|webOS|iPhone|iPod|iPad|BlackBerry/i.test(navigator.userAgent)
   )
     return
   const e = {
-    z: n(t, "zIndex", -3),
-    a: n(t, "alpha", 0.6),
-    s: n(t, "size", 90),
-    c: t.getAttribute("data-click")
+    z: n(contain, "zIndex", -3),
+    a: n(contain, "alpha", 0.6),
+    s: n(contain, "size", 90),
+    c: contain.getAttribute("data-click")
   }
   function n(t, e, n) {
     return Number(t.getAttribute(e)) || n
@@ -58,7 +58,7 @@
     o.scale(c, c),
     (o.globalAlpha = e.a),
     (i.style.cssText = `opacity: ${e.a};position:fixed;top:0;left:0;z-index: ${e.z};width:100%;height:100%;pointer-events:none;`),
-    document.getElementsByTagName("body")[0].appendChild(i),
+    contain.appendChild(i),
     "false" !== e.c && ((document.onclick = x), (document.ontouchstart = x)),
     x()
-})()
+}
