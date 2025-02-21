@@ -70,7 +70,9 @@ export const makeTextRect = (props: {
     listening: false // 禁止文字响应事件
   })
 
-  const group = new Konva.Group()
+  const group = new Konva.Group({
+    perfectDrawEnabled: false
+  })
   group.add(rect)
   group.add(textNode)
 
@@ -126,7 +128,8 @@ export const drawLine = ({
     strokeWidth: 3, // 线条宽度
     lineCap: "round", // 线条端点样式
     lineJoin: "round", // 线条连接点样式
-    tension: 0.5 // 贝塞尔曲线张力
+    tension: 0.5, // 贝塞尔曲线张力
+    perfectDrawEnabled: false
   })
 }
 
@@ -186,6 +189,7 @@ export const drawDashedLine = (args: DrawDashedLineProps) => {
     lineCap: "round", // 线条端点样式
     lineJoin: "round", // 线条连接点样式
     tension: 0.5, // 贝塞尔曲线张力
-    dash: [5, 5] // 虚线样式，5像素实线，5像素空白
+    dash: [5, 5], // 虚线样式，5像素实线，5像素空白
+    perfectDrawEnabled: false
   })
 }

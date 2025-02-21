@@ -10,6 +10,7 @@ import Konva from "konva"
 import React, { useEffect, useRef } from "react"
 import Group = Konva.Group
 import { AnimatedGridPattern } from "@/components/AnimatedGridPattern"
+import Message from "@/components/Message"
 import {
   type RoadMapLeftTree,
   type RoadMapRightTree,
@@ -21,9 +22,27 @@ import { useTheme } from "next-themes"
 import Head from "next/head"
 import { useRouter } from "next/navigation"
 
+// 添加工具函数
+function getCenter(p1: { x: number; y: number }, p2: { x: number; y: number }) {
+  return {
+    x: (p1.x + p2.x) / 2,
+    y: (p1.y + p2.y) / 2
+  }
+}
+
+function getDistance(
+  p1: { x: number; y: number },
+  p2: { x: number; y: number }
+) {
+  return Math.sqrt((p2.x - p1.x) ** 2 + (p2.y - p1.y) ** 2)
+}
+
 export default function Home() {
   const router = useRouter()
   const { theme } = useTheme()
+  // 添加 ref 用于保存缩放状态
+  const lastCenter = useRef<{ x: number; y: number } | null>(null)
+  const lastDist = useRef(0)
 
   useEffect(() => {
     const container = document.getElementById("container")
@@ -36,8 +55,67 @@ export default function Home() {
     const stage = new Konva.Stage({
       container: "container", // 绑定到 id 为 container 的 div
       width: width,
-      height: height
+      height: height,
+      draggable: true,
+      dragDistance: 5, // 设置拖动触发阈值
+      hitGraphEnabled: true // 启用精确命中检测
     })
+
+    // 添加触摸事件监听
+    stage.on("touchmove", (e) => {
+      e.evt.preventDefault()
+      const touch1 = e.evt.touches[0]
+      const touch2 = e.evt.touches[1]
+
+      if (touch1 && touch2) {
+        stage.draggable(false)
+        if (stage.isDragging()) {
+          stage.stopDrag()
+        }
+
+        const p1 = { x: touch1.clientX, y: touch1.clientY }
+        const p2 = { x: touch2.clientX, y: touch2.clientY }
+
+        if (!lastCenter.current) {
+          lastCenter.current = getCenter(p1, p2)
+          return
+        }
+
+        const newCenter = getCenter(p1, p2)
+        const dist = getDistance(p1, p2)
+
+        if (!lastDist.current) {
+          lastDist.current = dist
+        }
+
+        const pointTo = {
+          x: (newCenter.x - stage.x()) / stage.scaleX(),
+          y: (newCenter.y - stage.y()) / stage.scaleX()
+        }
+
+        const scale = stage.scaleX() * (dist / lastDist.current)
+        stage.scaleX(scale)
+        stage.scaleY(scale)
+
+        const dx = newCenter.x - lastCenter.current.x
+        const dy = newCenter.y - lastCenter.current.y
+        const newPos = {
+          x: newCenter.x - pointTo.x * scale + dx,
+          y: newCenter.y - pointTo.y * scale + dy
+        }
+
+        stage.position(newPos)
+        lastDist.current = dist
+        lastCenter.current = newCenter
+      }
+    })
+
+    stage.on("touchend", () => {
+      lastDist.current = 0
+      lastCenter.current = null
+      stage.draggable(true)
+    })
+
     const map = _.cloneDeep(_map)
     // 创建 Layer
     const mainLayer = new Konva.Layer()
@@ -159,21 +237,29 @@ export default function Home() {
       stage.container().style.cursor = "default"
     })
 
-    mainLayer.on("click", (e) => {
-      // 获取点击的目标形状
+    const handleTap = (e: Konva.KonvaEventObject<MouseEvent>) => {
       const target = e.target
 
-      // 判断目标形状是否有 link 属性
+      // 添加触摸事件过滤
+      if (e.evt.type === "touchend" && lastDist.current !== 0) {
+        return
+      }
+
       const link = target.getAttr("link")
       if (link) {
-        // 跳转到 link 属性指定的链接
         if (String(link).includes("http")) {
           window.open(link, "_blank")
         } else {
           router.push(`/note/${link}`)
         }
+      } else {
+        Message.warning("这个卡片暂未设置链接~", { justify: "center" })
       }
-    })
+    }
+
+    // 修改事件监听方式
+    mainLayer.on("tap", handleTap)
+    mainLayer.on("click", handleTap)
 
     // 将 Layer 添加到 Stage
     stage.add(lineLayer)
