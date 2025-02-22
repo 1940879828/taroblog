@@ -20,9 +20,9 @@ const HappyCover = () => {
       videoRef.current.preload = "auto" // 强制预加载
       videoRef.current.style.display = "none" // 隐藏预加载元素
       videoRef.current.load() // 手动触发加载
-      videoRef.current.onerror = function() {
+      videoRef.current.onerror = () => {
         window.alert("视频加载失败，请尝试关闭vpn或vpn放行：https://t.alcy.cc/")
-      };
+      }
     }
   }, [])
 
@@ -55,7 +55,6 @@ const HappyCover = () => {
             />
             <TypingAnimation
               delay={300}
-              startOnView
               className="text-white text-xl"
             >
               其生若浮，其死若休。
