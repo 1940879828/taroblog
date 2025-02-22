@@ -30,7 +30,6 @@ const HappyModeButton = () => {
       upTimerRef.current = setTimeout(() => {
         handleHappyModeGlobalTransition()
         setAnimationPhase("idle")
-        console.log("1")
         setLoading(false)
       }, 3000)
     } else {

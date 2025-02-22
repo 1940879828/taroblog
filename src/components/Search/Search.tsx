@@ -31,14 +31,12 @@ const Search = () => {
         setNotes([])
         return
       }
-      console.log({ keyword })
       handleSearch(keyword).then()
     }, 300)
   )
 
   const triggerSearchDebounce = useRef(
     _.debounce(async (keyword: string) => {
-      console.log({ keyword })
       handleSearch(keyword).then()
     }, 500)
   )
