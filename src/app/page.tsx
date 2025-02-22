@@ -19,7 +19,7 @@ import {
 } from "@/config/roadMap"
 import { cn } from "@/lib/utils"
 import { isHappyModeAtom } from "@/store/happyMode"
-import {useAtom, useAtomValue} from "jotai"
+import { useAtom } from "jotai"
 import _ from "lodash"
 import { useTheme } from "next-themes"
 import Head from "next/head"
@@ -46,7 +46,6 @@ export default function Home() {
   // 添加 ref 用于保存缩放状态
   const lastCenter = useRef<{ x: number; y: number } | null>(null)
   const lastDist = useRef(0)
-  const isHappyMode = useAtomValue(isHappyModeAtom)
 
   useEffect(() => {
     const container = document.getElementById("container")
@@ -333,7 +332,7 @@ export default function Home() {
             repeatDelay={1}
             className={cn(
               "[mask-image:radial-gradient(800px_circle_at_center,white,transparent)]",
-              "skew-y-12 z-[-1] fixed left-0 top-[65px]",
+              "skew-y-12 z-[-1] fixed left-0 top-[65px]"
             )}
           />
         )}

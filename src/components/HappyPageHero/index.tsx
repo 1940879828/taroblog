@@ -3,7 +3,7 @@ import { isHappyModeAtom } from "@/store/happyMode"
 import { useAtomValue } from "jotai/index"
 import Image from "next/image"
 import type React from "react"
-import { type PropsWithChildren, useId } from "react"
+import { type PropsWithChildren } from "react"
 
 const HappyPageHero: React.FC<PropsWithChildren> = (props) => {
   const isHappyMode = useAtomValue(isHappyModeAtom)

@@ -24,7 +24,7 @@ const convertNote = ({
   data,
   content
 }: {
-  data: { [p: string]: any } & GrayMatterData
+  data: { [_: string]: any } & GrayMatterData
   content: string
 }) => {
   // 处理日期类型转换

@@ -1,12 +1,12 @@
 import type { Metadata } from "next"
 import "./globals.css"
 import HappyModeButton from "@/components/HappyModeButton"
-import HappyNavBg from "@/components/HappyNavBg"
 import MountMessageList from "@/components/MountMessageList"
 import NavBar from "@/components/NavBar"
 import ThemeProvider from "@/components/ThemeProvider"
 import localFont from "next/font/local"
 import Head from "next/head"
+import { cookies } from "next/headers"
 import type React from "react"
 
 const geistSans = localFont({
@@ -49,13 +49,16 @@ export const metadata: Metadata = {
   }
 }
 
-export default function RootLayout({
+export default async function RootLayout({
   children
 }: Readonly<{
   children: React.ReactNode
 }>) {
+  const cookieStore = await cookies()
+  const initialTheme = cookieStore.get("theme")?.value || "cupcake"
+
   return (
-    <html lang="en" data-theme="cupcake" className="theme-transition">
+    <html lang="zh" data-theme={initialTheme} className="theme-transition">
       <head>
         <meta itemProp="name" content="TaroBlog" />
         <meta itemProp="description" content="欢迎光临泰罗的个人网站" />
@@ -70,7 +73,7 @@ export default function RootLayout({
           <meta itemProp="description" content="欢迎光临泰罗的个人网站" />
           <meta itemProp="image" content="https://taroblog.top/icon.png" />
         </Head>
-        <ThemeProvider>
+        <ThemeProvider initialTheme={initialTheme}>
           <NavBar />
           <div
             id="hi_scroll"

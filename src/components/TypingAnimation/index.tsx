@@ -2,7 +2,7 @@
 
 import { cn } from "@/lib/utils"
 import { type MotionProps, motion } from "motion/react"
-import { useEffect, useRef, useState } from "react"
+import React, { useEffect, useRef, useState } from "react"
 
 interface TypingAnimationProps extends MotionProps {
   children: string
