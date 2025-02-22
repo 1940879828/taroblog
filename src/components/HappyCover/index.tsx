@@ -20,7 +20,9 @@ const HappyCover = () => {
       videoRef.current.preload = "auto" // 强制预加载
       videoRef.current.style.display = "none" // 隐藏预加载元素
       videoRef.current.load() // 手动触发加载
-      console.log("触发了预先加载", videoRef.current)
+      videoRef.current.onerror = function() {
+        window.alert("视频加载失败，请尝试关闭vpn或vpn放行：https://t.alcy.cc/")
+      };
     }
   }, [])
 
