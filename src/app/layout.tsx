@@ -72,7 +72,10 @@ export default function RootLayout({
         </Head>
         <ThemeProvider>
           <NavBar />
-          <div className="relative overflow-auto h-[calc(100vh-65px)] hi_scroll">
+          <div
+            id="hi_scroll"
+            className="relative overflow-auto h-[calc(100vh-65px)]"
+          >
             {children}
           </div>
           <MountMessageList />
