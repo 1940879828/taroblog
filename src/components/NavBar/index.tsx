@@ -1,12 +1,15 @@
+import HappyNavBg from "@/components/HappyNavBg"
 import LinkButtonGroup from "@/components/NavBar/LinkButtonGroup"
 import NavbarDrawer from "@/components/NavbarDrawer"
 import Search from "@/components/Search/Search"
 import { navs } from "@/config/navbar"
 import Link from "next/link"
+import type React from "react"
 
 const NavBar = () => {
   return (
-    <div className="navbar bg-base-100">
+    <div className="relative navbar bg-base-100">
+      <HappyNavBg />
       <div className="w-container flex items-center justify-between">
         <div className="flex-1 items-center hidden lg:flex">
           <div className="border-l-8 border-base-300 w-4 h-8" />

@@ -53,10 +53,7 @@ const HappyCover = () => {
               className="text-white"
               texts={["TaroBlog", "知识积累与沉淀"]}
             />
-            <TypingAnimation
-              delay={300}
-              className="text-white text-xl"
-            >
+            <TypingAnimation delay={300} className="text-white text-xl">
               其生若浮，其死若休。
             </TypingAnimation>
           </div>

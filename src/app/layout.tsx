@@ -1,6 +1,7 @@
 import type { Metadata } from "next"
 import "./globals.css"
 import HappyModeButton from "@/components/HappyModeButton"
+import HappyNavBg from "@/components/HappyNavBg"
 import MountMessageList from "@/components/MountMessageList"
 import NavBar from "@/components/NavBar"
 import ThemeProvider from "@/components/ThemeProvider"
@@ -71,7 +72,7 @@ export default function RootLayout({
         </Head>
         <ThemeProvider>
           <NavBar />
-          <div className="overflow-auto h-[calc(100vh-65px)] hi_scroll">
+          <div className="relative overflow-auto h-[calc(100vh-65px)] hi_scroll">
             {children}
           </div>
           <MountMessageList />
