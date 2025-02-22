@@ -1,0 +1,32 @@
+.edgeProtection {
+  /* 强制覆盖Edge默认样式 */
+  -webkit-media-controls: none !important;
+  -moz-media-controls: none !important;
+  media-controls: none !important;
+}
+
+/* 隐藏Edge的专属下载按钮 */
+.edgeProtection::-webkit-media-controls-fullscreen-button,
+.edgeProtection::-internal-media-controls-download-button {
+  display: none !important;
+  opacity: 0 !important;
+  pointer-events: none !important;
+}
+
+/* 禁用投屏按钮 */
+.edgeProtection::-internal-media-controls-overlay-cast-button {
+  visibility: hidden !important;
+  width: 0 !important;
+  height: 0 !important;
+}
+
+/* 阻止工具栏显示 */
+.edgeProtection::-webkit-media-controls-enclosure {
+  display: none !important;
+}
+
+/* 禁用触摸设备的长按菜单 */
+.edgeProtection {
+  -ms-touch-action: none !important;
+  touch-action: none !important;
+}

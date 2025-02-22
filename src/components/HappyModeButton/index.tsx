@@ -2,6 +2,7 @@
 import { isHappyModeAtom } from "@/store/happyMode"
 import type { Timeout } from "ahooks/lib/useRequest/src/types"
 import { useAtom } from "jotai"
+import { useTheme } from "next-themes"
 import Image from "next/image"
 import { useRef, useState } from "react"
 
@@ -12,6 +13,7 @@ const HappyModeButton = () => {
   const [loading, setLoading] = useState(false)
   const upTimerRef = useRef<Timeout>(null)
   const downTimerRef = useRef<Timeout>(null)
+  const { setTheme } = useTheme()
 
   const handleClick = () => {
     if (loading) return
@@ -55,6 +57,7 @@ const HappyModeButton = () => {
       } else {
         document.documentElement.classList.remove("dark-transition")
       }
+      setTheme("cupcake")
       setIsHappyModeGlobal((prev) => !prev)
     })
 
@@ -100,7 +103,7 @@ const HappyModeButton = () => {
           marginBottom: isHappyMode ? "-5px" : "-120px",
           transition: "all 3s ease-in-out"
         }}
-        className={`w-48 h-auto select-none ${
+        className={`hidden lg:block w-48 h-auto select-none ${
           loading ? "cursor-not-allowed" : "cursor-pointer"
         }`}
         onClick={handleClick}

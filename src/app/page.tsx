@@ -10,6 +10,7 @@ import Konva from "konva"
 import React, { useEffect, useRef } from "react"
 import Group = Konva.Group
 import { AnimatedGridPattern } from "@/components/AnimatedGridPattern"
+import HappyCover from "@/components/HappyCover"
 import Message from "@/components/Message"
 import {
   type RoadMapLeftTree,
@@ -318,7 +319,32 @@ export default function Home() {
   }
   const [_isHappyModeGlobal, _setIsHappyModeGlobal] = useAtom(isHappyModeAtom)
   return (
-    <div className="overflow-hidden h-full sm:overflow-auto sm:h-auto">
+    <>
+      <HappyCover />
+      <div className="overflow-hidden h-full sm:overflow-auto sm:h-auto">
+        <div className="absolute inset-0 z-[-2] bg-base-100" />
+        {theme !== "dark" && (
+          <AnimatedGridPattern
+            numSquares={30}
+            maxOpacity={0.1}
+            duration={3}
+            repeatDelay={1}
+            className={cn(
+              "[mask-image:radial-gradient(800px_circle_at_center,white,transparent)]",
+              "skew-y-12 z-[-1]"
+            )}
+          />
+        )}
+        <div
+          id="container"
+          style={{
+            display: "flex",
+            justifyContent: "center",
+            background: theme === "dark" ? "#181818" : "transparent",
+            overflowX: "auto"
+          }}
+        />
+      </div>
       <Head>
         <script type="application/ld+json">
           {JSON.stringify(websiteJsonLd)}
@@ -330,28 +356,6 @@ export default function Home() {
           {JSON.stringify(organizationJsonLd)}
         </script>
       </Head>
-      <div className="absolute inset-0 z-[-2] bg-base-100" />
-      {theme !== "dark" && (
-        <AnimatedGridPattern
-          numSquares={30}
-          maxOpacity={0.1}
-          duration={3}
-          repeatDelay={1}
-          className={cn(
-            "[mask-image:radial-gradient(800px_circle_at_center,white,transparent)]",
-            "skew-y-12 z-[-1]"
-          )}
-        />
-      )}
-      <div
-        id="container"
-        style={{
-          display: "flex",
-          justifyContent: "center",
-          background: theme === "dark" ? "#181818" : "transparent",
-          overflowX: "auto"
-        }}
-      />
-    </div>
+    </>
   )
 }
