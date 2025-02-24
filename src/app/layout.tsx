@@ -4,6 +4,8 @@ import HappyModeButton from "@/components/HappyModeButton"
 import MountMessageList from "@/components/MountMessageList"
 import NavBar from "@/components/NavBar"
 import ThemeProvider from "@/components/ThemeProvider"
+import useClickEffect from "@/hooks/FireworkEffect"
+import FireWordEffect from "@/providers/fireword"
 import localFont from "next/font/local"
 import Head from "next/head"
 import { cookies } from "next/headers"
@@ -81,6 +83,7 @@ export default async function RootLayout({
           >
             {children}
           </div>
+          <FireWordEffect />
           <MountMessageList />
           <HappyModeButton />
         </ThemeProvider>
