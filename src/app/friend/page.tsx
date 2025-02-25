@@ -1,3 +1,4 @@
+import FadeInBottom from "@/components/AnimatedEffect/FadeInBottom"
 import FriendLinkItem from "@/components/FriendLinkItem"
 import PageHero from "@/components/HappyPageHero"
 import Paper from "@/components/Paper/Paper"
@@ -17,7 +18,9 @@ export default function Friend() {
           <p className="text-lg py-4">那些人，那些事。</p>
           <div className="flex flex-wrap gap-[14px]">
             {friends.map((friend, index) => (
-              <FriendLinkItem friend={friend} key={index} />
+              <FadeInBottom key={index} index={index}>
+                <FriendLinkItem friend={friend} />
+              </FadeInBottom>
             ))}
           </div>
         </Paper>

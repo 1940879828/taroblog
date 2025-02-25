@@ -7,7 +7,8 @@
     "build": "next build",
     "postbuild": "next-sitemap",
     "start": "next start",
-    "lint": "npx @biomejs/biome check --write --unsafe"
+    "lint": "npx @biomejs/biome check --write --unsafe",
+    "postinstall": "patch-package"
   },
   "dependencies": {
     "@react-spring/web": "^9.7.5",

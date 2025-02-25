@@ -2,19 +2,22 @@ import { navs } from "@/config/navbar"
 import { AlignLeft } from "lucide-react"
 import Link from "next/link"
 import DrawerLinkButtonGroup from "./DrawerLinkButtonGroup"
+import FadeInTop from "../AnimatedEffect/FadeInTop"
 
 const NavbarDrawer = () => {
   return (
     <div className="drawer w-auto">
       <input id="my-drawer" type="checkbox" className="drawer-toggle" />
-      <div className="drawer-content">
-        <label
-          htmlFor="my-drawer"
-          className="btn btn-ghost flex lg:hidden items-center justify-center w-12 p-0 input input-bordered cursor-pointer"
-        >
-          <AlignLeft />
-        </label>
-      </div>
+      <FadeInTop>
+        <div className="drawer-content">
+          <label
+            htmlFor="my-drawer"
+            className="btn btn-ghost flex lg:hidden items-center justify-center w-12 p-0 input input-bordered cursor-pointer"
+          >
+            <AlignLeft />
+          </label>
+        </div>
+      </FadeInTop>
       <div className="drawer-side z-30">
         <label
           htmlFor="my-drawer"

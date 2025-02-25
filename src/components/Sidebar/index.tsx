@@ -1,3 +1,4 @@
+import FadeInBottom from "@/components/AnimatedEffect/FadeInBottom"
 import Paper from "@/components/Paper/Paper"
 import TagGroup from "@/components/TagGroup"
 import { getAllCategoriesTree, getNotesCount } from "@/lib/note"
@@ -10,48 +11,52 @@ const Sidebar = async () => {
 
   return (
     <div className="flex flex-col gap-2 w-full md:w-64 h-fit pb-20 md:pb-0">
-      <Paper elevation={2} className=" bg-base-100 card card-sm">
-        <div className="card-body">
-          <div className="flex text-xl font-bold justify-between items-center">
-            <div className="flex gap-1 items-center">
-              <ListTree />
-              分类
+      <FadeInBottom index={0}>
+        <Paper elevation={2} className=" bg-base-100 card card-sm">
+          <div className="card-body">
+            <div className="flex text-xl font-bold justify-between items-center">
+              <div className="flex gap-1 items-center">
+                <ListTree />
+                分类
+              </div>
+              <span>{notesCount}</span>
             </div>
-            <span>{notesCount}</span>
+            <ul className="flex flex-col">
+              {categoryTree.map(function recursion(category, index) {
+                const { name, count, children } = category
+                return (
+                  <li key={index}>
+                    <Link
+                      href={`/categories/${name}`}
+                      className="text-base py-1 px-1 hover:bg-base-200 flex justify-between items-center hover:px-2 transition-all duration-[218ms]"
+                    >
+                      <span>{name}</span>
+                      <span>{count}</span>
+                    </Link>
+                    <ul
+                      hidden={children.length === 0}
+                      className="flex pl-4 flex-col"
+                    >
+                      {children.map(recursion)}
+                    </ul>
+                  </li>
+                )
+              })}
+            </ul>
           </div>
-          <ul className="flex flex-col">
-            {categoryTree.map(function recursion(category, index) {
-              const { name, count, children } = category
-              return (
-                <li key={index}>
-                  <Link
-                    href={`/categories/${name}`}
-                    className="text-base py-1 px-1 hover:bg-base-200 flex justify-between items-center hover:px-2 transition-all duration-[218ms]"
-                  >
-                    <span>{name}</span>
-                    <span>{count}</span>
-                  </Link>
-                  <ul
-                    hidden={children.length === 0}
-                    className="flex pl-4 flex-col"
-                  >
-                    {children.map(recursion)}
-                  </ul>
-                </li>
-              )
-            })}
-          </ul>
-        </div>
-      </Paper>
-      <Paper elevation={2} className=" bg-base-100 card card-sm">
-        <div className="card-body">
-          <div className="text-xl flex gap-1 items-center font-bold">
-            <Tag />
-            标签
+        </Paper>
+      </FadeInBottom>
+      <FadeInBottom index={1}>
+        <Paper elevation={2} className=" bg-base-100 card card-sm">
+          <div className="card-body">
+            <div className="text-xl flex gap-1 items-center font-bold">
+              <Tag />
+              标签
+            </div>
+            <TagGroup />
           </div>
-          <TagGroup />
-        </div>
-      </Paper>
+        </Paper>
+      </FadeInBottom>
     </div>
   )
 }

@@ -77,9 +77,7 @@ export default async function RootLayout({
           <meta itemProp="image" content="https://taroblog.top/icon.png" />
         </Head>
         <ThemeProvider initialTheme={initialTheme}>
-          <FadeInTop>
-            <NavBar />
-          </FadeInTop>
+          <NavBar />
           <div
             id="hi_scroll"
             className="relative overflow-auto h-[calc(100vh-65px)]"
