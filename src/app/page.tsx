@@ -4,7 +4,7 @@ import {
   canvasWidth,
   drawDashedLine,
   drawLine,
-  makeTextRect
+  makeTextRect, canvasHeight
 } from "@/lib/drawRoadmap"
 import Konva from "konva"
 import React, { useEffect, useRef } from "react"
@@ -53,7 +53,7 @@ export default function Home() {
     if (container) container.innerHTML = ""
 
     const width = canvasWidth
-    const height = 1500
+    const height = canvasHeight
 
     // 创建 Stage
     const stage = new Konva.Stage({
@@ -228,6 +228,37 @@ export default function Home() {
       }
     })
 
+    // 添加鼠标滚轮缩放功能
+    if (!isMobile()) {
+      stage.on("wheel", (e) => {
+        e.evt.preventDefault()
+        const scaleBy = 1.1
+        const oldScale = stage.scaleX()
+        const pointer = stage.getPointerPosition()
+
+        if (!pointer) return
+
+        // 计算新的缩放比例（限制在0.5到5倍之间）
+        let newScale = e.evt.deltaY > 0 ? oldScale / scaleBy : oldScale * scaleBy
+        newScale = Math.max(0.5, Math.min(newScale, 5))
+
+        // 计算缩放中心点
+        const mousePointTo = {
+          x: (pointer.x - stage.x()) / oldScale,
+          y: (pointer.y - stage.y()) / oldScale
+        }
+
+        // 更新舞台位置和缩放比例
+        stage.scale({ x: newScale, y: newScale })
+        stage.position({
+          x: pointer.x - mousePointTo.x * newScale,
+          y: pointer.y - mousePointTo.y * newScale
+        })
+
+        stage.batchDraw()
+      })
+    }
+
     // 在 Layer 上监听 mouseenter 和 mouseleave 事件
     mainLayer.on("mouseenter", (e) => {
       // 如果事件目标是矩形（或其他形状），则修改光标样式
@@ -343,7 +374,7 @@ export default function Home() {
             display: "flex",
             justifyContent: "center",
             background: theme === "dark" ? "#181818" : "transparent",
-            overflowX: "auto"
+            overflowX: "hidden"
           }}
         />
       </div>

@@ -9,8 +9,8 @@ export const CARD_CONFIG = {
 }
 
 // 画布宽度
-export const canvasWidth = 1280
-
+export const canvasWidth = window.innerWidth
+export const canvasHeight = window.innerHeight - 70
 // 画带有文字的方块
 export const makeTextRect = (props: {
   /** 距离画布左边👈的距离 */
