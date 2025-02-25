@@ -1,8 +1,9 @@
 "use client"
 import { a, useSpring } from "@react-spring/web"
+import type React from "react"
 import { useEffect } from "react"
 
-export default function About() {
+const FadeInTop = ({ children }: { children: React.ReactNode }) => {
   const [springs, api] = useSpring(() => ({
     from: {
       opacity: 0,
@@ -25,11 +26,7 @@ export default function About() {
     })
   }, [api])
 
-  return (
-    <div className="min-h-screen flex items-center justify-center overflow-visible">
-      <a.div style={springs}>
-        <div>123</div>
-      </a.div>
-    </div>
-  )
+  return <a.div style={springs}>{children}</a.div>
 }
+
+export default FadeInTop

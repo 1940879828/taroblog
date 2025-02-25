@@ -1,5 +1,6 @@
 import type { Metadata } from "next"
 import "./globals.css"
+import FadeInTop from "@/components/AnimatedEffect/FadeInTop"
 import HappyModeButton from "@/components/HappyModeButton"
 import MountMessageList from "@/components/MountMessageList"
 import NavBar from "@/components/NavBar"
@@ -76,7 +77,9 @@ export default async function RootLayout({
           <meta itemProp="image" content="https://taroblog.top/icon.png" />
         </Head>
         <ThemeProvider initialTheme={initialTheme}>
-          <NavBar />
+          <FadeInTop>
+            <NavBar />
+          </FadeInTop>
           <div
             id="hi_scroll"
             className="relative overflow-auto h-[calc(100vh-65px)]"
