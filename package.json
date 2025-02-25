@@ -10,6 +10,7 @@
     "lint": "npx @biomejs/biome check --write --unsafe"
   },
   "dependencies": {
+    "@react-spring/web": "^9.7.5",
     "@tailwindcss/postcss": "^4.0.0-beta.9",
     "ahooks": "^3.8.4",
     "animejs": "^3.2.2",
