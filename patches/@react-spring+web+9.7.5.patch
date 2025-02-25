@@ -1,0 +1,15 @@
+diff --git a/node_modules/@react-spring/web/dist/react-spring_web.modern.d.ts b/node_modules/@react-spring/web/dist/react-spring_web.modern.d.ts
+index f647f1b..a18ef5c 100644
+--- a/node_modules/@react-spring/web/dist/react-spring_web.modern.d.ts
++++ b/node_modules/@react-spring/web/dist/react-spring_web.modern.d.ts
+@@ -24,7 +24,9 @@ type AnimatedComponent<T extends ElementType> = ForwardRefExoticComponent<Animat
+ }>>;
+ /** The props of an `animated()` component */
+ type AnimatedProps<Props extends object> = {
+-    [P in keyof Props]: P extends 'ref' | 'key' ? Props[P] : AnimatedProp<Props[P]>;
++    [P in keyof Props]: P extends 'ref' | 'key' | 'children' ? Props[P] : AnimatedProp<Props[P]>;
++} & {
++    children?: React.ReactNode;
+ };
+ type StyleProps = Merge<CSSProperties, TransformProps>;
+ type StylePropKeys = keyof StyleProps;
