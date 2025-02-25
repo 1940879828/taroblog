@@ -17,7 +17,7 @@ import {
   type RoadMapRightTree,
   map as _map
 } from "@/config/roadMap"
-import { cn } from "@/lib/utils"
+import {cn, isMobile} from "@/lib/utils"
 import { isHappyModeAtom } from "@/store/happyMode"
 import { useAtom } from "jotai"
 import _ from "lodash"
@@ -324,7 +324,7 @@ export default function Home() {
       <HappyCover />
       <div className="overflow-hidden h-full sm:overflow-auto sm:h-auto">
         <div className="absolute inset-0 z-[-2] bg-base-100" />
-        {theme !== "dark" && (
+        {theme !== "dark" && !isMobile() && (
           <AnimatedGridPattern
             y={100}
             numSquares={30}
