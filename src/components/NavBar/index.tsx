@@ -11,7 +11,7 @@ const NavBar = () => {
   return (
     <div className="relative navbar bg-base-100">
       <HappyNavBg />
-      <div className="w-container flex items-center justify-between">
+      <div className="w-container flex items-center justify-start md:justify-between">
         <FadeInTop>
           <div className="flex-1 items-center hidden lg:flex">
             <div className="border-l-8 border-base-300 w-4 h-8" />
