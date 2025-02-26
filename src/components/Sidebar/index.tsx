@@ -10,7 +10,7 @@ const Sidebar = async () => {
   const categoryTree = await getAllCategoriesTree()
 
   return (
-    <div className="flex flex-col gap-2 w-full md:w-64 h-fit pb-20 md:pb-0">
+    <div className="flex flex-col gap-2 w-full md:w-64 h-fit pb-[190px] md:pb-0">
       <FadeInBottom index={0}>
         <Paper elevation={2} className=" bg-base-100 card card-sm">
           <div className="card-body">
