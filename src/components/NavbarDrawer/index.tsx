@@ -1,8 +1,8 @@
 import { navs } from "@/config/navbar"
 import { AlignLeft } from "lucide-react"
 import Link from "next/link"
-import DrawerLinkButtonGroup from "./DrawerLinkButtonGroup"
 import FadeInTop from "../AnimatedEffect/FadeInTop"
+import DrawerLinkButtonGroup from "./DrawerLinkButtonGroup"
 
 const NavbarDrawer = () => {
   return (
