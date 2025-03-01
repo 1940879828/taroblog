@@ -17,10 +17,11 @@ import { isMobile } from "@/lib/utils"
 import Konva from "konva"
 import type { Group } from "konva/lib/Group"
 import _ from "lodash"
+import { ChevronUp } from "lucide-react"
 import { useTheme } from "next-themes"
-import { router } from "next/client"
 import { useRouter } from "next/navigation"
 import React, { useEffect, useRef } from "react"
+import styles from "./index.module.css"
 
 // 添加工具函数
 function getCenter(p1: { x: number; y: number }, p2: { x: number; y: number }) {
@@ -296,16 +297,30 @@ const RoadMap = () => {
     stage.add(mainLayer)
   }, [theme])
 
+  function goToTop() {
+    if (coverRef) {
+      coverRef.current?.scrollIntoView({ behavior: "smooth", block: "end" })
+    }
+  }
+
+  const coverRef = useRef<HTMLDivElement | null>(null)
+
   return (
-    <div
-      id="container"
-      style={{
-        display: "flex",
-        justifyContent: "center",
-        background: theme === "dark" ? "#181818" : "transparent",
-        overflowX: "hidden"
-      }}
-    />
+    <>
+      <div ref={coverRef} />
+      <div className={styles.angleDown} onClick={goToTop}>
+        <ChevronUp size={32} />
+      </div>
+      <div
+        id="container"
+        style={{
+          display: "flex",
+          justifyContent: "center",
+          background: theme === "dark" ? "#181818" : "transparent",
+          overflowX: "hidden"
+        }}
+      />
+    </>
   )
 }
 

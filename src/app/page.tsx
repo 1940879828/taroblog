@@ -5,7 +5,6 @@ import RoadMap from "@/components/RoadMap"
 import { cn, isMobile } from "@/lib/utils"
 import { isHappyModeAtom } from "@/store/happyMode"
 import { useAtom } from "jotai"
-import Konva from "konva"
 import { useTheme } from "next-themes"
 import Head from "next/head"
 import React from "react"
@@ -66,7 +65,7 @@ export default function Home() {
   return (
     <>
       <HappyCover />
-      <div className="overflow-hidden h-full sm:overflow-auto sm:h-auto">
+      <div className="relative overflow-hidden h-full sm:overflow-auto sm:h-auto">
         <div className="absolute inset-0 z-[-2] bg-base-100" />
         {theme !== "dark" && !isMobile() && (
           <AnimatedGridPattern

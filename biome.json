@@ -31,7 +31,8 @@
       "recommended": true,
       "complexity": {
         "noUselessTypeConstraint": "error",
-        "noForEach": "off"
+        "noForEach": "off",
+        "noBannedTypes": "off"
       },
       "correctness": {
         "noUnusedVariables": "error",

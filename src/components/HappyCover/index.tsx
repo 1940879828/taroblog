@@ -5,58 +5,51 @@ import { MorphingText } from "@/components/useMorphingText"
 import { cn, isMobile } from "@/lib/utils"
 import { isHappyModeAtom } from "@/store/happyMode"
 import { useAtomValue } from "jotai"
-import { useEffect, useRef } from "react"
+import { ChevronDown } from "lucide-react"
+import Image from "next/image"
+import React, { useRef } from "react"
 import styles from "./index.module.css"
 
 const HappyCover = () => {
   const isHappyMode = useAtomValue(isHappyModeAtom)
-  const videoRef = useRef<HTMLVideoElement>(null) // 预加载的video引用
+  const coverRef = useRef<HTMLDivElement | null>(null)
 
-  // 预加载逻辑
-  useEffect(() => {
-    if (videoRef.current) {
-      videoRef.current = document.createElement("video")
-      videoRef.current.src = "https://t.alcy.cc/acg"
-      videoRef.current.preload = "auto" // 强制预加载
-      videoRef.current.style.display = "none" // 隐藏预加载元素
-      videoRef.current.load() // 手动触发加载
-      videoRef.current.onerror = () => {
-        window.alert("视频加载失败，请尝试关闭vpn或vpn放行：https://t.alcy.cc/")
-      }
+  function goToDown() {
+    if (coverRef) {
+      coverRef.current?.scrollIntoView({ behavior: "smooth", block: "start" })
     }
-  }, [])
+  }
 
   return (
     <>
       {!isMobile() && (
         <div className={cn("relative w-full h-full", { hidden: !isHappyMode })}>
-          <video
-            ref={videoRef}
-            className={styles.edgeProtection}
-            src={"https://t.alcy.cc/acg"}
-            autoPlay
-            loop
-            muted
+          <Image
+            src={"https://s21.ax1x.com/2025/03/01/pE8DbRI.jpg"}
+            width={1920}
+            height={1080}
+            alt={"cover"}
             style={{
-              width: "100%",
-              height: "100%",
               objectFit: "cover",
-              pointerEvents: "none"
+              width: "100%",
+              height: "calc(100vh - 65px)"
             }}
-            disablePictureInPicture // 禁用画中画
-            disableRemotePlayback // 禁止投屏
-            controlsList="nodownload noremoteplayback nofullscreen"
-            onContextMenu={(e) => e.preventDefault()} // 禁用右键菜单
           />
           <div className="absolute top-0 left-0 flex flex-col items-center justify-center w-full h-full">
-            <MorphingText
-              className="text-white"
-              texts={["TaroBlog", "知识积累与沉淀"]}
-            />
-            <TypingAnimation delay={300} className="text-white text-xl">
-              其生若浮，其死若休。
-            </TypingAnimation>
+            <div className="w-full flex flex-col items-center justify-center gap-2 bg-black/50 py-12 -mt-20">
+              <MorphingText
+                className="text-white"
+                texts={["TaroBlog", "知识积累与沉淀"]}
+              />
+              <TypingAnimation delay={300} className="text-white text-xl">
+                其生若浮，其死若休。
+              </TypingAnimation>
+            </div>
+            <div className={styles.angleDown} onClick={goToDown}>
+              <ChevronDown size={32} />
+            </div>
           </div>
+          <div ref={coverRef} />
         </div>
       )}
     </>
