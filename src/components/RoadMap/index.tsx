@@ -22,6 +22,8 @@ import { useTheme } from "next-themes"
 import { useRouter } from "next/navigation"
 import React, { useEffect, useRef } from "react"
 import styles from "./index.module.css"
+import {isHappyModeAtom} from "@/store/happyMode";
+import {useAtomValue} from "jotai";
 
 // 添加工具函数
 function getCenter(p1: { x: number; y: number }, p2: { x: number; y: number }) {
@@ -41,6 +43,8 @@ function getDistance(
 const RoadMap = () => {
   const { theme } = useTheme()
   const router = useRouter()
+  const coverRef = useRef<HTMLDivElement | null>(null)
+  const isHappyMode = useAtomValue(isHappyModeAtom)
 
   // 添加 ref 用于保存缩放状态
   const lastCenter = useRef<{ x: number; y: number } | null>(null)
@@ -303,12 +307,10 @@ const RoadMap = () => {
     }
   }
 
-  const coverRef = useRef<HTMLDivElement | null>(null)
-
   return (
     <>
       <div ref={coverRef} />
-      <div className={styles.angleDown} onClick={goToTop}>
+      <div hidden={!isHappyMode} className={styles.angleDown} onClick={goToTop}>
         <ChevronUp size={32} />
       </div>
       <div
