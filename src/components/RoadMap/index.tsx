@@ -14,6 +14,8 @@ import {
   makeTextRect
 } from "@/lib/drawRoadmap"
 import { isMobile } from "@/lib/utils"
+import { isHappyModeAtom } from "@/store/happyMode"
+import { useAtomValue } from "jotai"
 import Konva from "konva"
 import type { Group } from "konva/lib/Group"
 import _ from "lodash"
@@ -22,8 +24,6 @@ import { useTheme } from "next-themes"
 import { useRouter } from "next/navigation"
 import React, { useEffect, useRef } from "react"
 import styles from "./index.module.css"
-import {isHappyModeAtom} from "@/store/happyMode";
-import {useAtomValue} from "jotai";
 
 // 添加工具函数
 function getCenter(p1: { x: number; y: number }, p2: { x: number; y: number }) {

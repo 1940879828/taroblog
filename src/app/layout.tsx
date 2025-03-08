@@ -1,11 +1,8 @@
 import type { Metadata } from "next"
 import "./globals.css"
-import FadeInTop from "@/components/AnimatedEffect/FadeInTop"
 import HappyModeButton from "@/components/HappyModeButton"
 import MountMessageList from "@/components/MountMessageList"
-import NavBar from "@/components/NavBar"
 import ThemeProvider from "@/components/ThemeProvider"
-import useClickEffect from "@/hooks/FireworkEffect"
 import FireWordEffect from "@/providers/fireword"
 import localFont from "next/font/local"
 import Head from "next/head"
@@ -77,13 +74,7 @@ export default async function RootLayout({
           <meta itemProp="image" content="https://taroblog.top/icon.png" />
         </Head>
         <ThemeProvider initialTheme={initialTheme}>
-          <NavBar />
-          <div
-            id="hi_scroll"
-            className="relative overflow-auto h-[calc(100vh-65px)]"
-          >
-            {children}
-          </div>
+          {children}
           <FireWordEffect />
           <MountMessageList />
           <HappyModeButton />
