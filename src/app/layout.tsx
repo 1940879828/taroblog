@@ -1,6 +1,5 @@
 import type { Metadata } from "next"
 import "./globals.css"
-import HappyModeButton from "@/components/HappyModeButton"
 import MountMessageList from "@/components/MountMessageList"
 import ThemeProvider from "@/components/ThemeProvider"
 import FireWordEffect from "@/providers/fireword"
@@ -77,7 +76,6 @@ export default async function RootLayout({
           {children}
           <FireWordEffect />
           <MountMessageList />
-          <HappyModeButton />
         </ThemeProvider>
       </body>
     </html>
