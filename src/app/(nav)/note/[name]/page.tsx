@@ -6,6 +6,9 @@ import { getNoteDetail } from "@/lib/note"
 import Head from "next/head"
 import type React from "react"
 
+export const dynamic = 'force-static'
+export const revalidate = 3600
+
 // 生成静态路径
 export async function generateStaticParams() {
   const notesDir = path.join(process.cwd(), "public/notes")

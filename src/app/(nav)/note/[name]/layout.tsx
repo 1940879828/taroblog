@@ -10,27 +10,31 @@ export async function generateMetadata({
 }) {
   const { name } = await params
   const note = await getNoteDetail(name)
+  
+  // 优化 meta 信息
   return {
     title: `${decodeURI(note.title)} | TaroBlog`,
     description: note.description,
     alternates: {
-      canonical: `https://taroblog.top/note/${note.fileName}` // 动态生成 canonical URL
+      canonical: `https://taroblog.top/note/${note.fileName}`
     },
     openGraph: {
       title: note.title,
       description: note.description,
-      url: `https://taroblog.top/note/${note.title}`, // 页面的完整 URL
+      url: `https://taroblog.top/note/${note.fileName}`,
       siteName: "TaroBlog",
-      images: [
-        {
-          url: "https://t.alcy.cc/ycy", // Open Graph 图片 URL
-          width: 800,
-          height: 600,
-          alt: "beautiful cover"
-        }
-      ],
-      locale: "zh_CN", // 页面的语言和地区
-      type: "article" // 页面类型，如 'website', 'article' 等
+      type: "article",
+      article: {
+        publishedTime: note.date,
+        authors: ["Taro"],
+        tags: note.tags
+      }
+    },
+    // 添加更多结构化数据
+    other: {
+      'article:published_time': note.date,
+      'article:author': 'Taro',
+      'article:tag': note.tags?.join(',')
     }
   }
 }
