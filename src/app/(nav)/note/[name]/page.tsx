@@ -31,7 +31,7 @@ export default async function NoteDetail({
     "@context": "https://schema.org",
     "@type": "Article",
     headline: note.title,
-    description: note.description,
+    description: note.description ? note.description : note.content.slice(0, 100),
     author: {
       "@type": "Person",
       name: "Taro"
@@ -55,7 +55,7 @@ export default async function NoteDetail({
         <meta itemProp="image" content="https://taroblog.top/icon.png" />
       </Head>
       <BackButton className="mt-4" />
-      <div className="mt-2">: {note.title}</div>
+      <h1 className="mt-2">: {note.title}</h1>
       <Markdown content={note.content} />
     </div>
   )

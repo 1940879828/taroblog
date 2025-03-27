@@ -14,7 +14,7 @@ export async function generateMetadata({
   // 优化 meta 信息
   return {
     title: `${decodeURI(note.title)} | TaroBlog`,
-    description: note.description,
+    description: note.description ? note.description : note.content.slice(0, 100),
     alternates: {
       canonical: `https://taroblog.top/note/${note.fileName}`
     },
