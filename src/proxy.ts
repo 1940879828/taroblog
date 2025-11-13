@@ -2,7 +2,7 @@
 import { NextResponse } from "next/server"
 import type { NextRequest } from "next/server"
 
-export function middleware(request: NextRequest) {
+export function proxy(request: NextRequest) {
   // 同步主题到 header
   const theme = request.cookies.get("theme")?.value || "light"
   const headers = new Headers(request.headers)

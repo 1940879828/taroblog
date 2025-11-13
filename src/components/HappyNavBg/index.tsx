@@ -1,5 +1,4 @@
 "use client"
-import { cn } from "@/lib/utils"
 import { isHappyModeAtom } from "@/store/happyMode"
 import { useAtomValue } from "jotai/index"
 import styles from "./index.module.css"
@@ -11,7 +10,7 @@ const HappyNavBg = ({
   const isHappyMode = useAtomValue(isHappyModeAtom)
   return (
     <>
-      {isHappyMode && <div className={cn(styles.animeBg, `z-[${zIndex}]`)} />}
+      {isHappyMode && <div className={styles.animeBg} style={{ zIndex }} />}
     </>
   )
 }

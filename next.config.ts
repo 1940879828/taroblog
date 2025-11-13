@@ -6,23 +6,28 @@ const nextConfig: NextConfig = {
     remotePatterns: [
       {
         protocol: "https",
-        hostname: "www.imgse.com", // 注意这里要包含 www
+        hostname: "www.imgse.com",
         port: "",
-        pathname: "/**" // 精确匹配图片路径
+        pathname: "/**"
       },
       {
         protocol: "https",
-        hostname: "s21.ax1x.com", // 注意这里要包含 www
+        hostname: "s21.ax1x.com",
         port: "",
-        pathname: "/**" // 精确匹配图片路径
+        pathname: "/**"
       },
       {
         protocol: "https",
-        hostname: "t.alcy.cc", // 注意这里要包含 www
+        hostname: "t.alcy.cc",
         port: "",
-        pathname: "/**" // 精确匹配图片路径
+        pathname: "/**"
       }
-    ]
+    ],
+    // 禁用图片优化以绕过私有 IP 检查（图片将直接使用原始 URL）
+    unoptimized: true,
+    dangerouslyAllowSVG: true,
+    contentDispositionType: "attachment",
+    contentSecurityPolicy: "default-src 'self'; script-src 'none'; sandbox;"
   }
 }
 

@@ -97,7 +97,7 @@ const ThemeController = ({
       />
 
       <svg
-        className={`swap-off h-[${size}px] w-[${size}px] fill-current`}
+        className="swap-off fill-current"
         xmlns="http://www.w3.org/2000/svg"
         viewBox="0 0 24 24"
         height={size}
@@ -107,7 +107,7 @@ const ThemeController = ({
       </svg>
 
       <svg
-        className={`swap-on h-[${size}px] w-[${size}px] fill-current`}
+        className="swap-on fill-current"
         xmlns="http://www.w3.org/2000/svg"
         viewBox="0 0 24 24"
         height={size}
