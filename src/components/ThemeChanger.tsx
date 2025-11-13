@@ -38,9 +38,11 @@ const ThemeController = ({
 
   const onInputChange = (e: ChangeEvent<HTMLInputElement>) => {
     const toTheme = theme === "dark" ? "cupcake" : "dark"
+    const isSwitchingToDark = toTheme === "dark"
+    
     const transition = document.startViewTransition(async () => {
-      // 如果当前是暗色模式，添加类名以控制 z-index
-      if (theme === "cupcake") {
+      // 如果切换到暗色模式，添加类名以控制 z-index
+      if (isSwitchingToDark) {
         document.documentElement.classList.add("dark-transition")
       } else {
         document.documentElement.classList.remove("dark-transition")
@@ -63,27 +65,93 @@ const ThemeController = ({
         `circle(0% at ${clientX}px ${clientY}px)`,
         `circle(${radius}px at ${clientX}px ${clientY}px)`
       ]
+      
       // 自定义动画
-      document.documentElement.animate(
+      const animation = document.documentElement.animate(
         {
-          // 如果要切换到暗色主题，我们在过渡的时候从半径 100% 的圆开始，到 0% 的圆结束
-          clipPath: theme === "cupcake" ? clipPath.reverse() : clipPath
+          // 切换到暗色主题时，从大圆到小圆（白色逐渐消失）
+          // 切换到亮色主题时，从小圆到大圆（黑色逐渐消失）
+          clipPath: isSwitchingToDark ? clipPath.reverse() : clipPath
         },
         {
           duration: 500,
-          // 如果要切换到暗色主题，我们应该裁剪 view-transition-old(root) 的内容
-          pseudoElement:
-            theme === "cupcake"
-              ? "::view-transition-old(root)"
-              : "::view-transition-new(root)"
+          easing: "ease-in-out",
+          // 切换到暗色主题时，裁剪旧的白色视图
+          // 切换到亮色主题时，裁剪新的黑色视图
+          pseudoElement: isSwitchingToDark
+            ? "::view-transition-old(root)"
+            : "::view-transition-new(root)"
         }
       )
-      // 确保在动画完成后移除类
-      transition.ready.then(() => {
-        if (theme === "dark") {
-          document.documentElement.classList.remove("dark-transition")
+      
+      // 方案B：在动画完成前提前调整z-index，避免白色闪烁
+      if (isSwitchingToDark) {
+        // 方案B：在动画完成前提前调整z-index，避免白色闪烁
+        let progressHandled = false
+        let tempStyle: HTMLStyleElement | null = null
+        
+        const adjustZIndex = () => {
+          if (progressHandled) return
+          progressHandled = true
+          
+          console.log("[ThemeChanger] 提前调整z-index，让新视图显示在上层")
+          
+          // 提前调整z-index，让新视图显示在上层
+          tempStyle = document.createElement("style")
+          tempStyle.id = "theme-transition-override"
+          tempStyle.textContent = `
+            .dark-transition::view-transition-new(root) {
+              z-index: 101 !important;
+            }
+            .dark-transition::view-transition-old(root) {
+              z-index: 99 !important;
+            }
+          `
+          document.head.appendChild(tempStyle)
+          console.log("[ThemeChanger] 已添加临时样式调整z-index")
         }
-      })
+        
+        // 在动画450ms时（90%）提前调整z-index
+        setTimeout(() => {
+          if (!progressHandled) {
+            adjustZIndex()
+          }
+        }, 450)
+        
+        // 监听动画完成
+        animation.addEventListener("finish", () => {
+          console.log("[ThemeChanger] 动画完成")
+          if (!progressHandled) {
+            adjustZIndex()
+          }
+          
+          // 等待过渡完成后再移除类
+          Promise.all([animation.finished, transition.finished]).then(() => {
+            console.log("[ThemeChanger] 过渡完成，准备移除类")
+            // 使用双重 requestAnimationFrame 确保浏览器完成渲染
+            requestAnimationFrame(() => {
+              requestAnimationFrame(() => {
+                console.log("[ThemeChanger] 移除dark-transition类")
+                document.documentElement.classList.remove("dark-transition")
+                
+                // 清理临时样式
+                if (tempStyle && tempStyle.parentNode) {
+                  setTimeout(() => {
+                    document.head.removeChild(tempStyle!)
+                    console.log("[ThemeChanger] 已清理临时样式")
+                  }, 200)
+                }
+              })
+            })
+          }).catch((err) => {
+            console.error("[ThemeChanger] 过渡出错:", err)
+            document.documentElement.classList.remove("dark-transition")
+            if (tempStyle && tempStyle.parentNode) {
+              document.head.removeChild(tempStyle)
+            }
+          })
+        })
+      }
     })
   }
 

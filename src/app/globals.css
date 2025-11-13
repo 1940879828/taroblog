@@ -97,7 +97,22 @@
 /* 暗黑模式遮罩层级调整 */
 /*noinspection CssInvalidPseudoSelector*/
 .dark-transition::view-transition-old(root) {
-  z-index: 100 !important; /* 确保在添加类时能生效 */
+  z-index: 100 !important; /* 确保在添加类时能生效，旧视图在上层以便动画可见 */
+  /* 确保旧视图在动画过程中完全可见 */
+  will-change: clip-path;
+}
+
+/* 确保新视图在动画完成后立即显示，避免白色闪烁 */
+/*noinspection CssInvalidPseudoSelector*/
+.dark-transition::view-transition-new(root) {
+  z-index: 99 !important; /* 新视图在旧视图下方，让动画可见 */
+  /* 确保新视图在动画过程中也能看到，并且完全渲染 */
+  opacity: 1 !important;
+  /* 强制硬件加速，确保渲染完成 */
+  transform: translateZ(0);
+  will-change: auto;
+  /* 确保新视图完全覆盖背景 */
+  background-color: var(--root-bg, #181818);
 }
 
 * {
