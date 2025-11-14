@@ -266,49 +266,49 @@ export const map: RoadMap = [
     children: [
       [
         {
-          y: -40,
+          y: -100,
           fill: "#f5b361",
           link: "关于React的一些内容",
           text: "UI库",
           marginRight: 80,
           children: [
             {
-              y: -180,
+              y: -230,
               fill: "#a8e0e5",
               link: "关于React的一些内容",
               text: "daisyUI",
               marginRight: 80
             },
             {
-              y: -120,
+              y: -170,
               fill: "#a8e0e5",
               link: "关于React的一些内容",
               text: "shadcn/ui",
               marginRight: 80
             },
             {
-              y: -60,
+              y: -110,
               fill: "#a8e0e5",
               link: "关于React的一些内容",
               text: "Material UI",
               marginRight: 80
             },
             {
-              y: 0,
+              y: -50,
               fill: "#a8e0e5",
               link: "关于React的一些内容",
               text: "Magic UI",
               marginRight: 80
             },
             {
-              y: 60,
+              y: 10,
               fill: "#a8e0e5",
               link: "关于React的一些内容",
               text: "Ant Design",
               marginRight: 80
             },
             {
-              y: 60,
+              y: 10,
               fill: "#cf63ff",
               link: "关于React的一些内容",
               text: "Ant Design X",
@@ -317,20 +317,27 @@ export const map: RoadMap = [
           ]
         },
         {
-          y: 80,
+          y: -10,
           fill: "#6F42C1",
           link: "关于React的一些内容",
           text: "Next.js",
           marginRight: 80,
           children: [
             {
-              y: 120,
+              y: 70,
               fill: "#6F42C1",
               link: "Next中seo优化实践",
               text: "seo优化",
               marginRight: 60
             }
           ]
+        },
+        {
+          y: 80,
+          fill: "#f85961",
+          link: "React19新特性",
+          text: "React19新特性",
+          marginRight: 80
         }
       ],
       []
