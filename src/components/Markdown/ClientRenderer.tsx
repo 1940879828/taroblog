@@ -3,22 +3,13 @@
 
 import { MdCatalog, MdPreview } from "md-editor-rt"
 import { useTheme } from "next-themes"
-import { useEffect } from "react"
 
 export const ClientRenderer = ({
-  content,
-  initialTheme // 来自服务端的初始主题
+  content
 }: {
   content: string
-  initialTheme: string
 }) => {
-  const { theme, setTheme } = useTheme()
-  // 同步初始主题
-  useEffect(() => {
-    if (theme !== initialTheme) {
-      setTheme(initialTheme)
-    }
-  }, [initialTheme]) // 仅在 initialTheme 变化时执行
+  const { theme } = useTheme()
   return (
     <div className="flex-1 flex justify-center relative">
       <MdPreview
