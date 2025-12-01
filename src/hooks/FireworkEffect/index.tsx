@@ -5,7 +5,7 @@ import React, { useCallback, useEffect, useRef } from "react"
 const ClickEffect = () => {
   const canvasRef = useRef<HTMLCanvasElement | null>(null)
   const ctxRef = useRef<CanvasRenderingContext2D | null>(null)
-  const numberOfParticules = useRef(30)
+  const numberOfParticulars = useRef(30)
   const colors = useRef(["#FF1461", "#18FF92", "#5A87FF", "#FBF38C"])
   const pointer = useRef({ x: 0, y: 0 })
   const animationRef = useRef<any>(null)
@@ -93,7 +93,7 @@ const ClickEffect = () => {
   const animateParticules = useCallback(
     (x: number, y: number) => {
       const particules = Array.from(
-        { length: numberOfParticules.current },
+        { length: numberOfParticulars.current },
         () => createParticule(x, y)
       )
 

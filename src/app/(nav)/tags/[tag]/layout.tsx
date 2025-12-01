@@ -1,3 +1,4 @@
+import type { Metadata } from "next"
 import type React from "react"
 
 export async function generateMetadata({
@@ -6,7 +7,7 @@ export async function generateMetadata({
   params: Promise<{
     tag: string
   }>
-}) {
+}): Promise<Metadata> {
   const { tag } = await params
   const _tag = decodeURIComponent(tag)
   return {

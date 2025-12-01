@@ -1,6 +1,7 @@
+import type { Metadata } from "next"
 import type React from "react"
 
-export async function generateMetadata() {
+export async function generateMetadata(): Promise<Metadata> {
   return {
     title: "Test🧪"
   }

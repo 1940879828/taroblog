@@ -1,4 +1,5 @@
 import RibbonEffect from "@/components/RibbonEffect"
+import type { Metadata } from "next"
 import type React from "react"
 
 export async function generateMetadata({
@@ -7,7 +8,7 @@ export async function generateMetadata({
   params: Promise<{
     currentPage: string
   }>
-}) {
+}): Promise<Metadata> {
   const { currentPage } = await params
   return {
     title: `笔记列表 第${currentPage}页 | TaroBlog`
