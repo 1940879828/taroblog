@@ -3,6 +3,10 @@ package-lock.json text eol=lf
 pnpm-lock.yaml text eol=lf
 yarn.lock text eol=lf
 
+# 补丁文件使用 LF（确保跨平台一致性）
+*.patch text eol=lf
+patches/** text eol=lf
+
 # 源代码文件使用 LF（跨平台项目推荐）
 *.ts text eol=lf
 *.tsx text eol=lf
@@ -25,4 +29,3 @@ yarn.lock text eol=lf
 *.woff2 binary
 *.ttf binary
 *.eot binary
-
