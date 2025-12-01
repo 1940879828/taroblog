@@ -1,5 +1,12 @@
 export const init = (id) => {
+  // 服务端渲染时直接返回
+  if (typeof document === 'undefined' || typeof window === 'undefined' || typeof navigator === 'undefined') {
+    return
+  }
+  
   const contain = document.getElementById(id)
+  if (!contain) return
+  
   if (
     "false" === contain.getAttribute("mobile") &&
     /Android|webOS|iPhone|iPod|iPad|BlackBerry/i.test(navigator.userAgent)
@@ -16,9 +23,10 @@ export const init = (id) => {
   }
   const i = document.createElement("canvas")
   const o = i.getContext("2d")
-  const c = window.devicePixelRatio || 1
-  const a = window.innerWidth
-  const l = window.innerHeight
+  // 服务端渲染时使用默认值
+  const c = typeof window !== 'undefined' ? (window.devicePixelRatio || 1) : 1
+  const a = typeof window !== 'undefined' ? window.innerWidth : 1920
+  const l = typeof window !== 'undefined' ? window.innerHeight : 1080
   const d = e.s
   let r
   let s

@@ -1,6 +1,6 @@
-"use client"
-import React, {useRef, useEffect} from 'react';
-import * as THREE from 'three';
+"use client";
+import React, { useRef, useEffect } from "react";
+import * as THREE from "three";
 
 // 在组件顶部添加类型定义
 type ScrollState = {
@@ -8,7 +8,7 @@ type ScrollState = {
   currentDelta: number;
   maxDelta: number;
   isAnimating: boolean;
-  aspect: number
+  aspect: number;
 };
 
 export default function History() {
@@ -20,12 +20,11 @@ export default function History() {
     currentDelta: 0,
     maxDelta: 0,
     isAnimating: false,
-    aspect: 1
+    aspect: 1,
   });
 
-
   const initScene = () => {
-    if (!containerRef.current) return
+    if (!containerRef.current) return;
     // 创建场景
     const scene = new THREE.Scene();
     const container = containerRef.current;
@@ -34,11 +33,11 @@ export default function History() {
     // 确保最小有效尺寸
     const getValidSize = () => ({
       width: Math.max(container.clientWidth, 1),
-      height: Math.max(container.clientHeight, 1)
+      height: Math.max(container.clientHeight, 1),
     });
 
     // 初始化尺寸
-    let {width, height} = getValidSize();
+    let { width, height } = getValidSize();
     let aspect = width / height;
 
     // 创建正交相机
@@ -56,7 +55,7 @@ export default function History() {
       const geometry = new THREE.PlaneGeometry(aspectRatio, 1);
       const material = new THREE.MeshBasicMaterial({
         color: 0x000000,
-        side: THREE.DoubleSide
+        side: THREE.DoubleSide,
       });
       const wall = new THREE.Mesh(geometry, material);
       wall.position.set(aspectRatio / 2, 0.5, 0);
@@ -70,17 +69,17 @@ export default function History() {
     scrollState.aspect = aspect;
 
     // 添加画框
-    const frames: THREE.Mesh[] = []
-    const numFrames = 5
-    const frameWidth = 0.3
-    const gap = 2
+    const frames: THREE.Mesh[] = [];
+    const numFrames = 5;
+    const frameWidth = 0.3;
+    const gap = 2;
     const totalWidth = numFrames * frameWidth + (numFrames - 1) * gap;
 
     for (let i = 0; i < numFrames; i++) {
       const geometry = new THREE.PlaneGeometry(frameWidth, 0.5);
       const material = new THREE.MeshBasicMaterial({
         color: 0x808080,
-        side: THREE.DoubleSide
+        side: THREE.DoubleSide,
       });
       const frame = new THREE.Mesh(geometry, material);
       const x = i * (frameWidth + gap) + frameWidth / 2;
@@ -89,18 +88,18 @@ export default function History() {
       frames.push(frame);
     }
 
-    console.log('背景墙范围：', {
+    console.log("背景墙范围：", {
       width: aspect,
       height: 1,
-      center: { x: aspect/2, y: 0.5 }
+      center: { x: aspect / 2, y: 0.5 },
     });
 
     const axesHelper = new THREE.AxesHelper(1);
     scene.add(axesHelper);
 
     // 滚动控制变量
-    let delta = 0
-    let maxDelta = Math.max(0, totalWidth - aspect)
+    let delta = 0;
+    let maxDelta = Math.max(0, totalWidth - aspect);
 
     // 初始化滚动范围
     scrollState.maxDelta = Math.max(0, totalWidth - aspect);
@@ -113,7 +112,10 @@ export default function History() {
 
       // 使用最新状态值计算
       scrollState.targetDelta += e.deltaY * speed;
-      scrollState.targetDelta = Math.max(0, Math.min(scrollState.targetDelta, scrollState.maxDelta));
+      scrollState.targetDelta = Math.max(
+        0,
+        Math.min(scrollState.targetDelta, scrollState.maxDelta)
+      );
 
       if (!scrollState.isAnimating) {
         scrollState.isAnimating = true;
@@ -134,16 +136,8 @@ export default function History() {
       camera.left = scrollState.currentDelta;
       camera.right = scrollState.currentDelta + currentAspect;
       camera.updateProjectionMatrix();
-      camera.position.set(
-        scrollState.currentDelta + currentAspect / 2,
-        0.5,
-        1
-      );
-      camera.lookAt(
-        scrollState.currentDelta + currentAspect / 2,
-        0.5,
-        0
-      );
+      camera.position.set(scrollState.currentDelta + currentAspect / 2, 0.5, 1);
+      camera.lookAt(scrollState.currentDelta + currentAspect / 2, 0.5, 0);
 
       if (Math.abs(diff) > 0.001) {
         requestAnimationFrame(animateScroll);
@@ -152,22 +146,25 @@ export default function History() {
       }
     };
 
-    container.addEventListener('wheel', onWheel, {passive: false});
+    container.addEventListener("wheel", onWheel, { passive: false });
 
     // 处理窗口resize
     const handleResize = () => {
-      const {width: newWidth, height: newHeight} = getValidSize();
+      const { width: newWidth, height: newHeight } = getValidSize();
       const newAspect = newWidth / newHeight;
 
       // 更新所有相关状态
       scrollState.aspect = newAspect;
       scrollState.maxDelta = Math.max(0, totalWidth - newAspect);
-      scrollState.targetDelta = Math.min(scrollState.targetDelta, scrollState.maxDelta);
+      scrollState.targetDelta = Math.min(
+        scrollState.targetDelta,
+        scrollState.maxDelta
+      );
 
       // 更新边界限制
-      maxDelta = Math.max(0, totalWidth - newAspect)
-      delta = Math.min(delta, maxDelta)
-      delta = Math.max(0, delta)
+      maxDelta = Math.max(0, totalWidth - newAspect);
+      delta = Math.min(delta, maxDelta);
+      delta = Math.max(0, delta);
 
       // 更新相机
       camera.left = 0;
@@ -188,18 +185,24 @@ export default function History() {
       renderer.setSize(newWidth, newHeight);
     };
 
-    window.addEventListener('resize', handleResize);
+    if (typeof window !== "undefined") {
+      window.addEventListener("resize", handleResize);
+    }
 
     // 渲染循环
     const animate = () => {
-      requestAnimationFrame(animate);
-      renderer.render(scene, camera);
+      if (typeof window !== "undefined") {
+        requestAnimationFrame(animate);
+        renderer.render(scene, camera);
+      }
     };
     animate();
 
     return () => {
-      window.removeEventListener('resize', handleResize);
-      container.removeEventListener('wheel', onWheel);
+      if (typeof window !== "undefined") {
+        window.removeEventListener("resize", handleResize);
+      }
+      container.removeEventListener("wheel", onWheel);
 
       // 清理场景
       scene.remove(wall);
@@ -209,7 +212,7 @@ export default function History() {
       // 清理画框
       for (const frame of frames) {
         scene.remove(frame);
-        
+
         // 确保 material 是单个材质对象
         if (Array.isArray(frame.material)) {
           for (const mat of frame.material) {
@@ -225,13 +228,12 @@ export default function History() {
       renderer.dispose();
       container.removeChild(renderer.domElement);
     };
-
-  }
+  };
 
   useEffect(() => {
-      const clearScene = initScene();
-      return () => clearScene?.()
+    const clearScene = initScene();
+    return () => clearScene?.();
   }, []);
 
-  return <div ref={containerRef} className='w-screen h-screen'/>;
+  return <div ref={containerRef} className="w-screen h-screen" />;
 }

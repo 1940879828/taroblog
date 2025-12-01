@@ -283,7 +283,9 @@ const RoadMap = () => {
       const link = target.getAttr("link")
       if (link) {
         if (String(link).includes("http")) {
-          window.open(link, "_blank")
+          if (typeof window !== 'undefined') {
+            window.open(link, "_blank")
+          }
         } else {
           router.push(`/note/${link}`)
         }

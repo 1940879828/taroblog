@@ -8,9 +8,9 @@ export const CARD_CONFIG = {
   color: "oklch(23.574% 0.066 313.189)"
 }
 
-// 画布宽度
-export const canvasWidth = window.innerWidth
-export const canvasHeight = window.innerHeight - 65
+// 画布宽度 - 服务端渲染时使用默认值，避免访问 window
+export const canvasWidth = typeof window !== 'undefined' ? window.innerWidth : 1920
+export const canvasHeight = typeof window !== 'undefined' ? window.innerHeight - 65 : 1080
 // 画带有文字的方块
 export const makeTextRect = (props: {
   /** 距离画布左边👈的距离 */

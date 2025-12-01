@@ -131,7 +131,7 @@ const ClickEffect = () => {
   const setCanvasSize = useCallback(
     debounce(() => {
       const canvas = canvasRef.current
-      if (!canvas) return
+      if (!canvas || typeof window === 'undefined') return
 
       canvas.width = 2 * window.innerWidth
       canvas.height = 2 * window.innerHeight
@@ -182,12 +182,16 @@ const ClickEffect = () => {
     })
 
     // 事件监听
-    window.addEventListener("resize", setCanvasSize)
+    if (typeof window !== 'undefined') {
+      window.addEventListener("resize", setCanvasSize)
+    }
     document.addEventListener("mousedown", handleClick)
     document.addEventListener("touchstart", handleClick)
 
     return () => {
-      window.removeEventListener("resize", setCanvasSize)
+      if (typeof window !== 'undefined') {
+        window.removeEventListener("resize", setCanvasSize)
+      }
       document.removeEventListener("mousedown", handleClick)
       document.removeEventListener("touchstart", handleClick)
       if (animationRef.current) animationRef.current.pause()
