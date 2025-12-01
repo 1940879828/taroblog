@@ -55,7 +55,6 @@ export default function Home() {
 
   return (
     <>
-      123123123123
       <HappyCover />
       <HomeRoadMap />
       <Head>

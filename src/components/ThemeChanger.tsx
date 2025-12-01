@@ -1,163 +1,272 @@
-"use client"
-import { cn } from "@/lib/utils"
-import { useTheme } from "next-themes"
-import { type ChangeEvent, useEffect, useRef, useState } from "react"
+"use client";
+import { cn } from "@/lib/utils";
+import {
+  type ChangeEvent,
+  forwardRef,
+  useCallback,
+  useEffect,
+  useImperativeHandle,
+  useRef,
+  useState,
+} from "react";
 
-const ThemeController = ({
-  className,
-  showText = false,
-  size = 32
-}: {
-  className?: string
-  showText?: boolean
-  size?: number
-}) => {
-  const { setTheme, theme } = useTheme()
-  const [isChecked, setIsChecked] = useState(theme === "cupcake")
+export interface ThemeChangerRef {
+  toggleTheme: () => void;
+  setTheme: (theme: "dark" | "cupcake") => void;
+  getCurrentTheme: () => string | undefined;
+}
+
+// 获取当前主题（从 DOM 的 data-theme 属性读取）
+const getCurrentThemeFromDOM = (): string | undefined => {
+  if (typeof window === "undefined") return undefined;
+  return document.documentElement.getAttribute("data-theme") || undefined;
+};
+
+const ThemeController = forwardRef<
+  ThemeChangerRef,
+  {
+    className?: string;
+    showText?: boolean;
+    size?: number;
+  }
+>(({ className, showText = false, size = 32 }, ref) => {
+  const [isChecked, setIsChecked] = useState(false);
+  const [currentTheme, setCurrentTheme] = useState<string | undefined>(
+    undefined
+  );
+  const inputRef = useRef<HTMLInputElement>(null);
   const mousePositionRef = useRef<{ clientX: number; clientY: number }>({
     clientX: 0,
-    clientY: 0
-  })
+    clientY: 0,
+  });
 
+  // 初始化：从 DOM 读取当前主题
   useEffect(() => {
-    setIsChecked(theme === "cupcake")
-  }, [theme])
+    if (typeof window === "undefined") return;
 
-  // 监听鼠标点击事件，获取鼠标位置
-  const handleMouseDown = (e: MouseEvent) => {
-    mousePositionRef.current = { clientX: e.clientX, clientY: e.clientY }
-  }
+    // 使用回调函数更新状态，避免 lint 警告
+    const updateTheme = () => {
+      const theme = getCurrentThemeFromDOM();
+      setCurrentTheme(theme);
+      setIsChecked(theme === "cupcake");
+    };
 
-  // 在组件挂载时添加鼠标点击事件监听器
-  useEffect(() => {
-    document.addEventListener("mousedown", handleMouseDown)
-    return () => {
-      document.removeEventListener("mousedown", handleMouseDown)
-    }
-  }, [])
+    // 初始读取
+    updateTheme();
 
-  const onInputChange = (e: ChangeEvent<HTMLInputElement>) => {
-    const toTheme = theme === "dark" ? "cupcake" : "dark"
-    const isSwitchingToDark = toTheme === "dark"
-    
-    const transition = document.startViewTransition(async () => {
-      // 如果切换到暗色模式，添加类名以控制 z-index
-      if (isSwitchingToDark) {
-        document.documentElement.classList.add("dark-transition")
-      } else {
-        document.documentElement.classList.remove("dark-transition")
+    // 监听 data-theme 属性变化
+    const observer = new MutationObserver(() => {
+      const newTheme = getCurrentThemeFromDOM();
+      if (newTheme !== currentTheme) {
+        setCurrentTheme(newTheme);
+        setIsChecked(newTheme === "cupcake");
       }
-      setTheme(toTheme)
-      setIsChecked(e.target.checked)
-    })
+    });
 
-    // 在 transition.ready 的 Promise 完成后，执行自定义动画
-    transition.ready.then(() => {
-      // 由于我们要从鼠标点击的位置开始做动画，所以我们需要先获取到鼠标的位置
-      const { clientX, clientY } = mousePositionRef.current
+    observer.observe(document.documentElement, {
+      attributes: true,
+      attributeFilter: ["data-theme"],
+    });
 
-      // 计算半径，以鼠标点击的位置为圆心，到四个角的距离中最大的那个作为半径
-      const radius = Math.hypot(
-        Math.max(clientX, innerWidth - clientX),
-        Math.max(clientY, innerHeight - clientY)
-      )
-      const clipPath = [
-        `circle(0% at ${clientX}px ${clientY}px)`,
-        `circle(${radius}px at ${clientX}px ${clientY}px)`
-      ]
-      
-      // 自定义动画
-      const animation = document.documentElement.animate(
-        {
-          // 切换到暗色主题时，从大圆到小圆（白色逐渐消失）
-          // 切换到亮色主题时，从小圆到大圆（黑色逐渐消失）
-          clipPath: isSwitchingToDark ? clipPath.reverse() : clipPath
-        },
-        {
-          duration: 500,
-          easing: "ease-in-out",
-          // 切换到暗色主题时，裁剪旧的白色视图
-          // 切换到亮色主题时，裁剪新的黑色视图
-          pseudoElement: isSwitchingToDark
-            ? "::view-transition-old(root)"
-            : "::view-transition-new(root)"
+    return () => observer.disconnect();
+  }, [currentTheme]);
+
+  // 处理主题切换的逻辑（提取为独立函数，方便外部调用）
+  const handleThemeChange = useCallback(
+    (toTheme: "dark" | "cupcake", checked?: boolean) => {
+      if (typeof window === "undefined") return;
+
+      const isSwitchingToDark = toTheme === "dark";
+
+      const transition = document.startViewTransition(async () => {
+        // 如果切换到暗色模式，添加类名以控制 z-index
+        if (isSwitchingToDark) {
+          document.documentElement.classList.add("dark-transition");
+        } else {
+          document.documentElement.classList.remove("dark-transition");
         }
-      )
-      
-      // 方案B：在动画完成前提前调整z-index，避免白色闪烁
-      if (isSwitchingToDark) {
+
+        // 直接设置 data-theme 属性来切换主题
+        document.documentElement.setAttribute("data-theme", toTheme);
+
+        // 同步更新 input 的 checked 状态
+        if (inputRef.current) {
+          inputRef.current.checked = toTheme === "cupcake";
+        }
+
+        // 更新状态
+        if (checked !== undefined) {
+          setIsChecked(checked);
+        } else {
+          setIsChecked(toTheme === "cupcake");
+        }
+        setCurrentTheme(toTheme);
+
+        // 保存主题到 cookie
+        document.cookie = `theme=${toTheme}; path=/; max-age=31536000`;
+      });
+
+      // 在 transition.ready 的 Promise 完成后，执行自定义动画
+      transition.ready.then(() => {
+        // 由于我们要从鼠标点击的位置开始做动画，所以我们需要先获取到鼠标的位置
+        const { clientX, clientY } = mousePositionRef.current;
+
+        // 计算半径，以鼠标点击的位置为圆心，到四个角的距离中最大的那个作为半径
+        const radius = Math.hypot(
+          Math.max(clientX, innerWidth - clientX),
+          Math.max(clientY, innerHeight - clientY)
+        );
+        const clipPath = [
+          `circle(0% at ${clientX}px ${clientY}px)`,
+          `circle(${radius}px at ${clientX}px ${clientY}px)`,
+        ];
+
+        // 自定义动画
+        const animation = document.documentElement.animate(
+          {
+            // 切换到暗色主题时，从大圆到小圆（白色逐渐消失）
+            // 切换到亮色主题时，从小圆到大圆（黑色逐渐消失）
+            clipPath: isSwitchingToDark ? clipPath.reverse() : clipPath,
+          },
+          {
+            duration: 500,
+            easing: "ease-in-out",
+            // 切换到暗色主题时，裁剪旧的白色视图
+            // 切换到亮色主题时，裁剪新的黑色视图
+            pseudoElement: isSwitchingToDark
+              ? "::view-transition-old(root)"
+              : "::view-transition-new(root)",
+          }
+        );
+
         // 方案B：在动画完成前提前调整z-index，避免白色闪烁
-        let progressHandled = false
-        let tempStyle: HTMLStyleElement | null = null
-        
-        const adjustZIndex = () => {
-          if (progressHandled) return
-          progressHandled = true
-          
-          console.log("[ThemeChanger] 提前调整z-index，让新视图显示在上层")
-          
-          // 提前调整z-index，让新视图显示在上层
-          tempStyle = document.createElement("style")
-          tempStyle.id = "theme-transition-override"
-          tempStyle.textContent = `
+        if (isSwitchingToDark) {
+          // 方案B：在动画完成前提前调整z-index，避免白色闪烁
+          let progressHandled = false;
+          let tempStyle: HTMLStyleElement | null = null;
+
+          const adjustZIndex = () => {
+            if (progressHandled) return;
+            progressHandled = true;
+
+            console.log("[ThemeChanger] 提前调整z-index，让新视图显示在上层");
+
+            // 提前调整z-index，让新视图显示在上层
+            tempStyle = document.createElement("style");
+            tempStyle.id = "theme-transition-override";
+            tempStyle.textContent = `
             .dark-transition::view-transition-new(root) {
               z-index: 101 !important;
             }
             .dark-transition::view-transition-old(root) {
               z-index: 99 !important;
             }
-          `
-          document.head.appendChild(tempStyle)
-          console.log("[ThemeChanger] 已添加临时样式调整z-index")
-        }
-        
-        // 在动画450ms时（90%）提前调整z-index
-        setTimeout(() => {
-          if (!progressHandled) {
-            adjustZIndex()
-          }
-        }, 450)
-        
-        // 监听动画完成
-        animation.addEventListener("finish", () => {
-          console.log("[ThemeChanger] 动画完成")
-          if (!progressHandled) {
-            adjustZIndex()
-          }
-          
-          // 等待过渡完成后再移除类
-          Promise.all([animation.finished, transition.finished]).then(() => {
-            console.log("[ThemeChanger] 过渡完成，准备移除类")
-            // 使用双重 requestAnimationFrame 确保浏览器完成渲染
-            requestAnimationFrame(() => {
-              requestAnimationFrame(() => {
-                console.log("[ThemeChanger] 移除dark-transition类")
-                document.documentElement.classList.remove("dark-transition")
-                
-                // 清理临时样式
-                if (tempStyle && tempStyle.parentNode) {
-                  setTimeout(() => {
-                    document.head.removeChild(tempStyle!)
-                    console.log("[ThemeChanger] 已清理临时样式")
-                  }, 200)
-                }
-              })
-            })
-          }).catch((err) => {
-            console.error("[ThemeChanger] 过渡出错:", err)
-            document.documentElement.classList.remove("dark-transition")
-            if (tempStyle && tempStyle.parentNode) {
-              document.head.removeChild(tempStyle)
+          `;
+            document.head.appendChild(tempStyle);
+            console.log("[ThemeChanger] 已添加临时样式调整z-index");
+          };
+
+          // 在动画450ms时（90%）提前调整z-index
+          setTimeout(() => {
+            if (!progressHandled) {
+              adjustZIndex();
             }
-          })
-        })
-      }
-    })
-  }
+          }, 450);
+
+          // 监听动画完成
+          animation.addEventListener("finish", () => {
+            console.log("[ThemeChanger] 动画完成");
+            if (!progressHandled) {
+              adjustZIndex();
+            }
+
+            // 等待过渡完成后再移除类
+            Promise.all([animation.finished, transition.finished])
+              .then(() => {
+                console.log("[ThemeChanger] 过渡完成，准备移除类");
+                // 使用双重 requestAnimationFrame 确保浏览器完成渲染
+                requestAnimationFrame(() => {
+                  requestAnimationFrame(() => {
+                    console.log("[ThemeChanger] 移除dark-transition类");
+                    document.documentElement.classList.remove(
+                      "dark-transition"
+                    );
+
+                    // 清理临时样式
+                    if (tempStyle && tempStyle.parentNode) {
+                      setTimeout(() => {
+                        document.head.removeChild(tempStyle!);
+                        console.log("[ThemeChanger] 已清理临时样式");
+                      }, 200);
+                    }
+                  });
+                });
+              })
+              .catch((err) => {
+                console.error("[ThemeChanger] 过渡出错:", err);
+                document.documentElement.classList.remove("dark-transition");
+                if (tempStyle && tempStyle.parentNode) {
+                  document.head.removeChild(tempStyle);
+                }
+              });
+          });
+        }
+      });
+    },
+    []
+  );
+
+  // 暴露方法供外部调用
+  useImperativeHandle(
+    ref,
+    () => ({
+      // 切换主题（通过触发 input 的 click 事件）
+      toggleTheme: () => {
+        if (inputRef.current) {
+          inputRef.current.click();
+        }
+      },
+      // 直接设置主题
+      setTheme: (newTheme: "dark" | "cupcake") => {
+        handleThemeChange(newTheme);
+      },
+      // 获取当前主题（从 HTML 的 data-theme 属性读取）
+      getCurrentTheme: () => {
+        if (typeof window === "undefined") return undefined;
+        return getCurrentThemeFromDOM();
+      },
+    }),
+    [handleThemeChange]
+  );
+
+  // 监听鼠标点击事件，获取鼠标位置
+  const handleMouseDown = useCallback((e: MouseEvent) => {
+    mousePositionRef.current = { clientX: e.clientX, clientY: e.clientY };
+  }, []);
+
+  // 在组件挂载时添加鼠标点击事件监听器
+  useEffect(() => {
+    if (typeof window === "undefined") return;
+
+    document.addEventListener("mousedown", handleMouseDown);
+    return () => {
+      document.removeEventListener("mousedown", handleMouseDown);
+    };
+  }, [handleMouseDown]);
+
+  const onInputChange = (e: ChangeEvent<HTMLInputElement>) => {
+    if (typeof window === "undefined") return;
+
+    // 根据 checkbox 的 checked 状态决定主题
+    // checked = true 表示 cupcake，checked = false 表示 dark
+    const toTheme = e.target.checked ? "cupcake" : "dark";
+    handleThemeChange(toTheme, e.target.checked);
+  };
 
   return (
     <label className={cn("swap swap-rotate", className)}>
       <input
+        ref={inputRef}
         type="checkbox"
         checked={isChecked}
         className="theme-controller"
@@ -185,7 +294,9 @@ const ThemeController = ({
       </svg>
       {showText && "切换主题"}
     </label>
-  )
-}
+  );
+});
 
-export default ThemeController
+ThemeController.displayName = "ThemeController";
+
+export default ThemeController;

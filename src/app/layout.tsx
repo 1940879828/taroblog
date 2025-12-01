@@ -3,7 +3,6 @@ import "./globals.css";
 import MountMessageList from "@/components/MountMessageList";
 import FireWordEffect from "@/providers/fireword";
 import localFont from "next/font/local";
-import Head from "next/head";
 import { cookies } from "next/headers";
 import type React from "react";
 

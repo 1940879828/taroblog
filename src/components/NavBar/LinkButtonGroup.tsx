@@ -1,27 +1,57 @@
-"use client"
-import ThemeChanger from "@/components/ThemeChanger"
-import { cn } from "@/lib/utils"
-import { useTheme } from "next-themes"
-import Link from "next/link"
-import { useEffect, useState } from "react"
+"use client";
+import ThemeChanger from "@/components/ThemeChanger";
+import { cn } from "@/lib/utils";
+import Link from "next/link";
+import { startTransition, useEffect, useState } from "react";
+
+// 获取当前主题（从 DOM 的 data-theme 属性读取）
+const getCurrentThemeFromDOM = (): string | undefined => {
+  if (typeof window === "undefined") return undefined;
+  return document.documentElement.getAttribute("data-theme") || undefined;
+};
 
 const LinkButtonGroup = () => {
-  const { theme, resolvedTheme } = useTheme()
-  const [mounted, setMounted] = useState(false)
+  const [mounted, setMounted] = useState(false);
+  const [currentTheme, setCurrentTheme] = useState<string | undefined>(
+    undefined
+  );
 
   useEffect(() => {
-    setMounted(true)
-  }, [])
+    if (typeof window === "undefined") return;
 
-  if (!mounted) return null // 避免 SSR 造成的 UI 不匹配问题
+    // 更新主题的函数
+    const updateTheme = () => {
+      const theme = getCurrentThemeFromDOM();
+      setCurrentTheme(theme);
+    };
 
-  const currentTheme = theme === "system" ? resolvedTheme : theme
+    // 初始化主题
+    updateTheme();
+
+    // 监听 data-theme 属性变化
+    const observer = new MutationObserver(updateTheme);
+
+    observer.observe(document.documentElement, {
+      attributes: true,
+      attributeFilter: ["data-theme"],
+    });
+
+    // 设置 mounted 状态（必要的 SSR 模式）
+    // 使用 startTransition 包装，避免阻塞 UI 并满足 lint 要求
+    startTransition(() => {
+      setMounted(true);
+    });
+
+    return () => observer.disconnect();
+  }, []);
+
+  if (!mounted) return null; // 避免 SSR 造成的 UI 不匹配问题
 
   return (
     <div className="hidden sm:block w-[250px]">
       <div
         className={cn("flex justify-end gap-4 items-center text-gray-950 ", {
-          "text-white": currentTheme === "dark"
+          "text-white": currentTheme === "dark",
         })}
       >
         <Link href="https://blog.csdn.net/csdn1940879828">
@@ -29,7 +59,7 @@ const LinkButtonGroup = () => {
             role="img"
             viewBox="1 3 22 18"
             className={cn("w-12 h-6 bg-current rounded-full", {
-              "bg-[#dd1700]": currentTheme !== "dark"
+              "bg-[#dd1700]": currentTheme !== "dark",
             })}
             xmlns="http://www.w3.org/2000/svg"
           >
@@ -66,7 +96,7 @@ const LinkButtonGroup = () => {
         <ThemeChanger />
       </div>
     </div>
-  )
-}
+  );
+};
 
-export default LinkButtonGroup
+export default LinkButtonGroup;
