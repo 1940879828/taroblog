@@ -12,13 +12,10 @@ const useTransitionExample: React.FC<PropsWithChildren<Props>> = () => {
   const [activeTab, setActiveTab] = useState('home');
 
   const [activeTab2, setActiveTab2] = useState('home');
-  const [pendingTab, setPendingTab] = useState<string | null>(null);
   const [isPending, startTransition] = useTransition();
   const switchActiveTab2 = (tab:string)=>{
-    setPendingTab(tab);
     startTransition(()=>{
       setActiveTab2(tab) // mutation
-      setPendingTab(null);
     })
   }
 
@@ -28,7 +25,7 @@ const useTransitionExample: React.FC<PropsWithChildren<Props>> = () => {
   }
 
   return (
-    <div className="border p-1 m-1">
+    <div className="border p-1 m-1 text-white">
       <h2 className="text-2xl font-bold text-white">useTransitionExample</h2>
 
       <h3>没使用的useTransition情况，切换到Product时会卡顿(阻塞了UI渲染)</h3>
@@ -79,7 +76,7 @@ const useTransitionExample: React.FC<PropsWithChildren<Props>> = () => {
 };
 
 const Products = memo(()=>{
-  let productsList = products.map((slowProduct,  i)=>(
+  let productsList = products.map((slowProduct)=>(
     <SlowProduct key={slowProduct.id} product={slowProduct} />
   ))
   return (
