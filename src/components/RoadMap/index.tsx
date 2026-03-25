@@ -380,14 +380,13 @@ const RoadMap = () => {
       <div hidden={!isHappyMode} className={styles.angleDown} onClick={goToTop}>
         <ChevronUp size={32} />
       </div>
-      <div style={{ position: "relative" }}>
+      <div style={{ position: "relative", overflow: "hidden", width: canvasWidth, height: canvasHeight }}>
         <div
           id="container"
           style={{
             display: "flex",
             justifyContent: "center",
-            background: theme === "dark" ? "#181818" : "transparent",
-            overflowX: "hidden"
+            background: theme === "dark" ? "#181818" : "transparent"
           }}
         />
         {overlayNodes.length > 0 && (
@@ -399,7 +398,6 @@ const RoadMap = () => {
               width: canvasWidth,
               height: canvasHeight,
               pointerEvents: "none",
-              overflow: "hidden",
               transformOrigin: "0 0",
               transform: `translate(${stageTransform.x}px, ${stageTransform.y}px) scale(${stageTransform.scale})`
             }}
