@@ -54,7 +54,7 @@ const RoadMap = () => {
   const coverRef = useRef<HTMLDivElement | null>(null)
   const isHappyMode = useAtomValue(isHappyModeAtom)
   const [overlayNodes, setOverlayNodes] = useState<OverlayNode[]>([])
-  const [stageTransform, setStageTransform] = useState({ x: 0, y: 0, scale: 1 })
+  const overlayRef = useRef<HTMLDivElement | null>(null)
 
   // 添加 ref 用于保存缩放状态
   const lastCenter = useRef<{ x: number; y: number } | null>(null)
@@ -64,9 +64,8 @@ const RoadMap = () => {
     const container = document.getElementById("container")
     if (container) container.innerHTML = ""
 
-    // 重置叠加层状态
+    // 重置叠加层
     setOverlayNodes([])
-    setStageTransform({ x: 0, y: 0, scale: 1 })
 
     // 创建 Stage
     const stage = new Konva.Stage({
@@ -78,13 +77,13 @@ const RoadMap = () => {
       hitGraphEnabled: true // 启用精确命中检测
     })
 
-    // 同步 Stage 变换到 HTML 叠加层
+    // 直接操作 DOM 同步 Stage 变换，绕过 React 渲染周期避免延迟
     const syncTransform = () => {
-      setStageTransform({
-        x: stage.x(),
-        y: stage.y(),
-        scale: stage.scaleX()
-      })
+      if (!overlayRef.current) return
+      const x = stage.x()
+      const y = stage.y()
+      const scale = stage.scaleX()
+      overlayRef.current.style.transform = `translate(${x}px, ${y}px) scale(${scale})`
     }
 
     stage.on("dragmove", syncTransform)
@@ -255,7 +254,7 @@ const RoadMap = () => {
     map.forEach((item) => {
       const itemWidth = item.width || CARD_CONFIG.width
       const itemHeight = item.height || CARD_CONFIG.height
-      const mainRectGroup: Group = makeTextRect(item)
+      const mainRectGroup: Group = makeTextRect({ ...item, text: item.text ?? "" })
       mainLayer.add(mainRectGroup)
 
       // 有 textCustomNode 时记录位置供叠加层渲染
@@ -391,6 +390,7 @@ const RoadMap = () => {
         />
         {overlayNodes.length > 0 && (
           <div
+            ref={overlayRef}
             style={{
               position: "absolute",
               top: 0,
@@ -398,8 +398,7 @@ const RoadMap = () => {
               width: canvasWidth,
               height: canvasHeight,
               pointerEvents: "none",
-              transformOrigin: "0 0",
-              transform: `translate(${stageTransform.x}px, ${stageTransform.y}px) scale(${stageTransform.scale})`
+              transformOrigin: "0 0"
             }}
           >
             {overlayNodes.map((node, i) => (
