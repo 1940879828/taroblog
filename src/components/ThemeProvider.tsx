@@ -2,7 +2,7 @@
 
 import { ThemeProvider as NextThemesProvider } from "next-themes"
 import type * as React from "react"
-import { type PropsWithChildren, useEffect, useState } from "react"
+import { type PropsWithChildren, useEffect } from "react"
 
 type Props = {
   initialTheme: string
@@ -12,13 +12,14 @@ const ThemeProvider: React.FC<PropsWithChildren<Props>> = ({
   children,
   initialTheme
 }) => {
-  const [mounted, setMounted] = useState(false)
-
   useEffect(() => {
-    setMounted(true)
-
     const handleThemeChange = (theme: string) => {
       document.cookie = `theme=${theme}; path=/; max-age=31536000`
+    }
+
+    const initialDomTheme = document.documentElement.getAttribute("data-theme")
+    if (initialDomTheme) {
+      handleThemeChange(initialDomTheme)
     }
 
     const observer = new MutationObserver(() => {
@@ -36,14 +37,12 @@ const ThemeProvider: React.FC<PropsWithChildren<Props>> = ({
     return () => observer.disconnect()
   }, [initialTheme])
 
-  if (!mounted) {
-    return null
-  }
-
   return (
     <NextThemesProvider
       attribute="data-theme"
       defaultTheme={initialTheme}
+      themes={["cupcake", "dark"]}
+      enableSystem={false}
       disableTransitionOnChange
     >
       {children}

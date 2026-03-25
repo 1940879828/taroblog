@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import "./globals.css";
 import MountMessageList from "@/components/MountMessageList";
 import FireWordEffect from "@/providers/fireword";
+import ThemeProvider from "@/components/ThemeProvider";
 import localFont from "next/font/local";
 import { cookies } from "next/headers";
 import type React from "react";
@@ -55,13 +56,20 @@ export default async function RootLayout({
   const initialTheme = cookieStore.get("theme")?.value || "cupcake";
 
   return (
-    <html lang="zh" data-theme={initialTheme} className="theme-transition">
+    <html
+      lang="zh"
+      data-theme={initialTheme}
+      className="theme-transition"
+      suppressHydrationWarning
+    >
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased overflow-hidden`}
       >
-        {children}
-        <FireWordEffect />
-        <MountMessageList />
+        <ThemeProvider initialTheme={initialTheme}>
+          {children}
+          <FireWordEffect />
+          <MountMessageList />
+        </ThemeProvider>
       </body>
     </html>
   );

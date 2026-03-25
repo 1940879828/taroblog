@@ -1,5 +1,6 @@
 "use client";
 import { cn } from "@/lib/utils";
+import { useTheme } from "next-themes";
 import {
   type ChangeEvent,
   forwardRef,
@@ -7,7 +8,6 @@ import {
   useEffect,
   useImperativeHandle,
   useRef,
-  useState,
 } from "react";
 
 export interface ThemeChangerRef {
@@ -15,12 +15,6 @@ export interface ThemeChangerRef {
   setTheme: (theme: "dark" | "cupcake") => void;
   getCurrentTheme: () => string | undefined;
 }
-
-// 获取当前主题（从 DOM 的 data-theme 属性读取）
-const getCurrentThemeFromDOM = (): string | undefined => {
-  if (typeof window === "undefined") return undefined;
-  return document.documentElement.getAttribute("data-theme") || undefined;
-};
 
 const ThemeController = forwardRef<
   ThemeChangerRef,
@@ -30,53 +24,33 @@ const ThemeController = forwardRef<
     size?: number;
   }
 >(({ className, showText = false, size = 32 }, ref) => {
-  const [isChecked, setIsChecked] = useState(false);
-  const [currentTheme, setCurrentTheme] = useState<string | undefined>(
-    undefined
-  );
+  const { theme, resolvedTheme, setTheme } = useTheme();
   const inputRef = useRef<HTMLInputElement>(null);
   const mousePositionRef = useRef<{ clientX: number; clientY: number }>({
     clientX: 0,
     clientY: 0,
   });
-
-  // 初始化：从 DOM 读取当前主题
-  useEffect(() => {
-    if (typeof window === "undefined") return;
-
-    // 使用回调函数更新状态，避免 lint 警告
-    const updateTheme = () => {
-      const theme = getCurrentThemeFromDOM();
-      setCurrentTheme(theme);
-      setIsChecked(theme === "cupcake");
-    };
-
-    // 初始读取
-    updateTheme();
-
-    // 监听 data-theme 属性变化
-    const observer = new MutationObserver(() => {
-      const newTheme = getCurrentThemeFromDOM();
-      if (newTheme !== currentTheme) {
-        setCurrentTheme(newTheme);
-        setIsChecked(newTheme === "cupcake");
-      }
-    });
-
-    observer.observe(document.documentElement, {
-      attributes: true,
-      attributeFilter: ["data-theme"],
-    });
-
-    return () => observer.disconnect();
-  }, [currentTheme]);
+  const currentTheme = theme === "system" ? resolvedTheme : theme;
+  const isChecked = currentTheme === "cupcake";
 
   // 处理主题切换的逻辑（提取为独立函数，方便外部调用）
   const handleThemeChange = useCallback(
-    (toTheme: "dark" | "cupcake", checked?: boolean) => {
+    (toTheme: "dark" | "cupcake") => {
       if (typeof window === "undefined") return;
 
       const isSwitchingToDark = toTheme === "dark";
+      const applyTheme = () => {
+        setTheme(toTheme);
+
+        if (inputRef.current) {
+          inputRef.current.checked = toTheme === "cupcake";
+        }
+      };
+
+      if (!document.startViewTransition) {
+        applyTheme();
+        return;
+      }
 
       const transition = document.startViewTransition(async () => {
         // 如果切换到暗色模式，添加类名以控制 z-index
@@ -86,24 +60,7 @@ const ThemeController = forwardRef<
           document.documentElement.classList.remove("dark-transition");
         }
 
-        // 直接设置 data-theme 属性来切换主题
-        document.documentElement.setAttribute("data-theme", toTheme);
-
-        // 同步更新 input 的 checked 状态
-        if (inputRef.current) {
-          inputRef.current.checked = toTheme === "cupcake";
-        }
-
-        // 更新状态
-        if (checked !== undefined) {
-          setIsChecked(checked);
-        } else {
-          setIsChecked(toTheme === "cupcake");
-        }
-        setCurrentTheme(toTheme);
-
-        // 保存主题到 cookie
-        document.cookie = `theme=${toTheme}; path=/; max-age=31536000`;
+        applyTheme();
       });
 
       // 在 transition.ready 的 Promise 完成后，执行自定义动画
@@ -149,8 +106,6 @@ const ThemeController = forwardRef<
             if (progressHandled) return;
             progressHandled = true;
 
-            console.log("[ThemeChanger] 提前调整z-index，让新视图显示在上层");
-
             // 提前调整z-index，让新视图显示在上层
             tempStyle = document.createElement("style");
             tempStyle.id = "theme-transition-override";
@@ -163,7 +118,6 @@ const ThemeController = forwardRef<
             }
           `;
             document.head.appendChild(tempStyle);
-            console.log("[ThemeChanger] 已添加临时样式调整z-index");
           };
 
           // 在动画450ms时（90%）提前调整z-index
@@ -175,7 +129,6 @@ const ThemeController = forwardRef<
 
           // 监听动画完成
           animation.addEventListener("finish", () => {
-            console.log("[ThemeChanger] 动画完成");
             if (!progressHandled) {
               adjustZIndex();
             }
@@ -183,11 +136,9 @@ const ThemeController = forwardRef<
             // 等待过渡完成后再移除类
             Promise.all([animation.finished, transition.finished])
               .then(() => {
-                console.log("[ThemeChanger] 过渡完成，准备移除类");
                 // 使用双重 requestAnimationFrame 确保浏览器完成渲染
                 requestAnimationFrame(() => {
                   requestAnimationFrame(() => {
-                    console.log("[ThemeChanger] 移除dark-transition类");
                     document.documentElement.classList.remove(
                       "dark-transition"
                     );
@@ -196,7 +147,6 @@ const ThemeController = forwardRef<
                     if (tempStyle && tempStyle.parentNode) {
                       setTimeout(() => {
                         document.head.removeChild(tempStyle!);
-                        console.log("[ThemeChanger] 已清理临时样式");
                       }, 200);
                     }
                   });
@@ -213,7 +163,7 @@ const ThemeController = forwardRef<
         }
       });
     },
-    []
+    [setTheme]
   );
 
   // 暴露方法供外部调用
@@ -230,13 +180,12 @@ const ThemeController = forwardRef<
       setTheme: (newTheme: "dark" | "cupcake") => {
         handleThemeChange(newTheme);
       },
-      // 获取当前主题（从 HTML 的 data-theme 属性读取）
+      // 获取当前主题
       getCurrentTheme: () => {
-        if (typeof window === "undefined") return undefined;
-        return getCurrentThemeFromDOM();
+        return currentTheme;
       },
     }),
-    [handleThemeChange]
+    [currentTheme, handleThemeChange]
   );
 
   // 监听鼠标点击事件，获取鼠标位置
@@ -260,7 +209,7 @@ const ThemeController = forwardRef<
     // 根据 checkbox 的 checked 状态决定主题
     // checked = true 表示 cupcake，checked = false 表示 dark
     const toTheme = e.target.checked ? "cupcake" : "dark";
-    handleThemeChange(toTheme, e.target.checked);
+    handleThemeChange(toTheme);
   };
 
   return (
