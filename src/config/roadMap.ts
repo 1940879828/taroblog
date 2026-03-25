@@ -52,7 +52,7 @@ export type RoadMap = {
   /** 路由 */
   link: string
   /** 矩形内填充文字 */
-  text: string
+  text?: string
   /** 文字颜色 */
   textColor?: string
   /** 自定义节点内容（优先级高于 text 和 textColor） */
@@ -434,8 +434,9 @@ export const map: RoadMap = [
   {
     y: 80,
     fill: "#000000",
-    link: "",
-    text: "AI",
-    textColor: "#ffffff"
+    text: "ai",
+    width: 160,
+    link: "AritificialIntelligence",
+    textCustomNode: `<div class="text-[#CCCCCC]"><span class="text-[#ffffff]">A</span>rtificial <span class="text-[#ffffff]">I</span>ntelligence</div>`
   }
 ]
