@@ -1,8 +1,8 @@
 ---
 title: 人工智能简介
-tags: ['AI']
+tags: ["AI"]
 date: 2026-03-25 15:58:29
-categories: ['AI']
+categories: ["AI"]
 ---
 
 有些历史在发生时，并没有多少戏剧性的声音。
@@ -35,7 +35,7 @@ categories: ['AI']
 
 ### 1956：达特茅斯会议，AI 正式得名
 
-[John McCarthy](https://en.wikipedia.org/wiki/John_McCarthy_(computer_scientist)) 等人在 [达特茅斯夏季研究项目](https://en.wikipedia.org/wiki/Dartmouth_workshop) 中正式提出 “Artificial Intelligence”。从这一刻起，这条原本分散的研究线索，第一次有了共同的名字。
+[John McCarthy](<https://en.wikipedia.org/wiki/John_McCarthy_(computer_scientist)>) 等人在 [达特茅斯夏季研究项目](https://en.wikipedia.org/wiki/Dartmouth_workshop) 中正式提出 “Artificial Intelligence”。从这一刻起，这条原本分散的研究线索，第一次有了共同的名字。
 
 - 关键意义：AI 从零散研究，变成一门有共同目标的学科。
 - 时代注脚：名字出现的那一刻，历史开始被书写。
@@ -51,7 +51,7 @@ categories: ['AI']
 
 这是一个充满乐观气氛的阶段。符号主义、机器翻译和早期学习方法不断推进，许多人相信，真正通用的智能也许并不遥远。但当时的算力、数据和模型能力，还不足以支撑这样的期待。
 
-- 关键节点：1969 年，[Marvin Minsky](https://en.wikipedia.org/wiki/Marvin_Minsky) 与 [Seymour Papert](https://en.wikipedia.org/wiki/Seymour_Papert) 在《[Perceptrons](https://en.wikipedia.org/wiki/Perceptrons_(book))》中对单层感知机局限性的批评，直接打击了神经网络路线。
+- 关键节点：1969 年，[Marvin Minsky](https://en.wikipedia.org/wiki/Marvin_Minsky) 与 [Seymour Papert](https://en.wikipedia.org/wiki/Seymour_Papert) 在《[Perceptrons](<https://en.wikipedia.org/wiki/Perceptrons_(book)>)》中对单层感知机局限性的批评，直接打击了神经网络路线。
 - 时代注脚：技术史里最常见的事情，不是突破，而是过早的期待。
 
 ### 1974-1980：第一次 AI 寒冬
@@ -70,7 +70,7 @@ categories: ['AI']
 
 ### 1997：Deep Blue 击败卡斯帕罗夫
 
-[IBM Deep Blue](https://en.wikipedia.org/wiki/Deep_Blue_(chess_computer)) 战胜国际象棋世界冠军 [Garry Kasparov](https://en.wikipedia.org/wiki/Garry_Kasparov)。它并不是今天意义上的大模型，却是 AI 第一次以如此直接的方式，进入大众的历史记忆。
+[IBM Deep Blue](<https://en.wikipedia.org/wiki/Deep_Blue_(chess_computer)>) 战胜国际象棋世界冠军 [Garry Kasparov](https://en.wikipedia.org/wiki/Garry_Kasparov)。它并不是今天意义上的大模型，却是 AI 第一次以如此直接的方式，进入大众的历史记忆。
 
 - 硬数据：Deep Blue 当时每秒可评估约 `2 亿` 个棋局位置。
 - 关键意义：AI 首次在高象征意义的智力竞技中击败顶尖人类选手。
@@ -86,7 +86,7 @@ categories: ['AI']
 
 ### 2012：AlexNet 引爆深度学习时代
 
-[AlexNet](https://en.wikipedia.org/wiki/AlexNet) 在 [ImageNet Large Scale Visual Recognition Challenge](https://en.wikipedia.org/wiki/ImageNet#ImageNet_Challenge) 竞赛中把深度卷积网络真正推到舞台中央。它的意义不只在于更深的卷积网络本身，还在于 [ReLU](https://en.wikipedia.org/wiki/Rectifier_(neural_networks))、[dropout](https://en.wikipedia.org/wiki/Dilution_(neural_networks))、数据增强与 GPU 并行训练被同时组织成一条可复制的工程路径。那不是一次普通的领先，而是一种几乎让整个研究方向重新排序的领先。
+[AlexNet](https://en.wikipedia.org/wiki/AlexNet) 在 [ImageNet Large Scale Visual Recognition Challenge](https://en.wikipedia.org/wiki/ImageNet#ImageNet_Challenge) 竞赛中把深度卷积网络真正推到舞台中央。它的意义不只在于更深的卷积网络本身，还在于 [ReLU](<https://en.wikipedia.org/wiki/Rectifier_(neural_networks)>)、[dropout](<https://en.wikipedia.org/wiki/Dilution_(neural_networks)>)、数据增强与 GPU 并行训练被同时组织成一条可复制的工程路径。那不是一次普通的领先，而是一种几乎让整个研究方向重新排序的领先。
 
 - 硬数据：模型在 ILSVRC 2012 中取得 `15.3%` 的 top-5 error，而第二名是 `26.2%`。
 - 硬数据：训练数据约 `120 万` 张图片，模型参数约 `6000 万`，训练使用 `2` 块 GTX 580 3GB GPU，耗时约 `5-6 天`。
@@ -95,7 +95,7 @@ categories: ['AI']
 
 ### 2017：Transformer 出现，基础模型的骨架被搭好
 
-《[Attention Is All You Need](https://arxiv.org/abs/1706.03762)》提出 [Transformer](https://en.wikipedia.org/wiki/Transformer_(deep_learning_architecture))。模型开始摆脱对循环结构的依赖，转向以 [self-attention](https://en.wikipedia.org/wiki/Attention_(machine_learning)) 为核心的并行计算框架。这不仅改善了长距离依赖建模，也显著提高了大规模训练时的扩展性。后来席卷世界的许多系统，最早的骨架都可以追溯到这里。
+《[Attention Is All You Need](https://arxiv.org/abs/1706.03762)》提出 [Transformer](<https://en.wikipedia.org/wiki/Transformer_(deep_learning_architecture)>)。模型开始摆脱对循环结构的依赖，转向以 [self-attention](<https://en.wikipedia.org/wiki/Attention_(machine_learning)>) 为核心的并行计算框架。这不仅改善了长距离依赖建模，也显著提高了大规模训练时的扩展性。后来席卷世界的许多系统，最早的骨架都可以追溯到这里。
 
 - 硬数据：论文中的单模型约 `1.65 亿` 参数，在英德翻译任务上达到 `27.5 BLEU`，超过当时最佳集成结果 `1+ BLEU`。
 - 关键意义：这是今天大语言模型与多模态模型最核心的结构起点之一。

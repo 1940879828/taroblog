@@ -12,7 +12,7 @@ const Markdown = async ({ content }: Props) => {
 
   return (
     <div className="flex-1 flex justify-center relative gap-8">
-      <article className="markdown-content min-w-0 flex-1">
+      <article className="markdown-content min-w-0 flex-1 pb-24">
         <ReactMarkdown
           remarkPlugins={[remarkGfm]}
           rehypePlugins={[rehypeSlug]}
@@ -35,9 +35,9 @@ const Markdown = async ({ content }: Props) => {
       </article>
 
       {toc.length > 0 ? (
-        <aside className="hidden lg:block mt-8 h-[calc(100vh-140px)] z-10 sticky top-4 w-64 shrink-0">
+        <aside className="hidden lg:flex flex-col mt-8 h-[calc(100vh-140px)] z-10 sticky top-4 w-64 shrink-0">
           <div className="text-xl mb-4">目录:</div>
-          <nav className="markdown-toc overflow-y-auto p-4 rounded-lg shadow-lg">
+          <nav className="markdown-toc flex-1 min-h-0 overflow-y-auto p-4 rounded-lg shadow-lg">
             <ul className="space-y-2">
               {toc.map((item) => (
                 <li

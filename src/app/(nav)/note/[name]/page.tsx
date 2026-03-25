@@ -47,7 +47,7 @@ export default async function NoteDetail({
     }
   }
   return (
-    <div className="w-container flex-nowrap flex flex-col">
+    <div className="w-container flex-nowrap flex flex-col pb-24">
       <Head>
         <script type="application/ld+json">{JSON.stringify(jsonLd)}</script>
         <meta itemProp="name" content={note.title} />
