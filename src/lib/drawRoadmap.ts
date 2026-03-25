@@ -29,6 +29,8 @@ export const makeTextRect = (props: {
   text: string
   /** 文字颜色 */
   textColor?: string
+  /** 自定义节点内容（有值时跳过 Konva.Text 渲染） */
+  textCustomNode?: string
 }) => {
   const {
     x,
@@ -38,7 +40,8 @@ export const makeTextRect = (props: {
     fill,
     link,
     text,
-    textColor
+    textColor,
+    textCustomNode
   } = props
   // 计算矩形水平居中的 x 坐标
   const rectX = (canvasWidth - width) / 2
@@ -57,27 +60,29 @@ export const makeTextRect = (props: {
   })
   rect.setAttr("link", link)
 
-  // 创建文字
-  const textNode = new Konva.Text({
-    x: x || rectX, // 文字起始位置
-    y: y, // 文字起始位置与矩形一致
-    width: width, // 文字宽度与矩形一致
-    height: height, // 文字高度与矩形一致
-    text: text,
-    fontSize: 16, // 字体大小
-    fontFamily:
-      "Helvetica, 'Hiragino Sans GB', 'Microsoft Yahei', '微软雅黑', Arial, sans-serif",
-    fill: textColor || CARD_CONFIG.color, // 字体颜色
-    align: "center", // 水平居中
-    verticalAlign: "middle", // 垂直居中
-    listening: false // 禁止文字响应事件
-  })
-
   const group = new Konva.Group({
     perfectDrawEnabled: false
   })
   group.add(rect)
-  group.add(textNode)
+
+  // 有 textCustomNode 时交由 HTML 叠加层渲染，否则创建 Konva.Text
+  if (!textCustomNode) {
+    const textNode = new Konva.Text({
+      x: x || rectX, // 文字起始位置
+      y: y, // 文字起始位置与矩形一致
+      width: width, // 文字宽度与矩形一致
+      height: height, // 文字高度与矩形一致
+      text: text,
+      fontSize: 16, // 字体大小
+      fontFamily:
+        "Helvetica, 'Hiragino Sans GB', 'Microsoft Yahei', '微软雅黑', Arial, sans-serif",
+      fill: textColor || CARD_CONFIG.color, // 字体颜色
+      align: "center", // 水平居中
+      verticalAlign: "middle", // 垂直居中
+      listening: false // 禁止文字响应事件
+    })
+    group.add(textNode)
+  }
 
   return group
 }

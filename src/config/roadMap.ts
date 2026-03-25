@@ -15,6 +15,8 @@ export type RoadMapLeftTree = {
   text: string
   /** 文字颜色 */
   textColor?: string
+  /** 自定义节点内容（优先级高于 text 和 textColor） */
+  textCustomNode?: string
   children?: RoadMapLeftTree
 }[]
 export type RoadMapRightTree = {
@@ -34,6 +36,8 @@ export type RoadMapRightTree = {
   text: string
   /** 文字颜色 */
   textColor?: string
+  /** 自定义节点内容（优先级高于 text 和 textColor） */
+  textCustomNode?: string
   children?: RoadMapRightTree
 }[]
 export type RoadMap = {
@@ -51,6 +55,8 @@ export type RoadMap = {
   text: string
   /** 文字颜色 */
   textColor?: string
+  /** 自定义节点内容（优先级高于 text 和 textColor） */
+  textCustomNode?: string
   children?: [RoadMapLeftTree, RoadMapRightTree]
 }[]
 
@@ -429,6 +435,7 @@ export const map: RoadMap = [
     y: 80,
     fill: "#000000",
     link: "",
-    text: "AI"
+    text: "AI",
+    textColor: "#ffffff"
   }
 ]

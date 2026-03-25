@@ -22,7 +22,7 @@ import _ from "lodash"
 import { ChevronUp } from "lucide-react"
 import { useTheme } from "next-themes"
 import { useRouter } from "next/navigation"
-import React, { useEffect, useRef } from "react"
+import React, { useEffect, useRef, useState } from "react"
 import styles from "./index.module.css"
 
 // 添加工具函数
@@ -40,11 +40,21 @@ function getDistance(
   return Math.sqrt((p2.x - p1.x) ** 2 + (p2.y - p1.y) ** 2)
 }
 
+type OverlayNode = {
+  x: number
+  y: number
+  width: number
+  height: number
+  html: string
+}
+
 const RoadMap = () => {
   const { theme } = useTheme()
   const router = useRouter()
   const coverRef = useRef<HTMLDivElement | null>(null)
   const isHappyMode = useAtomValue(isHappyModeAtom)
+  const [overlayNodes, setOverlayNodes] = useState<OverlayNode[]>([])
+  const [stageTransform, setStageTransform] = useState({ x: 0, y: 0, scale: 1 })
 
   // 添加 ref 用于保存缩放状态
   const lastCenter = useRef<{ x: number; y: number } | null>(null)
@@ -53,6 +63,10 @@ const RoadMap = () => {
   useEffect(() => {
     const container = document.getElementById("container")
     if (container) container.innerHTML = ""
+
+    // 重置叠加层状态
+    setOverlayNodes([])
+    setStageTransform({ x: 0, y: 0, scale: 1 })
 
     // 创建 Stage
     const stage = new Konva.Stage({
@@ -63,6 +77,17 @@ const RoadMap = () => {
       dragDistance: 5, // 设置拖动触发阈值
       hitGraphEnabled: true // 启用精确命中检测
     })
+
+    // 同步 Stage 变换到 HTML 叠加层
+    const syncTransform = () => {
+      setStageTransform({
+        x: stage.x(),
+        y: stage.y(),
+        scale: stage.scaleX()
+      })
+    }
+
+    stage.on("dragmove", syncTransform)
 
     // 添加触摸事件监听
     stage.on("touchmove", (e) => {
@@ -110,6 +135,7 @@ const RoadMap = () => {
         stage.position(newPos)
         lastDist.current = dist
         lastCenter.current = newCenter
+        syncTransform()
       }
     })
 
@@ -129,6 +155,10 @@ const RoadMap = () => {
       const prevY = map[index - 1] ? map[index - 1].y : 20
       item.y = item.y + prevY
     })
+
+    // 收集有 textCustomNode 的节点，供 HTML 叠加层渲染
+    const collectedNodes: OverlayNode[] = []
+
     // 画连接线
     for (let i = 0; i < map.length - 1; i++) {
       const rect1 = map[i] // 当前矩形
@@ -175,13 +205,30 @@ const RoadMap = () => {
           currentX = parentRightX + node.marginLeft
         }
 
+        const nodeY = mainRectY + node.y
+        const nodeWidth = node.width || CARD_CONFIG.width
+        const nodeHeight = node.height || CARD_CONFIG.height
+
         // 创建当前矩形
         const currentRect = makeTextRect({
           ...node,
           x: currentX,
-          y: mainRectY + node.y,
-          textColor: node.textColor
+          y: nodeY,
+          textColor: node.textColor,
+          textCustomNode: node.textCustomNode
         })
+
+        // 有 textCustomNode 时记录位置供叠加层渲染
+        if (node.textCustomNode) {
+          collectedNodes.push({
+            x: currentX,
+            y: nodeY,
+            width: nodeWidth,
+            height: nodeHeight,
+            html: node.textCustomNode.replace(/className=/g, "class=")
+          })
+        }
+
         // 绘制连接父节点和当前节点的虚线
         const line = drawDashedLine({
           parentGroup,
@@ -206,8 +253,22 @@ const RoadMap = () => {
     }
     // 画矩形
     map.forEach((item) => {
+      const itemWidth = item.width || CARD_CONFIG.width
+      const itemHeight = item.height || CARD_CONFIG.height
       const mainRectGroup: Group = makeTextRect(item)
       mainLayer.add(mainRectGroup)
+
+      // 有 textCustomNode 时记录位置供叠加层渲染
+      if (item.textCustomNode) {
+        collectedNodes.push({
+          x: (canvasWidth - itemWidth) / 2,
+          y: item.y,
+          width: itemWidth,
+          height: itemHeight,
+          html: item.textCustomNode.replace(/className=/g, "class=")
+        })
+      }
+
       // 画左子树🌳的矩形
       const leftTree = item?.children?.[0]
       if (leftTree && leftTree.length > 0) {
@@ -227,6 +288,8 @@ const RoadMap = () => {
         })
       }
     })
+
+    setOverlayNodes(collectedNodes)
 
     // 添加鼠标滚轮缩放功能
     if (!isMobile()) {
@@ -257,6 +320,7 @@ const RoadMap = () => {
         })
 
         stage.batchDraw()
+        syncTransform()
       })
     }
 
@@ -316,15 +380,52 @@ const RoadMap = () => {
       <div hidden={!isHappyMode} className={styles.angleDown} onClick={goToTop}>
         <ChevronUp size={32} />
       </div>
-      <div
-        id="container"
-        style={{
-          display: "flex",
-          justifyContent: "center",
-          background: theme === "dark" ? "#181818" : "transparent",
-          overflowX: "hidden"
-        }}
-      />
+      <div style={{ position: "relative" }}>
+        <div
+          id="container"
+          style={{
+            display: "flex",
+            justifyContent: "center",
+            background: theme === "dark" ? "#181818" : "transparent",
+            overflowX: "hidden"
+          }}
+        />
+        {overlayNodes.length > 0 && (
+          <div
+            style={{
+              position: "absolute",
+              top: 0,
+              left: 0,
+              width: canvasWidth,
+              height: canvasHeight,
+              pointerEvents: "none",
+              overflow: "hidden",
+              transformOrigin: "0 0",
+              transform: `translate(${stageTransform.x}px, ${stageTransform.y}px) scale(${stageTransform.scale})`
+            }}
+          >
+            {overlayNodes.map((node, i) => (
+              <div
+                key={i}
+                style={{
+                  position: "absolute",
+                  left: node.x,
+                  top: node.y,
+                  width: node.width,
+                  height: node.height,
+                  display: "flex",
+                  alignItems: "center",
+                  justifyContent: "center",
+                  fontSize: 16,
+                  fontFamily:
+                    "Helvetica, 'Hiragino Sans GB', 'Microsoft Yahei', '微软雅黑', Arial, sans-serif"
+                }}
+                dangerouslySetInnerHTML={{ __html: node.html }}
+              />
+            ))}
+          </div>
+        )}
+      </div>
     </>
   )
 }
