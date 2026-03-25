@@ -13,6 +13,8 @@ export type RoadMapLeftTree = {
   link: string
   /** 矩形内填充文字 */
   text: string
+  /** 文字颜色 */
+  textColor?: string
   children?: RoadMapLeftTree
 }[]
 export type RoadMapRightTree = {
@@ -30,6 +32,8 @@ export type RoadMapRightTree = {
   link: string
   /** 矩形内填充文字 */
   text: string
+  /** 文字颜色 */
+  textColor?: string
   children?: RoadMapRightTree
 }[]
 export type RoadMap = {
@@ -45,6 +49,8 @@ export type RoadMap = {
   link: string
   /** 矩形内填充文字 */
   text: string
+  /** 文字颜色 */
+  textColor?: string
   children?: [RoadMapLeftTree, RoadMapRightTree]
 }[]
 
@@ -411,14 +417,18 @@ export const map: RoadMap = [
     y: 80,
     fill: "#28A745",
     link: "",
-    // next
     text: "小程序"
   },
   {
     y: 80,
     fill: "#28A745",
     link: "",
-    // next
     text: "Web3"
+  },
+  {
+    y: 80,
+    fill: "#000000",
+    link: "",
+    text: "AI"
   }
 ]

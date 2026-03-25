@@ -27,6 +27,8 @@ export const makeTextRect = (props: {
   link: string
   /** 矩形内显示的文字 */
   text: string
+  /** 文字颜色 */
+  textColor?: string
 }) => {
   const {
     x,
@@ -35,7 +37,8 @@ export const makeTextRect = (props: {
     height = CARD_CONFIG.height,
     fill,
     link,
-    text
+    text,
+    textColor
   } = props
   // 计算矩形水平居中的 x 坐标
   const rectX = (canvasWidth - width) / 2
@@ -64,7 +67,7 @@ export const makeTextRect = (props: {
     fontSize: 16, // 字体大小
     fontFamily:
       "Helvetica, 'Hiragino Sans GB', 'Microsoft Yahei', '微软雅黑', Arial, sans-serif",
-    fill: CARD_CONFIG.color, // 字体颜色
+    fill: textColor || CARD_CONFIG.color, // 字体颜色
     align: "center", // 水平居中
     verticalAlign: "middle", // 垂直居中
     listening: false // 禁止文字响应事件

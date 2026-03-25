@@ -179,7 +179,8 @@ const RoadMap = () => {
         const currentRect = makeTextRect({
           ...node,
           x: currentX,
-          y: mainRectY + node.y
+          y: mainRectY + node.y,
+          textColor: node.textColor
         })
         // 绘制连接父节点和当前节点的虚线
         const line = drawDashedLine({
