@@ -50,10 +50,13 @@ const LinkButtonGroup = () => {
   return (
     <div className="hidden sm:block w-[250px]">
       <div
-        className={cn("flex justify-end gap-4 items-center text-gray-950 ", {
+        className={cn("flex justify-end gap-3 items-center text-gray-950 ", {
           "text-white": currentTheme === "dark",
         })}
       >
+        <Link className="text-[12px] text-[#FFFF00] bg-[#CE1126] py-0.5 px-1 rounded-md" style={{fontFamily:'Impact, Arial Black, Helvetica, sans-serif'}} target="_blank" href="https://www.marxists.org/chinese/index.html">
+          伟大的知识
+        </Link>
         <Link href="https://blog.csdn.net/csdn1940879828">
           <svg
             role="img"
