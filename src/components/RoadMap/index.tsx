@@ -380,7 +380,7 @@ const RoadMap = () => {
       <div hidden={!isHappyMode} className={styles.angleDown} onClick={goToTop}>
         <ChevronUp size={32} />
       </div>
-      <div style={{ position: "relative", overflow: "hidden", width: canvasWidth, height: canvasHeight }}>
+      <div style={{ position: "relative", overflow: "hidden" }}>
         <div
           id="container"
           style={{
