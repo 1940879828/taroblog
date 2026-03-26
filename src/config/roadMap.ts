@@ -437,6 +437,19 @@ export const map: RoadMap = [
     text: "ai",
     width: 160,
     link: "AritificialIntelligence",
-    textCustomNode: `<div class="text-[#CCCCCC]"><span class="text-[#ffffff]">A</span>rtificial <span class="text-[#ffffff]">I</span>ntelligence</div>`
+    textCustomNode: `<div class="text-[#CCCCCC]"><span class="text-[#ffffff]">A</span>rtificial <span class="text-[#ffffff]">I</span>ntelligence</div>`,
+    children: [
+      [],
+      [
+        {
+          y: 0,
+          fill: "#000000",
+          link: "提示词工程",
+          text: "提示词工程",
+          textColor: "#ffffff",
+          marginLeft: 40
+        }
+      ]
+    ]
   }
 ]
