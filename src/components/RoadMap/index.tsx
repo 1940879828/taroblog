@@ -1,9 +1,9 @@
 "use client"
 import Message from "@/components/Message"
 import {
+  type RoadMap,
   type RoadMapLeftTree,
   type RoadMapRightTree,
-  map as _map
 } from "@/config/roadMap"
 import {
   CARD_CONFIG,
@@ -48,7 +48,7 @@ type OverlayNode = {
   html: string
 }
 
-const RoadMap = () => {
+const RoadMap = ({ map: mapProp }: { map: RoadMap }) => {
   const { theme } = useTheme()
   const router = useRouter()
   const coverRef = useRef<HTMLDivElement | null>(null)
@@ -144,7 +144,7 @@ const RoadMap = () => {
       stage.draggable(true)
     })
 
-    const map = _.cloneDeep(_map)
+    const map = _.cloneDeep(mapProp)
     // 创建 Layer
     const mainLayer = new Konva.Layer()
     const lineLayer = new Konva.Layer()
@@ -365,7 +365,7 @@ const RoadMap = () => {
     // 将 Layer 添加到 Stage
     stage.add(lineLayer)
     stage.add(mainLayer)
-  }, [theme])
+  }, [theme, mapProp])
 
   function goToTop() {
     if (coverRef) {

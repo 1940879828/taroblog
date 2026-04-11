@@ -453,3 +453,265 @@ export const map: RoadMap = [
     ]
   }
 ]
+
+export const backendMap: RoadMap = [
+  {
+    y: 20,
+    fill: "#A9A9A9",
+    link: "",
+    text: "计算机网络"
+  },
+  {
+    y: 80,
+    fill: "#0078D7",
+    link: "",
+    text: "操作系统",
+    children: [
+      [],
+      [
+        {
+          y: -30,
+          fill: "#e07b39",
+          link: "",
+          text: "Linux",
+          marginLeft: 80
+        },
+        {
+          y: 30,
+          fill: "#0078D7",
+          link: "",
+          text: "Windows Server",
+          marginLeft: 80,
+          width: 160
+        }
+      ]
+    ]
+  },
+  {
+    y: 80,
+    fill: "#e65c00",
+    link: "",
+    text: "Java",
+    children: [
+      [
+        {
+          y: -30,
+          fill: "#c62828",
+          link: "",
+          text: "JVM",
+          marginRight: 80
+        },
+        {
+          y: 30,
+          fill: "#1565c0",
+          link: "",
+          text: "并发编程",
+          marginRight: 80
+        }
+      ],
+      []
+    ]
+  },
+  {
+    y: 80,
+    fill: "#6db33f",
+    link: "",
+    text: "Spring",
+    children: [
+      [],
+      [
+        {
+          y: -60,
+          fill: "#6db33f",
+          link: "",
+          text: "Spring Boot",
+          marginLeft: 80
+        },
+        {
+          y: 0,
+          fill: "#4caf50",
+          link: "",
+          text: "Spring MVC",
+          marginLeft: 80
+        },
+        {
+          y: 60,
+          fill: "#388e3c",
+          link: "",
+          text: "Spring Cloud",
+          marginLeft: 80
+        }
+      ]
+    ]
+  },
+  {
+    y: 80,
+    fill: "#cdbf9b",
+    link: "",
+    text: "数据库",
+    children: [
+      [
+        {
+          y: -60,
+          fill: "#017899",
+          link: "Mysql数据库常用命令",
+          text: "MySQL",
+          marginRight: 80
+        },
+        {
+          y: 0,
+          fill: "#336791",
+          link: "",
+          text: "PostgreSQL",
+          marginRight: 80
+        },
+        {
+          y: 60,
+          fill: "#37a742",
+          link: "MongoDB常用命令",
+          text: "MongoDB",
+          marginRight: 80
+        }
+      ],
+      []
+    ]
+  },
+  {
+    y: 80,
+    fill: "#d32f2f",
+    link: "",
+    text: "Redis",
+    children: [
+      [],
+      [
+        {
+          y: -30,
+          fill: "#e53935",
+          link: "",
+          text: "缓存策略",
+          marginLeft: 80
+        },
+        {
+          y: 30,
+          fill: "#c62828",
+          link: "",
+          text: "分布式锁",
+          marginLeft: 80
+        }
+      ]
+    ]
+  },
+  {
+    y: 80,
+    fill: "#ff6f00",
+    link: "",
+    text: "消息队列",
+    children: [
+      [
+        {
+          y: -30,
+          fill: "#e65100",
+          link: "",
+          text: "RabbitMQ",
+          marginRight: 80
+        },
+        {
+          y: 30,
+          fill: "#bf360c",
+          link: "",
+          text: "Kafka",
+          marginRight: 80
+        }
+      ],
+      []
+    ]
+  },
+  {
+    y: 80,
+    fill: "#0db7ed",
+    link: "",
+    text: "Docker",
+    children: [
+      [],
+      [
+        {
+          y: -30,
+          fill: "#0288d1",
+          link: "",
+          text: "容器编排",
+          marginLeft: 80
+        },
+        {
+          y: 30,
+          fill: "#326ce5",
+          link: "",
+          text: "Kubernetes",
+          marginLeft: 80
+        }
+      ]
+    ]
+  },
+  {
+    y: 80,
+    fill: "#5c6bc0",
+    link: "",
+    text: "微服务"
+  },
+  {
+    y: 80,
+    fill: "#00897b",
+    link: "",
+    text: "安全与认证",
+    children: [
+      [
+        {
+          y: -30,
+          fill: "#00796b",
+          link: "",
+          text: "JWT",
+          marginRight: 80
+        },
+        {
+          y: 30,
+          fill: "#004d40",
+          link: "",
+          text: "OAuth2",
+          marginRight: 80
+        }
+      ],
+      []
+    ]
+  },
+  {
+    y: 80,
+    fill: "#3572A5",
+    link: "",
+    text: "Python",
+    children: [
+      [],
+      [
+        {
+          y: -60,
+          fill: "#2b5b84",
+          link: "",
+          text: "Django",
+          marginLeft: 80
+        },
+        {
+          y: 0,
+          fill: "#009688",
+          link: "",
+          text: "FastAPI",
+          marginLeft: 80
+        },
+        {
+          y: 60,
+          fill: "#e65100",
+          link: "",
+          text: "数据分析",
+          marginLeft: 80
+        }
+      ]
+    ]
+  }
+]
