@@ -490,7 +490,7 @@ export const backendMap: RoadMap = [
   {
     y: 80,
     fill: "#e65c00",
-    link: "",
+    link: "Java笔记",
     text: "Java",
     children: [
       [
