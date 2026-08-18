@@ -214,6 +214,18 @@
   background-color: var(--root-bg, #181818);
 }
 
+/* 主题切换：固定新主题截图在旧截图上方，由 clip-path 负责揭开 */
+/*noinspection CssInvalidPseudoSelector*/
+.theme-view-transition::view-transition-old(root) {
+  z-index: 0 !important;
+}
+
+/*noinspection CssInvalidPseudoSelector*/
+.theme-view-transition::view-transition-new(root) {
+  z-index: 1 !important;
+  will-change: clip-path;
+}
+
 * {
   scroll-behavior: smooth;
   /*谷歌121版本后的新属性与旧webkit-scrollbar冲突*/

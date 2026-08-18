@@ -1,10 +1,10 @@
-import { Note, PageHeader, Result } from "../../_components";
+import { Note, PageHeader, Result } from "../../_components"
 
 // ISR：构建时静态生成，之后每 10 秒最多重建一次（过期后的首次请求触发，期间先返回旧版）
-export const revalidate = 10;
+export const revalidate = 10
 
 export default function IsrPage() {
-  const renderedAt = new Date().toISOString();
+  const renderedAt = new Date().toISOString()
 
   return (
     <div className="space-y-6">
@@ -19,7 +19,10 @@ export default function IsrPage() {
         <div className="rounded-xl border border-slate-700 bg-slate-900 p-4 text-sm leading-6 text-slate-300">
           <p className="text-xs text-slate-500">关键认知</p>
           <ul className="mt-2 list-disc space-y-1 pl-4">
-            <li><code>revalidate: 10</code> 不是"每 10 秒必更新"，而是"最多每 10 秒重建一次"。</li>
+            <li>
+              <code>revalidate: 10</code> 不是"每 10 秒必更新"，而是"最多每 10
+              秒重建一次"。
+            </li>
             <li>10 秒内所有请求直接命中旧缓存，响应极快、服务器不渲染。</li>
             <li>重建是后台异步完成，用户拿到的始终是"上一个周期"的内容。</li>
           </ul>
@@ -28,15 +31,21 @@ export default function IsrPage() {
 
       <Note title="怎么观察（必须生产模式）">
         <ol className="list-decimal space-y-1 pl-4">
-          <li>先 <code>pnpm build</code>：在 build 日志里找到本页 —— 当前标记为 <code>ƒ</code>（Dynamic）。</li>
           <li>
-            为什么？根 layout 的 <code>cookies()</code>（动态 API）把本页拖成了动态，<code>revalidate</code>{" "}
-            <strong>不能覆盖父级动态</strong>（对比 ssg 页的 <code>force-static</code> 可以）。
+            先 <code>pnpm build</code>：在 build 日志里找到本页 —— 应标记为{" "}
+            <code>○</code>（Static）并带 revalidate 信息。
           </li>
-          <li>临时注释根 layout 的 cookies 相关代码 → 重新 build，本页会变为 <code>○</code>（Static）+ Revalidate 10s。</li>
-          <li><code>pnpm start</code> 后连刷：约 10 秒内时间不变，10 秒后的首次请求触发后台重建，之后才变。</li>
+          <li>
+            根 layout 没有使用 <code>cookies()</code> 动态
+            API，主题同步不会把本页拖成动态； 本页的 <code>revalidate</code>{" "}
+            可以按 ISR 语义生效。
+          </li>
+          <li>
+            <code>pnpm start</code> 后连刷：约 10 秒内时间不变，10
+            秒后的首次请求触发后台重建，之后才变。
+          </li>
         </ol>
       </Note>
     </div>
-  );
+  )
 }

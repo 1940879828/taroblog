@@ -1,3 +1,11 @@
+export type RoadMapCustomText = {
+  className?: string
+  segments: {
+    text: string
+    className?: string
+  }[]
+}
+
 export type RoadMapLeftTree = {
   /** 相对主轴矩形的偏移量 */
   y: number
@@ -16,7 +24,7 @@ export type RoadMapLeftTree = {
   /** 文字颜色 */
   textColor?: string
   /** 自定义节点内容（优先级高于 text 和 textColor） */
-  textCustomNode?: string
+  textCustomNode?: RoadMapCustomText
   children?: RoadMapLeftTree
 }[]
 export type RoadMapRightTree = {
@@ -37,7 +45,7 @@ export type RoadMapRightTree = {
   /** 文字颜色 */
   textColor?: string
   /** 自定义节点内容（优先级高于 text 和 textColor） */
-  textCustomNode?: string
+  textCustomNode?: RoadMapCustomText
   children?: RoadMapRightTree
 }[]
 export type RoadMap = {
@@ -56,7 +64,7 @@ export type RoadMap = {
   /** 文字颜色 */
   textColor?: string
   /** 自定义节点内容（优先级高于 text 和 textColor） */
-  textCustomNode?: string
+  textCustomNode?: RoadMapCustomText
   children?: [RoadMapLeftTree, RoadMapRightTree]
 }[]
 
@@ -437,7 +445,15 @@ export const map: RoadMap = [
     text: "ai",
     width: 160,
     link: "AritificialIntelligence",
-    textCustomNode: `<div class="text-[#CCCCCC]"><span class="text-[#ffffff]">A</span>rtificial <span class="text-[#ffffff]">I</span>ntelligence</div>`,
+    textCustomNode: {
+      className: "text-[#CCCCCC]",
+      segments: [
+        { text: "A", className: "text-[#ffffff]" },
+        { text: "rtificial " },
+        { text: "I", className: "text-[#ffffff]" },
+        { text: "ntelligence" }
+      ]
+    },
     children: [
       [],
       [

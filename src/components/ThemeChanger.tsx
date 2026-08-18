@@ -1,170 +1,201 @@
-"use client";
-import { cn } from "@/lib/utils";
-import { useTheme } from "next-themes";
+"use client"
+import { useTheme } from "@/components/ThemeProvider"
+import { cn } from "@/lib/utils"
 import {
   type ChangeEvent,
+  type PointerEvent,
   forwardRef,
   useCallback,
   useEffect,
   useImperativeHandle,
-  useRef,
-} from "react";
+  useRef
+} from "react"
+import { flushSync } from "react-dom"
 
 export interface ThemeChangerRef {
-  toggleTheme: () => void;
-  setTheme: (theme: "dark" | "cupcake") => void;
-  getCurrentTheme: () => string | undefined;
+  toggleTheme: () => void
+  setTheme: (theme: "dark" | "cupcake") => void
+  getCurrentTheme: () => string | undefined
+}
+
+function warmThemeTransition() {
+  if (typeof document === "undefined") return
+  if (!document.startViewTransition) return
+  if (document.documentElement.classList.contains("theme-view-transition"))
+    return
+
+  const warmState = getThemeTransitionWarmState()
+
+  if (
+    warmState.__taroblogThemeTransitionWarmed ||
+    warmState.__taroblogThemeTransitionWarming
+  ) {
+    return
+  }
+
+  warmState.__taroblogThemeTransitionWarming = true
+  document.documentElement.classList.add("theme-view-transition")
+
+  const transition = document.startViewTransition(() => {})
+  transition.ready
+    .then(() => {
+      const animation = document.documentElement.animate(
+        {
+          clipPath: ["circle(0px at 50% 50%)", "circle(150vmax at 50% 50%)"]
+        },
+        {
+          duration: 160,
+          easing: "linear",
+          fill: "both",
+          pseudoElement: "::view-transition-new(root)"
+        }
+      )
+
+      return animation.finished
+    })
+    .catch(() => undefined)
+    .finally(() => {
+      document.documentElement.classList.remove("theme-view-transition")
+      warmState.__taroblogThemeTransitionWarming = false
+      warmState.__taroblogThemeTransitionWarmed = true
+    })
+}
+
+function getThemeTransitionWarmState() {
+  return window as Window & {
+    __taroblogThemeTransitionWarmed?: boolean
+    __taroblogThemeTransitionWarming?: boolean
+  }
 }
 
 const ThemeController = forwardRef<
   ThemeChangerRef,
   {
-    className?: string;
-    showText?: boolean;
-    size?: number;
+    className?: string
+    showText?: boolean
+    size?: number
   }
 >(({ className, showText = false, size = 32 }, ref) => {
-  const { theme, resolvedTheme, setTheme } = useTheme();
-  const inputRef = useRef<HTMLInputElement>(null);
-  const mousePositionRef = useRef<{ clientX: number; clientY: number }>({
-    clientX: 0,
-    clientY: 0,
-  });
-  const currentTheme = theme === "system" ? resolvedTheme : theme;
-  const isChecked = currentTheme === "cupcake";
+  const { resolvedTheme, setTheme } = useTheme()
+  const labelRef = useRef<HTMLLabelElement>(null)
+  const inputRef = useRef<HTMLInputElement>(null)
+  const transitionOriginRef = useRef<{
+    clientX: number
+    clientY: number
+  } | null>(null)
+  const currentTheme = resolvedTheme
+  const isChecked = currentTheme === "cupcake"
+
+  useEffect(() => {
+    const scheduleWarmup = () => {
+      warmThemeTransition()
+    }
+
+    const requestIdleCallback = window.requestIdleCallback
+
+    if (requestIdleCallback) {
+      const idleId = requestIdleCallback(scheduleWarmup, {
+        timeout: 1200
+      })
+
+      return () => {
+        window.cancelIdleCallback(idleId)
+      }
+    }
+
+    const timerId = setTimeout(scheduleWarmup, 600)
+    return () => {
+      clearTimeout(timerId)
+    }
+  }, [])
+
+  const getControlCenter = useCallback(() => {
+    const rect = labelRef.current?.getBoundingClientRect()
+
+    if (!rect || rect.width === 0 || rect.height === 0) {
+      return {
+        clientX: window.innerWidth / 2,
+        clientY: window.innerHeight / 2
+      }
+    }
+
+    return {
+      clientX: rect.left + rect.width / 2,
+      clientY: rect.top + rect.height / 2
+    }
+  }, [])
+
+  const getTransitionOrigin = useCallback(() => {
+    return transitionOriginRef.current ?? getControlCenter()
+  }, [getControlCenter])
 
   // 处理主题切换的逻辑（提取为独立函数，方便外部调用）
   const handleThemeChange = useCallback(
     (toTheme: "dark" | "cupcake") => {
-      if (typeof window === "undefined") return;
+      if (typeof window === "undefined") return
 
-      const isSwitchingToDark = toTheme === "dark";
       const applyTheme = () => {
-        setTheme(toTheme);
+        setTheme(toTheme)
 
         if (inputRef.current) {
-          inputRef.current.checked = toTheme === "cupcake";
+          inputRef.current.checked = toTheme === "cupcake"
         }
-      };
-
-      if (!document.startViewTransition) {
-        applyTheme();
-        return;
       }
 
-      const transition = document.startViewTransition(async () => {
-        // 如果切换到暗色模式，添加类名以控制 z-index
-        if (isSwitchingToDark) {
-          document.documentElement.classList.add("dark-transition");
-        } else {
-          document.documentElement.classList.remove("dark-transition");
-        }
+      if (!document.startViewTransition) {
+        applyTheme()
+        return
+      }
 
-        applyTheme();
-      });
+      document.documentElement.classList.remove("dark-transition")
+      document.documentElement.classList.add("theme-view-transition")
+
+      const transition = document.startViewTransition(() => {
+        flushSync(applyTheme)
+      })
 
       // 在 transition.ready 的 Promise 完成后，执行自定义动画
       transition.ready.then(() => {
-        // 由于我们要从鼠标点击的位置开始做动画，所以我们需要先获取到鼠标的位置
-        const { clientX, clientY } = mousePositionRef.current;
+        const { clientX, clientY } = getTransitionOrigin()
+        transitionOriginRef.current = null
+        const viewportWidth = window.visualViewport?.width ?? window.innerWidth
+        const viewportHeight =
+          window.visualViewport?.height ?? window.innerHeight
+        const originXPercent = (clientX / viewportWidth) * 100
+        const originYPercent = (clientY / viewportHeight) * 100
+        const circleAnchor = `${originXPercent}% ${originYPercent}%`
 
-        // 计算半径，以鼠标点击的位置为圆心，到四个角的距离中最大的那个作为半径
+        // 计算半径，以控件中心为圆心，到四个角的距离中最大的那个作为半径
         const radius = Math.hypot(
-          Math.max(clientX, innerWidth - clientX),
-          Math.max(clientY, innerHeight - clientY)
-        );
+          Math.max(clientX, viewportWidth - clientX),
+          Math.max(clientY, viewportHeight - clientY)
+        )
         const clipPath = [
-          `circle(0% at ${clientX}px ${clientY}px)`,
-          `circle(${radius}px at ${clientX}px ${clientY}px)`,
-        ];
+          `circle(0px at ${circleAnchor})`,
+          `circle(${radius}px at ${circleAnchor})`
+        ]
 
-        // 自定义动画
         const animation = document.documentElement.animate(
           {
-            // 切换到暗色主题时，从大圆到小圆（白色逐渐消失）
-            // 切换到亮色主题时，从小圆到大圆（黑色逐渐消失）
-            clipPath: isSwitchingToDark ? clipPath.reverse() : clipPath,
+            clipPath
           },
           {
             duration: 500,
-            easing: "ease-in-out",
-            // 切换到暗色主题时，裁剪旧的白色视图
-            // 切换到亮色主题时，裁剪新的黑色视图
-            pseudoElement: isSwitchingToDark
-              ? "::view-transition-old(root)"
-              : "::view-transition-new(root)",
+            easing: "linear",
+            fill: "both",
+            pseudoElement: "::view-transition-new(root)"
           }
-        );
+        )
 
-        // 方案B：在动画完成前提前调整z-index，避免白色闪烁
-        if (isSwitchingToDark) {
-          // 方案B：在动画完成前提前调整z-index，避免白色闪烁
-          let progressHandled = false;
-          let tempStyle: HTMLStyleElement | null = null;
-
-          const adjustZIndex = () => {
-            if (progressHandled) return;
-            progressHandled = true;
-
-            // 提前调整z-index，让新视图显示在上层
-            tempStyle = document.createElement("style");
-            tempStyle.id = "theme-transition-override";
-            tempStyle.textContent = `
-            .dark-transition::view-transition-new(root) {
-              z-index: 101 !important;
-            }
-            .dark-transition::view-transition-old(root) {
-              z-index: 99 !important;
-            }
-          `;
-            document.head.appendChild(tempStyle);
-          };
-
-          // 在动画450ms时（90%）提前调整z-index
-          setTimeout(() => {
-            if (!progressHandled) {
-              adjustZIndex();
-            }
-          }, 450);
-
-          // 监听动画完成
-          animation.addEventListener("finish", () => {
-            if (!progressHandled) {
-              adjustZIndex();
-            }
-
-            // 等待过渡完成后再移除类
-            Promise.all([animation.finished, transition.finished])
-              .then(() => {
-                // 使用双重 requestAnimationFrame 确保浏览器完成渲染
-                requestAnimationFrame(() => {
-                  requestAnimationFrame(() => {
-                    document.documentElement.classList.remove(
-                      "dark-transition"
-                    );
-
-                    // 清理临时样式
-                    if (tempStyle && tempStyle.parentNode) {
-                      setTimeout(() => {
-                        document.head.removeChild(tempStyle!);
-                      }, 200);
-                    }
-                  });
-                });
-              })
-              .catch((err) => {
-                console.error("[ThemeChanger] 过渡出错:", err);
-                document.documentElement.classList.remove("dark-transition");
-                if (tempStyle && tempStyle.parentNode) {
-                  document.head.removeChild(tempStyle);
-                }
-              });
-          });
-        }
-      });
+        animation.finished
+          .catch(() => undefined)
+          .finally(() => {
+            document.documentElement.classList.remove("theme-view-transition")
+          })
+      })
     },
-    [setTheme]
-  );
+    [getTransitionOrigin, setTheme]
+  )
 
   // 暴露方法供外部调用
   useImperativeHandle(
@@ -172,48 +203,46 @@ const ThemeController = forwardRef<
     () => ({
       // 切换主题（通过触发 input 的 click 事件）
       toggleTheme: () => {
+        transitionOriginRef.current = getControlCenter()
         if (inputRef.current) {
-          inputRef.current.click();
+          inputRef.current.click()
         }
       },
       // 直接设置主题
       setTheme: (newTheme: "dark" | "cupcake") => {
-        handleThemeChange(newTheme);
+        transitionOriginRef.current = getControlCenter()
+        handleThemeChange(newTheme)
       },
       // 获取当前主题
       getCurrentTheme: () => {
-        return currentTheme;
-      },
+        return currentTheme
+      }
     }),
-    [currentTheme, handleThemeChange]
-  );
+    [currentTheme, getControlCenter, handleThemeChange]
+  )
 
-  // 监听鼠标点击事件，获取鼠标位置
-  const handleMouseDown = useCallback((e: MouseEvent) => {
-    mousePositionRef.current = { clientX: e.clientX, clientY: e.clientY };
-  }, []);
-
-  // 在组件挂载时添加鼠标点击事件监听器
-  useEffect(() => {
-    if (typeof window === "undefined") return;
-
-    document.addEventListener("mousedown", handleMouseDown);
-    return () => {
-      document.removeEventListener("mousedown", handleMouseDown);
-    };
-  }, [handleMouseDown]);
+  const handlePointerDown = useCallback(
+    (_e: PointerEvent<HTMLLabelElement>) => {
+      transitionOriginRef.current = getControlCenter()
+    },
+    [getControlCenter]
+  )
 
   const onInputChange = (e: ChangeEvent<HTMLInputElement>) => {
-    if (typeof window === "undefined") return;
+    if (typeof window === "undefined") return
 
     // 根据 checkbox 的 checked 状态决定主题
     // checked = true 表示 cupcake，checked = false 表示 dark
-    const toTheme = e.target.checked ? "cupcake" : "dark";
-    handleThemeChange(toTheme);
-  };
+    const toTheme = e.target.checked ? "cupcake" : "dark"
+    handleThemeChange(toTheme)
+  }
 
   return (
-    <label className={cn("swap swap-rotate", className)}>
+    <label
+      ref={labelRef}
+      className={cn("swap swap-rotate", className)}
+      onPointerDown={handlePointerDown}
+    >
       <input
         ref={inputRef}
         type="checkbox"
@@ -243,9 +272,9 @@ const ThemeController = forwardRef<
       </svg>
       {showText && "切换主题"}
     </label>
-  );
-});
+  )
+})
 
-ThemeController.displayName = "ThemeController";
+ThemeController.displayName = "ThemeController"
 
-export default ThemeController;
+export default ThemeController
