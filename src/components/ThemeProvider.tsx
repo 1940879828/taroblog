@@ -1,57 +1,110 @@
 "use client"
 
-import { ThemeProvider as NextThemesProvider } from "next-themes"
+import { DEFAULT_THEME, type Theme, isTheme } from "@/lib/theme"
 import type * as React from "react"
-import { type PropsWithChildren, useEffect } from "react"
+import {
+  type PropsWithChildren,
+  createContext,
+  useCallback,
+  useContext,
+  useEffect,
+  useMemo,
+  useRef,
+  useState
+} from "react"
 
 type Props = {
-  initialTheme: string
+  initialTheme?: Theme
+}
+
+type ThemeContextValue = {
+  theme: Theme
+  resolvedTheme: Theme
+  setTheme: (theme: Theme) => void
+}
+
+const COOKIE_MAX_AGE = 60 * 60 * 24 * 365
+const THEME_CHANNEL = "taroblog-theme"
+
+const ThemeContext = createContext<ThemeContextValue | null>(null)
+
+function readDomTheme(fallback: Theme) {
+  if (typeof document === "undefined") return fallback
+
+  const domTheme = document.documentElement.getAttribute("data-theme")
+  return isTheme(domTheme) ? domTheme : fallback
+}
+
+function applyTheme(theme: Theme) {
+  document.documentElement.setAttribute("data-theme", theme)
+}
+
+function persistTheme(theme: Theme) {
+  document.cookie = `theme=${theme}; path=/; max-age=${COOKIE_MAX_AGE}`
 }
 
 const ThemeProvider: React.FC<PropsWithChildren<Props>> = ({
   children,
-  initialTheme
+  initialTheme = DEFAULT_THEME
 }) => {
+  const channelRef = useRef<BroadcastChannel | null>(null)
+  const [theme, setThemeState] = useState<Theme>(() =>
+    readDomTheme(initialTheme)
+  )
+
+  const setTheme = useCallback((nextTheme: Theme) => {
+    applyTheme(nextTheme)
+    persistTheme(nextTheme)
+    setThemeState(nextTheme)
+    channelRef.current?.postMessage(nextTheme)
+  }, [])
+
   useEffect(() => {
-    const handleThemeChange = (theme: string) => {
-      document.cookie = `theme=${theme}; path=/; max-age=31536000`
-    }
-
-    const initialDomTheme = document.documentElement.getAttribute("data-theme")
-    if (initialDomTheme) {
-      handleThemeChange(initialDomTheme)
-    }
-
-    const observer = new MutationObserver(() => {
-      const currentTheme = document.documentElement.getAttribute("data-theme")
-      if (currentTheme) {
-        handleThemeChange(currentTheme)
-      }
-    })
-
-    observer.observe(document.documentElement, {
-      attributes: true,
-      attributeFilter: ["data-theme"]
-    })
-
-    return () => observer.disconnect()
+    const domTheme = readDomTheme(initialTheme)
+    applyTheme(domTheme)
+    persistTheme(domTheme)
+    setThemeState(domTheme)
   }, [initialTheme])
 
-  return (
-    <NextThemesProvider
-      attribute="data-theme"
-      defaultTheme={initialTheme}
-      themes={["cupcake", "dark"]}
-      enableSystem={false}
-      disableTransitionOnChange
-      // 主题持久化已改为「单一 cookie 源」，由根 layout 服务端读 cookie + 本组件 MutationObserver 回写 cookie。
-      // 为避免 next-themes 默认往 localStorage 写 "theme" 与迁移脚本产生歧义，
-      // 这里改用独立的 storageKey，让它不再触碰 "theme" 这个 key。
-      storageKey="theme-pref"
-    >
-      {children}
-    </NextThemesProvider>
+  useEffect(() => {
+    if (!("BroadcastChannel" in window)) return
+
+    const channel = new BroadcastChannel(THEME_CHANNEL)
+    channelRef.current = channel
+
+    channel.onmessage = (event) => {
+      if (!isTheme(event.data)) return
+
+      applyTheme(event.data)
+      persistTheme(event.data)
+      setThemeState(event.data)
+    }
+
+    return () => {
+      channelRef.current = null
+      channel.close()
+    }
+  }, [])
+
+  const value = useMemo(
+    () => ({
+      theme,
+      resolvedTheme: theme,
+      setTheme
+    }),
+    [setTheme, theme]
   )
+
+  return <ThemeContext.Provider value={value}>{children}</ThemeContext.Provider>
+}
+
+export function useTheme() {
+  const context = useContext(ThemeContext)
+  if (!context) {
+    throw new Error("useTheme must be used within ThemeProvider")
+  }
+
+  return context
 }
 
 export default ThemeProvider

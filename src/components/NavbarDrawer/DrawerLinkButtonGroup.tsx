@@ -1,13 +1,13 @@
 "use client"
 
 import ThemeChanger from "@/components/ThemeChanger"
+import { useTheme } from "@/components/ThemeProvider"
 import { cn } from "@/lib/utils"
-import { useTheme } from "next-themes"
 import Link from "next/link"
-import {useEffect, useState} from "react"
+import { useEffect, useState } from "react"
 
 const DrawerLinkButtonGroup = () => {
-  const { theme, resolvedTheme } = useTheme()
+  const { resolvedTheme } = useTheme()
   const [mounted, setMounted] = useState(false)
 
   useEffect(() => {
@@ -16,7 +16,7 @@ const DrawerLinkButtonGroup = () => {
 
   if (!mounted) return null // 避免 SSR 造成的 UI 不匹配问题
 
-  const currentTheme = theme === "system" ? resolvedTheme : theme
+  const currentTheme = resolvedTheme
 
   return (
     <ul

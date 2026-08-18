@@ -1,9 +1,11 @@
 "use client"
 import Message from "@/components/Message"
-import {
-  type RoadMap,
-  type RoadMapLeftTree,
-  type RoadMapRightTree,
+import { useTheme } from "@/components/ThemeProvider"
+import type {
+  RoadMap as RoadMapConfig,
+  RoadMapCustomText,
+  RoadMapLeftTree,
+  RoadMapRightTree
 } from "@/config/roadMap"
 import {
   CARD_CONFIG,
@@ -20,7 +22,6 @@ import Konva from "konva"
 import type { Group } from "konva/lib/Group"
 import _ from "lodash"
 import { ChevronUp } from "lucide-react"
-import { useTheme } from "next-themes"
 import { useRouter } from "next/navigation"
 import React, { useEffect, useRef, useState } from "react"
 import styles from "./index.module.css"
@@ -45,10 +46,10 @@ type OverlayNode = {
   y: number
   width: number
   height: number
-  html: string
+  customText: RoadMapCustomText
 }
 
-const RoadMap = ({ map: mapProp }: { map: RoadMap }) => {
+const RoadMap = ({ map: mapProp }: { map: RoadMapConfig }) => {
   const { theme } = useTheme()
   const router = useRouter()
   const coverRef = useRef<HTMLDivElement | null>(null)
@@ -224,7 +225,7 @@ const RoadMap = ({ map: mapProp }: { map: RoadMap }) => {
             y: nodeY,
             width: nodeWidth,
             height: nodeHeight,
-            html: node.textCustomNode.replace(/className=/g, "class=")
+            customText: node.textCustomNode
           })
         }
 
@@ -254,7 +255,10 @@ const RoadMap = ({ map: mapProp }: { map: RoadMap }) => {
     map.forEach((item) => {
       const itemWidth = item.width || CARD_CONFIG.width
       const itemHeight = item.height || CARD_CONFIG.height
-      const mainRectGroup: Group = makeTextRect({ ...item, text: item.text ?? "" })
+      const mainRectGroup: Group = makeTextRect({
+        ...item,
+        text: item.text ?? ""
+      })
       mainLayer.add(mainRectGroup)
 
       // 有 textCustomNode 时记录位置供叠加层渲染
@@ -264,7 +268,7 @@ const RoadMap = ({ map: mapProp }: { map: RoadMap }) => {
           y: item.y,
           width: itemWidth,
           height: itemHeight,
-          html: item.textCustomNode.replace(/className=/g, "class=")
+          customText: item.textCustomNode
         })
       }
 
@@ -347,7 +351,7 @@ const RoadMap = ({ map: mapProp }: { map: RoadMap }) => {
       const link = target.getAttr("link")
       if (link) {
         if (String(link).includes("http")) {
-          if (typeof window !== 'undefined') {
+          if (typeof window !== "undefined") {
             window.open(link, "_blank")
           }
         } else {
@@ -402,23 +406,35 @@ const RoadMap = ({ map: mapProp }: { map: RoadMap }) => {
             }}
           >
             {overlayNodes.map((node, i) => (
-              <div
-                key={i}
-                style={{
-                  position: "absolute",
-                  left: node.x,
-                  top: node.y,
-                  width: node.width,
-                  height: node.height,
-                  display: "flex",
-                  alignItems: "center",
-                  justifyContent: "center",
-                  fontSize: 16,
-                  fontFamily:
-                    "Helvetica, 'Hiragino Sans GB', 'Microsoft Yahei', '微软雅黑', Arial, sans-serif"
-                }}
-                dangerouslySetInnerHTML={{ __html: node.html }}
-              />
+              <React.Fragment key={i}>
+                <div
+                  style={{
+                    position: "absolute",
+                    left: node.x,
+                    top: node.y,
+                    width: node.width,
+                    height: node.height,
+                    display: "flex",
+                    alignItems: "center",
+                    justifyContent: "center",
+                    fontSize: 16,
+                    fontFamily:
+                      "Helvetica, 'Hiragino Sans GB', 'Microsoft Yahei', '微软雅黑', Arial, sans-serif"
+                  }}
+                >
+                  <span className={node.customText.className}>
+                    {node.customText.segments.map((segment, index) =>
+                      segment.className ? (
+                        <span key={index} className={segment.className}>
+                          {segment.text}
+                        </span>
+                      ) : (
+                        segment.text
+                      )
+                    )}
+                  </span>
+                </div>
+              </React.Fragment>
             ))}
           </div>
         )}

@@ -1,4 +1,4 @@
-import type { RoadMap } from "@/config/roadMap"
+import type { RoadMap, RoadMapCustomText } from "@/config/roadMap"
 import Konva from "konva"
 
 // 卡片默认参数
@@ -9,8 +9,10 @@ export const CARD_CONFIG = {
 }
 
 // 画布宽度 - 服务端渲染时使用默认值，避免访问 window
-export const canvasWidth = typeof window !== 'undefined' ? window.innerWidth : 1920
-export const canvasHeight = typeof window !== 'undefined' ? window.innerHeight - 65 : 1080
+export const canvasWidth =
+  typeof window !== "undefined" ? window.innerWidth : 1920
+export const canvasHeight =
+  typeof window !== "undefined" ? window.innerHeight - 65 : 1080
 // 画带有文字的方块
 export const makeTextRect = (props: {
   /** 距离画布左边👈的距离 */
@@ -30,7 +32,7 @@ export const makeTextRect = (props: {
   /** 文字颜色 */
   textColor?: string
   /** 自定义节点内容（有值时跳过 Konva.Text 渲染） */
-  textCustomNode?: string
+  textCustomNode?: RoadMapCustomText
 }) => {
   const {
     x,

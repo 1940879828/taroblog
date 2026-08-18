@@ -1,11 +1,11 @@
 "use client"
-import {cn, isMobile} from "@/lib/utils";
-import {AnimatedGridPattern} from "@/components/AnimatedGridPattern";
-import RoadMap from "@/components/RoadMap";
-import React, {useState} from "react";
-import {useTheme} from "next-themes";
-import {useEffect} from "react";
-import {map, backendMap} from "@/config/roadMap";
+import { AnimatedGridPattern } from "@/components/AnimatedGridPattern"
+import RoadMap from "@/components/RoadMap"
+import { useTheme } from "@/components/ThemeProvider"
+import { backendMap, map } from "@/config/roadMap"
+import { cn, isMobile } from "@/lib/utils"
+import React, { useState } from "react"
+import { useEffect } from "react"
 
 type Tab = "frontend" | "backend"
 
@@ -19,7 +19,7 @@ const Index = () => {
     setMounted(true)
   }, [])
 
-  // next-themes 在 SSR 阶段 theme 为 undefined，且 isMobile 依赖 navigator，
+  // 主题和 isMobile 都依赖客户端环境，
   // 须等客户端挂载后再按 theme 条件渲染，否则会导致 hydration mismatch。
   if (!mounted) return null
 
@@ -41,25 +41,27 @@ const Index = () => {
       )}
       <div className="flex justify-center pt-4 pb-2 relative z-10">
         <div role="tablist" className="tabs tabs-boxed">
-          <a
+          <button
+            type="button"
             role="tab"
             className={`tab${activeTab === "frontend" ? " tab-active" : ""}`}
             onClick={() => setActiveTab("frontend")}
           >
             前端
-          </a>
-          <a
+          </button>
+          <button
+            type="button"
             role="tab"
             className={`tab${activeTab === "backend" ? " tab-active" : ""}`}
             onClick={() => setActiveTab("backend")}
           >
             后端
-          </a>
+          </button>
         </div>
       </div>
       <RoadMap map={currentMap} />
     </div>
-  );
-};
+  )
+}
 
-export default Index;
+export default Index

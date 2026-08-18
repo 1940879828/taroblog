@@ -1,32 +1,37 @@
-"use client";
-import ThemeChanger from "@/components/ThemeChanger";
-import { cn } from "@/lib/utils";
-import Link from "next/link";
-import { useTheme } from "next-themes";
-import { useEffect, useState } from "react";
+"use client"
+import ThemeChanger from "@/components/ThemeChanger"
+import { useTheme } from "@/components/ThemeProvider"
+import { cn } from "@/lib/utils"
+import Link from "next/link"
+import { useEffect, useState } from "react"
 
 const LinkButtonGroup = () => {
-  const { resolvedTheme } = useTheme();
-  const [mounted, setMounted] = useState(false);
+  const { resolvedTheme } = useTheme()
+  const [mounted, setMounted] = useState(false)
 
   useEffect(() => {
-    setMounted(true);
-  }, []);
+    setMounted(true)
+  }, [])
 
-  // next-themes 在 SSR 阶段 theme 为 undefined，须等客户端挂载后再渲染，
+  // 首屏主题由 head 脚本在水合前同步，仍须等客户端挂载后再渲染，
   // 否则会因条件渲染（text-white / bg-current / fill）导致 hydration mismatch。
-  if (!mounted) return null;
+  if (!mounted) return null
 
-  const currentTheme = resolvedTheme;
+  const currentTheme = resolvedTheme
 
   return (
     <div className="hidden sm:block w-[250px]">
       <div
         className={cn("flex justify-end gap-3 items-center text-gray-950 ", {
-          "text-white": currentTheme === "dark",
+          "text-white": currentTheme === "dark"
         })}
       >
-        <Link className="text-[12px] text-[#FFFF00] bg-[#CE1126] py-0.5 px-1 rounded-md" style={{fontFamily:'Impact, Arial Black, Helvetica, sans-serif'}} target="_blank" href="https://www.marxists.org/chinese/index.html">
+        <Link
+          className="text-[12px] text-[#FFFF00] bg-[#CE1126] py-0.5 px-1 rounded-md"
+          style={{ fontFamily: "Impact, Arial Black, Helvetica, sans-serif" }}
+          target="_blank"
+          href="https://www.marxists.org/chinese/index.html"
+        >
           伟大的知识
         </Link>
         <Link href="https://blog.csdn.net/csdn1940879828">
@@ -34,7 +39,7 @@ const LinkButtonGroup = () => {
             role="img"
             viewBox="1 3 22 18"
             className={cn("w-12 h-6 bg-current rounded-full", {
-              "bg-[#dd1700]": currentTheme !== "dark",
+              "bg-[#dd1700]": currentTheme !== "dark"
             })}
             xmlns="http://www.w3.org/2000/svg"
           >
@@ -71,7 +76,7 @@ const LinkButtonGroup = () => {
         <ThemeChanger />
       </div>
     </div>
-  );
-};
+  )
+}
 
-export default LinkButtonGroup;
+export default LinkButtonGroup
