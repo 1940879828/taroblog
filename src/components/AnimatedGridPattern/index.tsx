@@ -41,6 +41,12 @@ export function AnimatedGridPattern({
   const containerRef = useRef(null)
   const [dimensions, setDimensions] = useState({ width: 0, height: 0 })
   const [squares, setSquares] = useState(() => generateSquares(numSquares))
+  // 客户端挂载后再渲染，避免 SSR 阶段 Math.random 生成的位置在水合时不一致
+  const [mounted, setMounted] = useState(false)
+
+  useEffect(() => {
+    setMounted(true)
+  }, [])
 
   function getPos() {
     return [
@@ -99,6 +105,8 @@ export function AnimatedGridPattern({
       }
     }
   }, [containerRef])
+
+  if (!mounted) return null
 
   return (
     <svg

@@ -1,27 +1,23 @@
 "use client"
 import { AnimatedGridPattern } from "@/components/AnimatedGridPattern"
-import RoadMap from "@/components/RoadMap"
 import { useTheme } from "@/components/ThemeProvider"
 import { backendMap, map } from "@/config/roadMap"
 import { cn, isMobile } from "@/lib/utils"
+import { motion } from "motion/react"
+import dynamic from "next/dynamic"
 import React, { useState } from "react"
-import { useEffect } from "react"
+
+// Konva 画布依赖浏览器环境，关闭 SSR，客户端水合后再加载绘制
+const RoadMap = dynamic(() => import("@/components/RoadMap"), {
+  ssr: false
+})
 
 type Tab = "frontend" | "backend"
 
 const Index = () => {
   const { theme } = useTheme()
   const [activeTab, setActiveTab] = useState<Tab>("frontend")
-  const [mounted, setMounted] = useState(false)
   const currentMap = activeTab === "frontend" ? map : backendMap
-
-  useEffect(() => {
-    setMounted(true)
-  }, [])
-
-  // 主题和 isMobile 都依赖客户端环境，
-  // 须等客户端挂载后再按 theme 条件渲染，否则会导致 hydration mismatch。
-  if (!mounted) return null
 
   return (
     <div className="relative overflow-hidden h-full sm:overflow-auto sm:h-auto">
@@ -41,22 +37,28 @@ const Index = () => {
       )}
       <div className="flex justify-center pt-4 pb-2 relative z-10">
         <div role="tablist" className="tabs tabs-boxed">
-          <button
+          <motion.button
             type="button"
             role="tab"
             className={`tab${activeTab === "frontend" ? " tab-active" : ""}`}
             onClick={() => setActiveTab("frontend")}
+            initial={{ opacity: 0, y: 12 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.1, duration: 0.3 }}
           >
             前端
-          </button>
-          <button
+          </motion.button>
+          <motion.button
             type="button"
             role="tab"
             className={`tab${activeTab === "backend" ? " tab-active" : ""}`}
             onClick={() => setActiveTab("backend")}
+            initial={{ opacity: 0, y: 12 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.25, duration: 0.3 }}
           >
             后端
-          </button>
+          </motion.button>
         </div>
       </div>
       <RoadMap map={currentMap} />

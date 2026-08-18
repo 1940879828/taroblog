@@ -7,18 +7,26 @@ import { isHappyModeAtom } from "@/store/happyMode"
 import { useAtomValue } from "jotai"
 import { ChevronDown } from "lucide-react"
 import Image from "next/image"
-import React, { useRef } from "react"
+import React, { useEffect, useRef, useState } from "react"
 import styles from "./index.module.css"
 
 const HappyCover = () => {
   const isHappyMode = useAtomValue(isHappyModeAtom)
   const coverRef = useRef<HTMLDivElement | null>(null)
+  const [mounted, setMounted] = useState(false)
+
+  useEffect(() => {
+    setMounted(true)
+  }, [])
 
   function goToDown() {
     if (coverRef) {
       coverRef.current?.scrollIntoView({ behavior: "smooth", block: "start" })
     }
   }
+
+  // isMobile 依赖客户端环境，须等客户端挂载后再判断，否则会导致 hydration mismatch
+  if (!mounted) return null
 
   return (
     <>
