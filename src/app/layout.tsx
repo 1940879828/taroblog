@@ -84,12 +84,7 @@ export default function RootLayout({
   children: React.ReactNode
 }>) {
   return (
-    <html
-      lang="zh"
-      data-theme={DEFAULT_THEME}
-      className="theme-transition"
-      suppressHydrationWarning
-    >
+    <html lang="zh" data-theme={DEFAULT_THEME} suppressHydrationWarning>
       <head>
         {/* biome-ignore lint/security/noDangerouslySetInnerHtml: Static theme boot script prevents first-paint theme flash. */}
         <script dangerouslySetInnerHTML={{ __html: themeMigrationScript }} />
