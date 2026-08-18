@@ -44,6 +44,10 @@ const ThemeProvider: React.FC<PropsWithChildren<Props>> = ({
       themes={["cupcake", "dark"]}
       enableSystem={false}
       disableTransitionOnChange
+      // 主题持久化已改为「单一 cookie 源」，由根 layout 服务端读 cookie + 本组件 MutationObserver 回写 cookie。
+      // 为避免 next-themes 默认往 localStorage 写 "theme" 与迁移脚本产生歧义，
+      // 这里改用独立的 storageKey，让它不再触碰 "theme" 这个 key。
+      storageKey="theme-pref"
     >
       {children}
     </NextThemesProvider>

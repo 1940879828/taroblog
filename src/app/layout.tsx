@@ -47,13 +47,46 @@ export const metadata: Metadata = {
   },
 };
 
+const VALID_THEMES = ["cupcake", "dark"] as const;
+
+// 内联迁移脚本：在 React 水合 / 首屏绘制之前同步执行，
+// 把老用户的 localStorage 主题一次性迁移到 cookie，回到单一 cookie 源。
+const themeMigrationScript = `
+(function () {
+  try {
+    var valid = ${JSON.stringify(VALID_THEMES)};
+    var cookieTheme = (document.cookie.match(/(?:^|; )theme=([^;]+)/) || [])[1];
+
+    var stored = null;
+    try { stored = localStorage.getItem("theme"); } catch (e) {}
+
+    var finalTheme = cookieTheme || "";
+    // 只有 cookie 缺失、且 localStorage 有合法旧值时才迁移，防止旧数据覆盖新数据
+    if (!finalTheme && valid.indexOf(stored) !== -1) {
+      document.cookie = "theme=" + stored + "; path=/; max-age=31536000";
+      finalTheme = stored;
+    }
+
+    if (valid.indexOf(finalTheme) !== -1) {
+      document.documentElement.setAttribute("data-theme", finalTheme);
+    }
+
+    // 迁移后清理 localStorage，回归单一 cookie 源
+    try { localStorage.removeItem("theme"); } catch (e) {}
+  } catch (e) {}
+})();
+`;
+
 export default async function RootLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
 }>) {
   const cookieStore = await cookies();
-  const initialTheme = cookieStore.get("theme")?.value || "cupcake";
+  const cookieTheme = cookieStore.get("theme")?.value;
+  const initialTheme = VALID_THEMES.includes(cookieTheme as never)
+    ? (cookieTheme as (typeof VALID_THEMES)[number])
+    : "cupcake";
 
   return (
     <html
@@ -62,6 +95,11 @@ export default async function RootLayout({
       className="theme-transition"
       suppressHydrationWarning
     >
+      <head>
+        <script
+          dangerouslySetInnerHTML={{ __html: themeMigrationScript }}
+        />
+      </head>
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased overflow-hidden`}
       >
