@@ -2,50 +2,22 @@
 import ThemeChanger from "@/components/ThemeChanger";
 import { cn } from "@/lib/utils";
 import Link from "next/link";
-import { startTransition, useEffect, useState } from "react";
-
-// 获取当前主题（从 DOM 的 data-theme 属性读取）
-const getCurrentThemeFromDOM = (): string | undefined => {
-  if (typeof window === "undefined") return undefined;
-  return document.documentElement.getAttribute("data-theme") || undefined;
-};
+import { useTheme } from "next-themes";
+import { useEffect, useState } from "react";
 
 const LinkButtonGroup = () => {
+  const { resolvedTheme } = useTheme();
   const [mounted, setMounted] = useState(false);
-  const [currentTheme, setCurrentTheme] = useState<string | undefined>(
-    undefined
-  );
 
   useEffect(() => {
-    if (typeof window === "undefined") return;
-
-    // 更新主题的函数
-    const updateTheme = () => {
-      const theme = getCurrentThemeFromDOM();
-      setCurrentTheme(theme);
-    };
-
-    // 初始化主题
-    updateTheme();
-
-    // 监听 data-theme 属性变化
-    const observer = new MutationObserver(updateTheme);
-
-    observer.observe(document.documentElement, {
-      attributes: true,
-      attributeFilter: ["data-theme"],
-    });
-
-    // 设置 mounted 状态（必要的 SSR 模式）
-    // 使用 startTransition 包装，避免阻塞 UI 并满足 lint 要求
-    startTransition(() => {
-      setMounted(true);
-    });
-
-    return () => observer.disconnect();
+    setMounted(true);
   }, []);
 
-  if (!mounted) return null; // 避免 SSR 造成的 UI 不匹配问题
+  // next-themes 在 SSR 阶段 theme 为 undefined，须等客户端挂载后再渲染，
+  // 否则会因条件渲染（text-white / bg-current / fill）导致 hydration mismatch。
+  if (!mounted) return null;
+
+  const currentTheme = resolvedTheme;
 
   return (
     <div className="hidden sm:block w-[250px]">

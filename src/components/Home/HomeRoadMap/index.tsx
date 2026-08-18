@@ -4,6 +4,7 @@ import {AnimatedGridPattern} from "@/components/AnimatedGridPattern";
 import RoadMap from "@/components/RoadMap";
 import React, {useState} from "react";
 import {useTheme} from "next-themes";
+import {useEffect} from "react";
 import {map, backendMap} from "@/config/roadMap";
 
 type Tab = "frontend" | "backend"
@@ -11,7 +12,16 @@ type Tab = "frontend" | "backend"
 const Index = () => {
   const { theme } = useTheme()
   const [activeTab, setActiveTab] = useState<Tab>("frontend")
+  const [mounted, setMounted] = useState(false)
   const currentMap = activeTab === "frontend" ? map : backendMap
+
+  useEffect(() => {
+    setMounted(true)
+  }, [])
+
+  // next-themes 在 SSR 阶段 theme 为 undefined，且 isMobile 依赖 navigator，
+  // 须等客户端挂载后再按 theme 条件渲染，否则会导致 hydration mismatch。
+  if (!mounted) return null
 
   return (
     <div className="relative overflow-hidden h-full sm:overflow-auto sm:h-auto">
