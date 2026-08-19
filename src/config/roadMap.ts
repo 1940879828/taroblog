@@ -339,7 +339,7 @@ export const map: RoadMap = [
         {
           y: -10,
           fill: "#6F42C1",
-          link: "关于React的一些内容",
+          link: "关于Next的一些内容",
           text: "Next.js",
           marginRight: 80,
           children: [
