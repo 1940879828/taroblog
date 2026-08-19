@@ -34,8 +34,15 @@ const chapters = [
     no: "03",
     title: "React Server Components",
     desc: "'use client' 边界、Server 组件限制、window 坑",
-    items: [],
-    coming: true
+    items: [
+      "server-data · 服务端取数",
+      "client-boundary · use client 边界",
+      "window-pitfall · window 坑",
+      "hybrid · 混合树",
+      "daisyui-dropdown · 手写下拉",
+      "waterfall · 瀑布流",
+      "swr-waterfall · SWR 加载更多"
+    ]
   },
   {
     href: "/lab/data",

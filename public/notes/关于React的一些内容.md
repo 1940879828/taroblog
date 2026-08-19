@@ -44,5 +44,6 @@ description: "记录了一些关于React的内容，文章、文档、好用的�
 - [Next.js 面试学习笔记 · 索引](/note/00-README)：学习主线、章节导航、复习节奏。
 - [第 1 章 · 渲染模型](/note/01-渲染模型)：SSR / CSR / SSG / ISR 与水合。
 - [第 2 章 · App Router 路由](/note/02-App-Router-路由)：文件系统路由、布局状态、并行/拦截路由。
+- [第 3 章 · React Server Components](/note/03-React-Server-Components)：RSC vs SSR、'use client' 边界、window 坑。
 - [实验区入口](/lab)：每章对应的可运行最小实验。
 

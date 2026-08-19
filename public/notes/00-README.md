@@ -30,7 +30,7 @@ description: "面向 Next 专岗面试的系统学习笔记索引，以 Next 核
 |---|------|------|--------|------|
 | 1 | 渲染模型：SSR/CSR/SSG/ISR 与 水合 | [01-渲染模型.md](/note/01-渲染模型) | `src/app/lab/rendering` | ✅ |
 | 2 | App Router 路由：文件系统路由、匹配原理、动态/捕获段、layout 状态、并行/拦截路由 | [02-App-Router-路由.md](/note/02-App-Router-路由) | `src/app/lab/routing` | ✅ |
-| 3 | React Server Components：RSC vs SSR、`'use client'`、Server 限制、边界、window 坑 | [03-React-Server-Components.md](./03-React-Server-Components.md) | `src/app/lab/rsc` | ⏳ |
+| 3 | React Server Components：RSC vs SSR、`'use client'`、Server 限制、边界、window 坑 | [03-React-Server-Components.md](/note/03-React-Server-Components) | `src/app/lab/rsc` | ✅ |
 | 4 | 数据获取与缓存：fetch 策略、async 组件、四层缓存、revalidate、静态 vs 动态 | [04-数据获取与缓存.md](./04-%E6%95%B0%E6%8D%AE%E8%8E%B7%E5%8F%96%E4%B8%8E%E7%BC%93%E5%AD%98.md) | `src/app/lab/data` | ⏳ |
 | 5 | Server Actions：`'use server'` 原理、与 API Route 区别、渐进增强 | [05-Server-Actions.md](./05-Server-Actions.md) | `src/app/lab/actions` | ⏳ |
 | 6 | 性能 / 部署 / 工程化：next/image、流式渲染、next build、Next 16 新特性 | [06-性能部署与工程化.md](./06-%E6%80%A7%E8%83%BD%E9%83%A8%E7%BD%B2%E4%B8%8E%E5%B7%A5%E7%A8%8B%E5%8C%96.md) | `src/app/lab/perf` | ⏳ |
