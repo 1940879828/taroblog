@@ -19,8 +19,15 @@ const chapters = [
     no: "02",
     title: "App Router 路由",
     desc: "文件系统路由、动态/捕获段、layout 状态保留、并行/拦截路由",
-    items: [],
-    coming: true
+    items: [
+      "basics · 文件系统路由",
+      "layout-state · 布局状态保留",
+      "segments · 动态/捕获段",
+      "group · 路由组",
+      "special-files · loading/error",
+      "parallel · 并行路由",
+      "intercepting · 拦截路由"
+    ]
   },
   {
     href: "/lab/rsc",

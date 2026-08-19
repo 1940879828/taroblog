@@ -1,3 +1,11 @@
+---
+title: Next.js 面试学习笔记 · 索引
+tags: ['Next.js']
+date: 2026-08-19 00:00:00
+categories: ['前端','Next.js']
+description: "面向 Next 专岗面试的系统学习笔记索引，以 Next 核心机制为主线，含渲染模型、App Router 路由、RSC、数据缓存、Server Actions、性能工程化六章。"
+---
+
 # Next.js 面试学习笔记 · 索引
 
 > 面向 **Next 专岗面试**，React 基础扎实，源码"了解核心实现思路"即可。
@@ -20,8 +28,8 @@
 
 | # | 主题 | 笔记 | 实验区 | 状态 |
 |---|------|------|--------|------|
-| 1 | 渲染模型：SSR/CSR/SSG/ISR 与 水合 | [01-渲染模型.md](./01-%E6%B8%B2%E6%9F%93%E6%A8%A1%E5%9E%8B.md) | `src/app/lab/rendering` | ✅ |
-| 2 | App Router 路由：文件系统路由、匹配原理、动态/捕获段、layout 状态、并行/拦截路由 | [02-App-Router-路由.md](./02-App-Router-%E8%B7%AF%E7%94%B1.md) | `src/app/lab/routing` | ⏳ |
+| 1 | 渲染模型：SSR/CSR/SSG/ISR 与 水合 | [01-渲染模型.md](/note/01-渲染模型) | `src/app/lab/rendering` | ✅ |
+| 2 | App Router 路由：文件系统路由、匹配原理、动态/捕获段、layout 状态、并行/拦截路由 | [02-App-Router-路由.md](/note/02-App-Router-路由) | `src/app/lab/routing` | ✅ |
 | 3 | React Server Components：RSC vs SSR、`'use client'`、Server 限制、边界、window 坑 | [03-React-Server-Components.md](./03-React-Server-Components.md) | `src/app/lab/rsc` | ⏳ |
 | 4 | 数据获取与缓存：fetch 策略、async 组件、四层缓存、revalidate、静态 vs 动态 | [04-数据获取与缓存.md](./04-%E6%95%B0%E6%8D%AE%E8%8E%B7%E5%8F%96%E4%B8%8E%E7%BC%93%E5%AD%98.md) | `src/app/lab/data` | ⏳ |
 | 5 | Server Actions：`'use server'` 原理、与 API Route 区别、渐进增强 | [05-Server-Actions.md](./05-Server-Actions.md) | `src/app/lab/actions` | ⏳ |
@@ -33,7 +41,7 @@
 
 - 位置：`src/app/lab/**`（独立路由段，不影响博客本身的页面）
 - 形式：**可运行的 Next 最小实验**，每个实验页都附"观察什么、怎么验证"
-- 入口：`http://localhost:3000/lab`
+- 入口：[/lab](/lab)（本地开发为 `http://localhost:3000/lab`）
 - 验证方法：
   - `pnpm dev`：开发模式，**所有页面每次请求都重新渲染**，主要用于看交互
   - `pnpm build && pnpm start`：生产模式，**才能看到 静态/动态 的真实划分**（build 日志会打印 `○` 静态 / `ƒ` 动态 标记，末尾有图例）
