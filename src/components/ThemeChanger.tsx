@@ -1,6 +1,8 @@
 "use client"
 import { useTheme } from "@/components/ThemeProvider"
+import { isHappyModeAtom } from "@/store/happyMode"
 import { cn } from "@/lib/utils"
+import { useAtomValue } from "jotai"
 import {
   type ChangeEvent,
   type PointerEvent,
@@ -77,6 +79,7 @@ const ThemeController = forwardRef<
   }
 >(({ className, showText = false, size = 32 }, ref) => {
   const { resolvedTheme, setTheme } = useTheme()
+  const isHappyMode = useAtomValue(isHappyModeAtom)
   const labelRef = useRef<HTMLLabelElement>(null)
   const inputRef = useRef<HTMLInputElement>(null)
   const transitionOriginRef = useRef<{
@@ -236,6 +239,9 @@ const ThemeController = forwardRef<
     const toTheme = e.target.checked ? "cupcake" : "dark"
     handleThemeChange(toTheme)
   }
+
+  // happy mode 下隐藏主题切换按钮
+  if (isHappyMode) return null
 
   return (
     <label
