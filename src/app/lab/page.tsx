@@ -1,6 +1,15 @@
 import Link from "next/link"
 
-const chapters = [
+type Chapter = {
+  href: string
+  no: string
+  title: string
+  desc: string
+  items: string[]
+  coming?: boolean
+}
+
+const chapters: Chapter[] = [
   {
     href: "/lab/rendering",
     no: "01",
@@ -76,8 +85,12 @@ const chapters = [
     no: "06",
     title: "性能 / 部署 / 工程化",
     desc: "next/image、流式渲染、next build",
-    items: [],
-    coming: true
+    items: [
+      "image · 图片优化",
+      "streaming · 流式渲染",
+      "dynamic · 动态导入",
+      "build · 读 build 产物"
+    ]
   }
 ]
 

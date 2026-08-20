@@ -21,4 +21,5 @@ description: "记录了一些关于Next.js的内容，文章、文档、好用�
 - [第 3 章 · React Server Components](/note/03-React-Server-Components)：RSC vs SSR、'use client' 边界、window 坑。
 - [第 4 章 · 数据获取与缓存](/note/04-数据获取与缓存)：fetch 策略、四层缓存、revalidate、静态 vs 动态。
 - [第 5 章 · Server Actions](/note/05-Server-Actions)：'use server' 原理、与 API Route 区别、渐进增强。
+- [第 6 章 · 性能 / 部署 / 工程化](/note/06-性能部署与工程化)：next/image、流式渲染、next build、Next 16 新特性。
 - [实验区入口](/lab)：每章对应的可运行最小实验。
