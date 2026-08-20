@@ -19,4 +19,5 @@ description: "记录了一些关于Next.js的内容，文章、文档、好用�
 - [第 1 章 · 渲染模型](/note/01-渲染模型)：SSR / CSR / SSG / ISR 与水合。
 - [第 2 章 · App Router 路由](/note/02-App-Router-路由)：文件系统路由、布局状态、并行/拦截路由。
 - [第 3 章 · React Server Components](/note/03-React-Server-Components)：RSC vs SSR、'use client' 边界、window 坑。
+- [第 4 章 · 数据获取与缓存](/note/04-数据获取与缓存)：fetch 策略、四层缓存、revalidate、静态 vs 动态。
 - [实验区入口](/lab)：每章对应的可运行最小实验。

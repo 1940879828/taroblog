@@ -49,8 +49,14 @@ const chapters = [
     no: "04",
     title: "数据获取与缓存",
     desc: "fetch 缓存、四层缓存、revalidate、静态 vs 动态",
-    items: [],
-    coming: true
+    items: [
+      "fetch-default · 不缓存",
+      "fetch-cache · 数据缓存",
+      "revalidate-time · 时间刷新",
+      "revalidate-tag · 标签失效",
+      "unstable-cache · 非 fetch 缓存",
+      "static-vs-dynamic · 静态动态对比"
+    ]
   },
   {
     href: "/lab/actions",
