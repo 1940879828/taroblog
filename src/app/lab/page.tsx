@@ -63,8 +63,13 @@ const chapters = [
     no: "05",
     title: "Server Actions",
     desc: "'use server' 原理、渐进增强",
-    items: [],
-    coming: true
+    items: [
+      "form-basic · form action",
+      "use-action-state · 表单状态",
+      "event-handler · 事件调用",
+      "vs-api-route · 与 API Route 对比",
+      "with-revalidate · 联动缓存"
+    ]
   },
   {
     href: "/lab/perf",

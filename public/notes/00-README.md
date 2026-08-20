@@ -32,7 +32,7 @@ description: "面向 Next 专岗面试的系统学习笔记索引，以 Next 核
 | 2 | App Router 路由：文件系统路由、匹配原理、动态/捕获段、layout 状态、并行/拦截路由 | [02-App-Router-路由.md](/note/02-App-Router-路由) | `src/app/lab/routing` | ✅ |
 | 3 | React Server Components：RSC vs SSR、`'use client'`、Server 限制、边界、window 坑 | [03-React-Server-Components.md](/note/03-React-Server-Components) | `src/app/lab/rsc` | ✅ |
 | 4 | 数据获取与缓存：fetch 策略、async 组件、四层缓存、revalidate、静态 vs 动态 | [04-数据获取与缓存.md](/note/04-数据获取与缓存) | `src/app/lab/data` | ✅ |
-| 5 | Server Actions：`'use server'` 原理、与 API Route 区别、渐进增强 | [05-Server-Actions.md](./05-Server-Actions.md) | `src/app/lab/actions` | ⏳ |
+| 5 | Server Actions：`'use server'` 原理、与 API Route 区别、渐进增强 | [05-Server-Actions.md](/note/05-Server-Actions) | `src/app/lab/actions` | ✅ |
 | 6 | 性能 / 部署 / 工程化：next/image、流式渲染、next build、Next 16 新特性 | [06-性能部署与工程化.md](./06-%E6%80%A7%E8%83%BD%E9%83%A8%E7%BD%B2%E4%B8%8E%E5%B7%A5%E7%A8%8B%E5%8C%96.md) | `src/app/lab/perf` | ⏳ |
 
 > ⚠️ 章节序号基于已确认的学习顺序；内容写成后可再调整，但主线不变。
