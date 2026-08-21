@@ -91,6 +91,18 @@ const chapters: Chapter[] = [
       "dynamic · 动态导入",
       "build · 读 build 产物"
     ]
+  },
+  {
+    href: "/lab/auth",
+    no: "07",
+    title: "登录状态",
+    desc: "Firebase、Next 后端、业务后端之间的登录态泳道图",
+    items: [
+      "admin-cookie · SSR 会话",
+      "existing-backend · 复用后端",
+      "forward-token · 折中胶水层",
+      "optimistic-token · 乐观缓存"
+    ]
   }
 ]
 
