@@ -1,0 +1,6 @@
+# app-ads.txt
+# IAB Tech Lab 应用授权卖方标准 (https://iabtechlab.com/app-ads.txt/)
+# 域名: taroblog.top  —— 必须与此文件实际所在的域完全一致
+# 发布者 ID 派生自 AdMob 应用 ID: ca-app-pub-4572779551824977~7941772990
+# 校验请以 AdMob 后台「应用设置 → app-ads.txt」展示的原文为准。
+google.com, pub-4572779551824977, DIRECT, f08c47fec0942fa0
